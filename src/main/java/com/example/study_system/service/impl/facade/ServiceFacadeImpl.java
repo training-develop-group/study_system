@@ -1,6 +1,6 @@
 package com.example.study_system.service.impl.facade;
 
-import com.example.study_system.service.iface.IUserService;
+import com.example.study_system.service.iface.ILoginService;
 import com.example.study_system.service.iface.facade.IServiceFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServiceFacadeImpl implements IServiceFacade {
     @Autowired
-    IUserService userService;
+    ILoginService userService;
 
     @Override
-    public IUserService getUserService() {
+    public ILoginService getUserService() {
         return userService;
     }
 }
