@@ -29,10 +29,12 @@ public class LoginController extends BaseController {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             return new ResultDTO(ResultEmun.VALIDATION_ERROR);
         }
+        logger.info("用户名："+userName+ ",密码: " +password);
         UserInfo userInfo = serviceFacade.getUserService().selectUser(userName,password);
         if (userInfo == null) {
             return noData();
         }
+        userInfo.setPassword("");
         String sessionUser = JSONObject.toJSONString(userInfo);
         session.setAttribute("user",sessionUser);
         return success(userInfo);
