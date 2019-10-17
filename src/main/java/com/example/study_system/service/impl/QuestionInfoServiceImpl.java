@@ -27,7 +27,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	@Override
 	public int insertSelective(QuestionInfoWithBLOBs record, Long questionId, String optionContent, Integer isRight,
 			String optionType) {
-		Date date = new Date();
+		Date date = new Date(); 
 		record.setcTime(date);
 		jQuestionInfoMapper.insertSelective(new JQuestionOption(questionId, optionContent, isRight, optionType));
 
