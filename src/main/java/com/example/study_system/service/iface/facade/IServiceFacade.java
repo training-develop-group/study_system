@@ -2,6 +2,7 @@ package com.example.study_system.service.iface.facade;
 
 
 import com.example.study_system.service.iface.ILoginService;
+import com.example.study_system.service.iface.IResourceService;
 
 /**
  * author lindan.
@@ -9,4 +10,6 @@ import com.example.study_system.service.iface.ILoginService;
  */
 public interface IServiceFacade {
     ILoginService getUserService();
+    
+    IResourceService getResourceService();
 }
