@@ -1,30 +1,36 @@
 package com.example.study_system.model;
 
+import java.util.Date;
+
 public class UserInfo {
-    private Integer userId;
+    private String userId;
 
     private String userName;
 
     private String password;
 
-    private Integer roleType;
+    private String status;
 
-    private Integer sex;
+    private String empId;
 
-    private String email;
+    private Integer stRoleId;
 
-    private String tel;
+    private String cUser;
 
-    private Integer status;
+    private String mUser;
 
-    private String phone;
+    private Date cTime;
 
-    public Integer getUserId() {
+    private Date mTime;
+
+    private String isDel;
+
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public String getUserName() {
@@ -43,51 +49,67 @@ public class UserInfo {
         this.password = password == null ? null : password.trim();
     }
 
-    public Integer getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(Integer roleType) {
-        this.roleType = roleType;
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel == null ? null : tel.trim();
-    }
-
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
-    public String getPhone() {
-        return phone;
+    public String getEmpId() {
+        return empId;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+    public void setEmpId(String empId) {
+        this.empId = empId == null ? null : empId.trim();
+    }
+
+    public Integer getStRoleId() {
+        return stRoleId;
+    }
+
+    public void setStRoleId(Integer stRoleId) {
+        this.stRoleId = stRoleId;
+    }
+
+    public String getcUser() {
+        return cUser;
+    }
+
+    public void setcUser(String cUser) {
+        this.cUser = cUser == null ? null : cUser.trim();
+    }
+
+    public String getmUser() {
+        return mUser;
+    }
+
+    public void setmUser(String mUser) {
+        this.mUser = mUser == null ? null : mUser.trim();
+    }
+
+    public Date getcTime() {
+        return cTime;
+    }
+
+    public void setcTime(Date cTime) {
+        this.cTime = cTime;
+    }
+
+    public Date getmTime() {
+        return mTime;
+    }
+
+    public void setmTime(Date mTime) {
+        this.mTime = mTime;
+    }
+
+    public String getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(String isDel) {
+        this.isDel = isDel == null ? null : isDel.trim();
     }
 }
