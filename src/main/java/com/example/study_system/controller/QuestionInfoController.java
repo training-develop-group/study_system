@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
+import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.github.pagehelper.PageInfo;
@@ -29,8 +30,10 @@ public class QuestionInfoController extends BaseController {
 	}
 	// 删除
 
-	@RequestMapping(value = "/questionAnswer", method = RequestMethod.POST)
-	public ResultDTO editQeustionInfo(@RequestBody QuestionInfoWithBLOBs record) {
+	@RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
+	public ResultDTO editQeustionInfo(@PathVariable("questionId") Long questionId,
+			@RequestBody QuestionInfoWithBLOBs record) {
+		record.setQuestionId(questionId);
 		return success(serviceFacade.getQuestionInfoService().updateByPrimaryKeySelective(record));
 	}
 	// 修改
@@ -38,7 +41,7 @@ public class QuestionInfoController extends BaseController {
 	@RequestMapping(value = "/questions", method = RequestMethod.GET)
 	public ResultDTO selectQuestion(@RequestParam("pageNum") Integer pageNum,
 			@RequestParam("pageSize") Integer pageSize) {
-		PageInfo<QuestionInfoWithBLOBs> result = serviceFacade.getQuestionInfoService().selectAllQuestion(pageNum,
+		PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectAllQuestion(pageNum,
 				pageSize);
 
 		return success(result);
