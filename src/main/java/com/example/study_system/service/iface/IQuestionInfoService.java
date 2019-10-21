@@ -6,8 +6,7 @@ import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.github.pagehelper.PageInfo;
 
 public interface IQuestionInfoService {
-	int insertSelective(QuestionInfoWithBLOBs record, Long questionId, String optionContent, Integer isRight,
-			String optionType);
+	int insertSelective(QuestionInfoWithBLOBs record);
 
 	int deleteByPrimaryKey(Long questionId);
 
@@ -17,7 +16,7 @@ public interface IQuestionInfoService {
 
 	QuestionInfoWithBLOBs selectByPrimaryKey(Long questionId);
 
-	int selectQuestionCount();
+	int selectQuestionCount(Integer questionType);
 
 	String selectAnalysisById(Long questionId);
 }

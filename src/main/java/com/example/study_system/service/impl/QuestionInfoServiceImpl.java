@@ -25,12 +25,10 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	private JQuestionOptionMapper jQuestionInfoMapper;
 
 	@Override
-	public int insertSelective(QuestionInfoWithBLOBs record, Long questionId, String optionContent, Integer isRight,
-			String optionType) {
-		Date date = new Date(); 
+	public int insertSelective(QuestionInfoWithBLOBs record) {
+		Date date = new Date();
 		record.setcTime(date);
-		jQuestionInfoMapper.insertSelective(new JQuestionOption(questionId, optionContent, isRight, optionType));
-
+		
 		return questionInfoMapper.insertSelective(record);
 	}
 
@@ -60,8 +58,8 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public int selectQuestionCount() {
-		return questionInfoMapper.selectQuestionCount();
+	public int selectQuestionCount(Integer questionType) {
+		return questionInfoMapper.selectQuestionCount(questionType);
 	}
 
 	@Override
