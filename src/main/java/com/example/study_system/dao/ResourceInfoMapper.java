@@ -1,23 +1,25 @@
 package com.example.study_system.dao;
 
+import java.util.List;
+
 import com.example.study_system.model.ResourceInfo;
 
 public interface ResourceInfoMapper {
-//    int deleteByPrimaryKey(Long resId);
-//
-//    int insert(ResourceInfo record);
-//
-//    int insertSelective(ResourceInfo record);
-//
-//    ResourceInfo selectByPrimaryKey(Long resId);
-//
-//    int updateByPrimaryKeySelective(ResourceInfo record);
-//
-//    int updateByPrimaryKey(ResourceInfo record);
-//    
-    int selectResource (Integer resId);		//获取资源详情
+    int deleteByPrimaryKey(Long resId);		//删除资源
+
+    int insert(ResourceInfo resourceInfo);		//上传资源
+
+    int insertSelective(ResourceInfo record);
+
+    ResourceInfo selectByPrimaryKey(String resId);		//获取资源详情
+
+    int updateByPrimaryKeySelective(ResourceInfo record);
+
+    int updateByPrimaryKey(Long resId);		//修改资源名
     
-    ResourceInfo modifyResourceByResName(String resName);		//修改资源名
+    List<ResourceInfo> selectList();		//查询全部
     
-    int deleteResourceByresId(Integer resId);		//删除资源
+    
+    
+
 }
