@@ -157,4 +157,6 @@ public class QuestionResultDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	
 }

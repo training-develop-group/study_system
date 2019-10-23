@@ -35,7 +35,7 @@ public class QuestionInfoController extends BaseController {
 		List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
 		QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
 		int result = serviceFacade.getQuestionInfoService().addQuestion(questionInfo, options);
-		return success(0);
+		return success(result);
 	}
 
 	/**
@@ -59,9 +59,11 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
 	public ResultDTO updateQeustionInfo(@PathVariable("questionId") Long questionId,
-			@RequestBody QuestionInfoWithBLOBs record) {
-		record.setQuestionId(questionId);
-		return success(serviceFacade.getQuestionInfoService().updateQuestion(record));
+			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions) {
+		List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
+		QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
+		int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
+		return success(result);
 	}
 
 	/**
@@ -89,7 +91,7 @@ public class QuestionInfoController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.GET)
-	public ResultDTO selectQuestionTitle(@PathVariable("questionId") Long questionId) {
+	public ResultDTO selectQuestionDetailed(@PathVariable("questionId") Long questionId) {
 		return success(serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId));
 	}
 
@@ -100,7 +102,7 @@ public class QuestionInfoController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
-	public ResultDTO selectQuestionCount(Integer questionType) {
+	public ResultDTO selectQuestionCount(@RequestParam(value = "questionType", required = false) Integer questionType) {
 		return success(serviceFacade.getQuestionInfoService().selectQuestionCount(questionType));
 	}
 
@@ -111,7 +113,7 @@ public class QuestionInfoController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/answer", method = RequestMethod.GET)
-	public ResultDTO selectAnalysis(Long questionId) {
+	public ResultDTO selectAnalysis(@RequestParam("questionId") Long questionId) {
 		return success(serviceFacade.getQuestionInfoService().selectAnalysis(questionId));
 	}
 

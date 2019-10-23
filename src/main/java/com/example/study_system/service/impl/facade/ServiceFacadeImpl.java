@@ -1,6 +1,7 @@
 package com.example.study_system.service.impl.facade;
 
 import com.example.study_system.service.iface.IJQuestionOptionService;
+import com.example.study_system.service.iface.ILoginService;
 import com.example.study_system.service.iface.IQuestionInfoService;
 import com.example.study_system.service.iface.IUserService;
 import com.example.study_system.service.iface.facade.IServiceFacade;
@@ -12,15 +13,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ServiceFacadeImpl implements IServiceFacade {
-	@Autowired
-	IUserService userService;
+
 	@Autowired
 	IQuestionInfoService questionInfoService;
 	@Autowired
 	IJQuestionOptionService jQuestionOptionService;
+	@Autowired
+	ILoginService userService;
 
 	@Override
-	public IUserService getUserService() {
+	public ILoginService getUserService() {
 		return userService;
 	}
 

@@ -26,7 +26,7 @@ public interface QuestionInfoMapper {
 
 	List<QuestionInfoWithBLOBs> selectAllQuestion(@Param("content")String content);
 
-	int selectQuestionCount(Integer questionType);
+	int selectQuestionCount(@Param("questionType")Integer questionType);
 
-	String selectAnalysisById(Long questionId);
+	QuestionInfoWithBLOBs selectAnalysisById(@Param("questionId")Long questionId);
 }

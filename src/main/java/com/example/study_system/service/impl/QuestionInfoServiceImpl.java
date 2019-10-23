@@ -53,11 +53,18 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public int updateQuestion(QuestionInfoWithBLOBs record) {
+	public int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
 		Date date = new Date();
-		record.setmTime(date);
-
-		return questionInfoMapper.updateByPrimaryKeySelective(record);
+		question.setmTime(date);
+		question.setcUser("未定义");
+		int result = questionInfoMapper.updateByPrimaryKeySelective(question);
+		questionOptions.forEach(item -> {
+			item.setcUser("未定义");
+			item.setcTime(date);
+			item.setQuestionId(question.getQuestionId());
+			jQuestionInfoMapper.updateByPrimaryKeySelective(item);
+		});
+		return result;
 	}
 
 	@Override
@@ -84,8 +91,21 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public QuestionInfoWithBLOBs selectQuestionTitle(Long questionId) {
-		return questionInfoMapper.selectByPrimaryKey(questionId);
+	public List<QuestionResultDTO> selectQuestionTitle(Long questionId) {
+		QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(questionId);
+		List<JQuestionOption> questionOptionList = jQuestionInfoMapper.selectQuestionByQuestionId(questionId);
+		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
+
+		questionOptionList.forEach(optionItem -> {
+
+			questionResultDTO.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
+					question.getScore(), question.getDifficulty(), optionItem.getIsRight(), optionItem.getOptionType(),
+					question.getContent(), question.getAnalysis(), optionItem.getContent(), question.getStatus(),
+					question.getcTime(), question.getmTime(), question.getcUser(), question.getmUser()));
+
+		});
+
+		return questionResultDTO;
 	}
 
 	@Override
@@ -94,7 +114,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public String selectAnalysis(Long questionId) {
+	public QuestionInfoWithBLOBs selectAnalysis(Long questionId) {
 		return questionInfoMapper.selectAnalysisById(questionId);
 	}
 }

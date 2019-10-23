@@ -23,6 +23,8 @@
 			jdbcType="LONGVARCHAR" />
 		<result column="analysis" property="analysis"
 			jdbcType="LONGVARCHAR" />
+		<result column="option_type" property="optionType"
+			jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		question_id, question_type, score, difficulty, STATUS,
@@ -46,18 +48,25 @@
 	<select id="selectQuestionCount" resultType="java.lang.Integer"
 		parameterType="java.lang.Integer">
 		select count(question_id) from question_info
-		<if test="questionId != null">
+		<if test="questionType != null">
 			where
 			question_type= #{questionType,jdbcType=INTEGER}
 		</if>
-		ORDER BY question_id ASC
+
 	</select>
-	<select id="selectAnalysisById" resultType="java.lang.String"
+	<select id="selectAnalysisById" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Long">
+		select a.analysis,b.option_type from
+		question_info a left
+		join
+		j_question_option b on a.question_id = b.question_id
+		where
+		b.is_right = 1 and a.question_id = #{questionId,jdbcType=BIGINT}
+		ORDER
+		BY a.question_id ASC;
+	</select>
+	<select id="selectAllQuestion" resultMap="ResultMapWithBLOBs"
 		parameterType="java.lang.String">
-		select analysis from question_info where question_id =
-		#{questionId,jdbcType=BIGINT} ORDER BY question_id ASC;
-	</select>
-	<select id="selectAllQuestion" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
 		,

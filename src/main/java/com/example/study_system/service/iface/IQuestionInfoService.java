@@ -14,13 +14,13 @@ public interface IQuestionInfoService {
 
 	int deleteQuestion(Long questionId);
 
-	int updateQuestion(QuestionInfoWithBLOBs record);
+	int updateQuestion(QuestionInfoWithBLOBs question,List<JQuestionOption> questionOptions);
 
 	PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize,String content);
 
-	QuestionInfoWithBLOBs selectQuestionTitle(Long questionId);
+	List<QuestionResultDTO> selectQuestionTitle(Long questionId);
 
 	int selectQuestionCount(Integer questionType);
 
-	String selectAnalysis(Long questionId);
+	QuestionInfoWithBLOBs selectAnalysis(Long questionId);
 }
