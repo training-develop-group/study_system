@@ -1,23 +1,26 @@
 package com.example.study_system.service.iface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.study_system.dto.QuestionResultDTO;
+import com.example.study_system.model.JQuestionOption;
+import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.github.pagehelper.PageInfo;
 
 public interface IQuestionInfoService {
-	int insertSelective(QuestionInfoWithBLOBs record);
+	int addQuestion(QuestionInfoWithBLOBs question,List<JQuestionOption> questionOptions);
 
-	int deleteByPrimaryKey(Long questionId);
+	int deleteQuestion(Long questionId);
 
-	int updateByPrimaryKeySelective(QuestionInfoWithBLOBs record);
+	int updateQuestion(QuestionInfoWithBLOBs record);
 
-	PageInfo<QuestionResultDTO> selectAllQuestion(Integer pageNum, Integer pageSize);
+	PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize,String content);
 
-	QuestionInfoWithBLOBs selectByPrimaryKey(Long questionId);
+	QuestionInfoWithBLOBs selectQuestionTitle(Long questionId);
 
 	int selectQuestionCount(Integer questionType);
 
-	String selectAnalysisById(Long questionId);
+	String selectAnalysis(Long questionId);
 }

@@ -15,6 +15,7 @@ import com.example.study_system.dao.JQuestionOptionMapper;
 import com.example.study_system.dao.QuestionInfoMapper;
 import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
+import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.example.study_system.service.iface.IQuestionInfoService;
 import com.github.pagehelper.PageHelper;
@@ -28,34 +29,42 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	private JQuestionOptionMapper jQuestionInfoMapper;
 
 	@Override
-	public int insertSelective(QuestionInfoWithBLOBs record) {
+	public int addQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
 		Date date = new Date();
-		record.setcTime(date);
+		question.setcTime(date);
+		question.setcUser("未定义");
+		int result = questionInfoMapper.insertSelective(question);
+		questionOptions.forEach(item -> {
+			item.setcUser("未定义");
+			item.setcTime(date);
+			item.setQuestionId(question.getQuestionId());
+			jQuestionInfoMapper.insertSelective(item);
+		});
 
-		return questionInfoMapper.insertSelective(record);
+		return result;
 	}
 
 	@Override
 	@Transactional
-	public int deleteByPrimaryKey(Long questionId) {
+	public int deleteQuestion(Long questionId) {
 		int result = questionInfoMapper.deleteByPrimaryKey(questionId);
 		jQuestionInfoMapper.deleteByPrimaryKey(questionId);
 		return result;
 	}
 
 	@Override
-	public int updateByPrimaryKeySelective(QuestionInfoWithBLOBs record) {
+	public int updateQuestion(QuestionInfoWithBLOBs record) {
 		Date date = new Date();
 		record.setmTime(date);
-		
+
 		return questionInfoMapper.updateByPrimaryKeySelective(record);
 	}
 
 	@Override
 	@Transactional
-	public PageInfo<QuestionResultDTO> selectAllQuestion(Integer pageNum, Integer pageSize) {
+	public PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize, String content) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectAllQuestion();
+		List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectAllQuestion(content);
 		List<JQuestionOption> questionOptionList = jQuestionInfoMapper.selectAllQuestionOption();
 		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
 		questionList.forEach(questionItem -> {
@@ -75,7 +84,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public QuestionInfoWithBLOBs selectByPrimaryKey(Long questionId) {
+	public QuestionInfoWithBLOBs selectQuestionTitle(Long questionId) {
 		return questionInfoMapper.selectByPrimaryKey(questionId);
 	}
 
@@ -85,7 +94,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public String selectAnalysisById(Long questionId) {
+	public String selectAnalysis(Long questionId) {
 		return questionInfoMapper.selectAnalysisById(questionId);
 	}
 }

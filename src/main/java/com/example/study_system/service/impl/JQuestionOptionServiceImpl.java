@@ -17,8 +17,6 @@ public class JQuestionOptionServiceImpl implements IJQuestionOptionService {
 
 	@Override
 	public int insertSelective(JQuestionOption record) {
-		Date date = new Date();
-		record.setcTime(date);
 		return jQuestionOptionMapper.insertSelective(record);
 	}
 

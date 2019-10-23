@@ -3,6 +3,7 @@ package com.example.study_system.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
@@ -23,7 +24,7 @@ public interface QuestionInfoMapper {
 
 	int updateByPrimaryKey(QuestionInfo record);
 
-	List<QuestionInfoWithBLOBs> selectAllQuestion();
+	List<QuestionInfoWithBLOBs> selectAllQuestion(@Param("content")String content);
 
 	int selectQuestionCount(Integer questionType);
 

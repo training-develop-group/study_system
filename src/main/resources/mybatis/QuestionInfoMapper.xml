@@ -46,22 +46,28 @@
 	<select id="selectQuestionCount" resultType="java.lang.Integer"
 		parameterType="java.lang.Integer">
 		select count(question_id) from question_info
-		where
-		question_type= #{questionType,jdbcType=INTEGER}
-		ORDER BY question_id
-		ASC
+		<if test="questionId != null">
+			where
+			question_type= #{questionType,jdbcType=INTEGER}
+		</if>
+		ORDER BY question_id ASC
 	</select>
 	<select id="selectAnalysisById" resultType="java.lang.String"
 		parameterType="java.lang.String">
 		select analysis from question_info where question_id =
 		#{questionId,jdbcType=BIGINT} ORDER BY question_id ASC;
 	</select>
-	<select id="selectAllQuestion" resultMap="ResultMapWithBLOBs">
+	<select id="selectAllQuestion" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
 		select
 		<include refid="Base_Column_List" />
 		,
 		<include refid="Blob_Column_List" />
-		from question_info ORDER BY question_id ASC
+		from question_info
+		<if test="content != null">
+			where
+			content like "%"#{content,jdbcType=LONGVARCHAR}"%"
+		</if>
+		ORDER BY question_id ASC
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from
