@@ -31,13 +31,31 @@ public class QuestionResultDTO {
 
 	private String mUser;
 
+	private Long ref;
+
+	public String getmUser() {
+		return mUser;
+	}
+
+	public void setmUser(String mUser) {
+		this.mUser = mUser;
+	}
+
+	public Long getRef() {
+		return ref;
+	}
+
+	public void setRef(Long ref) {
+		this.ref = ref;
+	}
+
 	public QuestionResultDTO() {
 
 	}
 
 	public QuestionResultDTO(Long questionId, Integer questionType, Float score, Integer difficulty, Integer isRight,
 			String optionType, String content, String analysis, String optionCentent, Integer status, Date cTime,
-			Date mTime, String cUser, String mUser) {
+			Date mTime, String cUser, String mUser, Long ref) {
 		this.questionId = questionId;
 		this.questionType = questionType;
 		this.score = score;
@@ -52,6 +70,7 @@ public class QuestionResultDTO {
 		this.mTime = mTime;
 		this.cUser = cUser;
 		this.mUser = mUser;
+		this.ref = ref;
 	}
 
 	public String getAnalysis() {
@@ -158,5 +177,4 @@ public class QuestionResultDTO {
 		this.content = content;
 	}
 
-	
 }

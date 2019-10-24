@@ -56,8 +56,9 @@
 	</select>
 	<select id="selectAnalysisById" resultMap="ResultMapWithBLOBs"
 		parameterType="java.lang.Long">
-		select a.analysis,b.option_type from
-		question_info a left
+		select a.analysis,b.ref,b.option_type from
+		question_info
+		a left
 		join
 		j_question_option b on a.question_id = b.question_id
 		where

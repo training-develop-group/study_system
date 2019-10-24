@@ -2,6 +2,7 @@ package com.example.study_system.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -53,17 +54,34 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
+	public int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions, Integer count) {
 		Date date = new Date();
 		question.setmTime(date);
 		question.setcUser("未定义");
 		int result = questionInfoMapper.updateByPrimaryKeySelective(question);
+		List<JQuestionOption> options = jQuestionInfoMapper.selectQuestionByQuestionId(question.getQuestionId());
 		questionOptions.forEach(item -> {
 			item.setcUser("未定义");
 			item.setcTime(date);
-			item.setQuestionId(question.getQuestionId());
 			jQuestionInfoMapper.updateByPrimaryKeySelective(item);
 		});
+		if (count != 0) {
+			if (count > 0) {
+				int index = 0;
+				for (int i = 0; i < count; i++) {
+					index++;
+					questionOptions.get(questionOptions.size() - index).setQuestionId(question.getQuestionId());
+					jQuestionInfoMapper.insertSelective(questionOptions.get(questionOptions.size() - index));
+				}
+			} else {
+				int index = 0;
+				for (int i = 0; i < -(count); i++) {
+					index++;
+					jQuestionInfoMapper.deleteByPrimaryKey(options.get(options.size() - index).getRef());
+					
+				}
+			}
+		}
 		return result;
 	}
 
@@ -77,12 +95,12 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 		questionList.forEach(questionItem -> {
 			questionOptionList.forEach(optionItem -> {
 				if (questionItem.getQuestionId() == optionItem.getQuestionId()) {
-					questionResultDTO
-							.add(new QuestionResultDTO(questionItem.getQuestionId(), questionItem.getQuestionType(),
-									questionItem.getScore(), questionItem.getDifficulty(), optionItem.getIsRight(),
-									optionItem.getOptionType(), questionItem.getContent(), questionItem.getAnalysis(),
-									optionItem.getContent(), questionItem.getStatus(), questionItem.getcTime(),
-									questionItem.getmTime(), questionItem.getcUser(), questionItem.getmUser()));
+					questionResultDTO.add(new QuestionResultDTO(questionItem.getQuestionId(),
+							questionItem.getQuestionType(), questionItem.getScore(), questionItem.getDifficulty(),
+							optionItem.getIsRight(), optionItem.getOptionType(), questionItem.getContent(),
+							questionItem.getAnalysis(), optionItem.getContent(), questionItem.getStatus(),
+							questionItem.getcTime(), questionItem.getmTime(), questionItem.getcUser(),
+							questionItem.getmUser(), optionItem.getRef()));
 				}
 			});
 		});
@@ -101,7 +119,8 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 			questionResultDTO.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
 					question.getScore(), question.getDifficulty(), optionItem.getIsRight(), optionItem.getOptionType(),
 					question.getContent(), question.getAnalysis(), optionItem.getContent(), question.getStatus(),
-					question.getcTime(), question.getmTime(), question.getcUser(), question.getmUser()));
+					question.getcTime(), question.getmTime(), question.getcUser(), question.getmUser(),
+					optionItem.getRef()));
 
 		});
 

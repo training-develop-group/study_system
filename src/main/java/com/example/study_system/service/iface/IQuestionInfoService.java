@@ -14,7 +14,7 @@ public interface IQuestionInfoService {
 
 	int deleteQuestion(Long questionId);
 
-	int updateQuestion(QuestionInfoWithBLOBs question,List<JQuestionOption> questionOptions);
+	int updateQuestion(QuestionInfoWithBLOBs question,List<JQuestionOption> questionOptions,Integer count);
 
 	PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize,String content);
 

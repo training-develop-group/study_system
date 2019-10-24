@@ -59,10 +59,11 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
 	public ResultDTO updateQeustionInfo(@PathVariable("questionId") Long questionId,
-			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions) {
+			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions,
+			@RequestParam("count") Integer count) {
 		List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
 		QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
-		int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
+		int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options, count);
 		return success(result);
 	}
 
