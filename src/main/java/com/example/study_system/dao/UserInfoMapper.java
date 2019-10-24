@@ -1,17 +1,24 @@
 package com.example.study_system.dao;
 
 import com.example.study_system.model.UserInfo;
+import com.example.study_system.model.UserInfoWithBLOBs;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 public interface UserInfoMapper {
-    int deleteByPrimaryKey(Integer userId);
+    int deleteByPrimaryKey(String userId);
 
-    int insert(UserInfo record);
+    int insert(UserInfoWithBLOBs record);
 
-    int insertSelective(UserInfo record);
+    int insertSelective(UserInfoWithBLOBs record);
 
-    UserInfo selectByPrimaryKey(Integer userId);
+    UserInfoWithBLOBs selectByPrimaryKey(String userId);
 
-    int updateByPrimaryKeySelective(UserInfo record);
+    int updateByPrimaryKeySelective(UserInfoWithBLOBs record);
+
+    int updateByPrimaryKeyWithBLOBs(UserInfoWithBLOBs record);
 
     int updateByPrimaryKey(UserInfo record);
+
+    UserInfo selectByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
 }
