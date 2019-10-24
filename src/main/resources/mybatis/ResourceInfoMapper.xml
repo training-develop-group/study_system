@@ -6,6 +6,7 @@
     <result column="res_name" property="resName" jdbcType="VARCHAR" />
     <result column="res_type" property="resType" jdbcType="INTEGER" />
     <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="img_path" property="imgPath" jdbcType="VARCHAR" />
     <result column="res_ext" property="resExt" jdbcType="VARCHAR" />
     <result column="res_size" property="resSize" jdbcType="BIGINT" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
@@ -15,7 +16,7 @@
     <result column="m_user" property="mUser" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    res_id, res_name, res_type, path, res_ext, res_size, STATUS, c_time, m_time, c_user, 
+    res_id, res_name, res_type, path, img_path, res_ext, res_size, STATUS, c_time, m_time, c_user, 
     m_user
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -29,17 +30,22 @@
   	<include refid="Base_Column_List" />
   	from resource_info
   </select>
+  <select id="selectListCount" resultType="java.lang.Integer" >
+  	select count(res_id)
+  	<include refid="Base_Column_List" />
+  	from resource_info
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from resource_info
     where res_id = #{resId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.example.study_system.model.ResourceInfo" >
     insert into resource_info (res_id, res_name, res_type, 
-      path, res_ext, res_size, 
+      path, img_path, res_ext, res_size, 
       STATUS, c_time, m_time, 
       c_user, m_user)
     values (#{resId,jdbcType=BIGINT}, #{resName,jdbcType=VARCHAR}, #{resType,jdbcType=INTEGER}, 
-      #{path,jdbcType=VARCHAR}, #{resExt,jdbcType=VARCHAR}, #{resSize,jdbcType=BIGINT}, 
+      #{path,jdbcType=VARCHAR}, #{imgPath,jdbcType=VARCHAR}, #{resExt,jdbcType=VARCHAR}, #{resSize,jdbcType=BIGINT}, 
       #{status,jdbcType=INTEGER}, #{cTime,jdbcType=TIMESTAMP}, #{mTime,jdbcType=TIMESTAMP}, 
       #{cUser,jdbcType=VARCHAR}, #{mUser,jdbcType=VARCHAR})
   </insert>
@@ -57,6 +63,9 @@
       </if>
       <if test="path != null" >
         path,
+      </if>
+       <if test="imgPath != null" >
+        imgPath,
       </if>
       <if test="resExt != null" >
         res_ext,
@@ -93,6 +102,9 @@
       <if test="path != null" >
         #{path,jdbcType=VARCHAR},
       </if>
+      <if test="imgPath != null" >
+        #{imgPath,jdbcType=VARCHAR},
+      </if>
       <if test="resExt != null" >
         #{resExt,jdbcType=VARCHAR},
       </if>
@@ -128,6 +140,9 @@
       <if test="path != null" >
         path = #{path,jdbcType=VARCHAR},
       </if>
+      <if test="imgPath != null" >
+        imgPath = #{imgPath,jdbcType=VARCHAR},
+      </if>
       <if test="resExt != null" >
         res_ext = #{resExt,jdbcType=VARCHAR},
       </if>
@@ -157,6 +172,7 @@
     set res_name = #{resName,jdbcType=VARCHAR},
       res_type = #{resType,jdbcType=INTEGER},
       path = #{path,jdbcType=VARCHAR},
+      img_path = #{imgPath,jdbcType=VARCHAR},
       res_ext = #{resExt,jdbcType=VARCHAR},
       res_size = #{resSize,jdbcType=BIGINT},
       STATUS = #{status,jdbcType=INTEGER},

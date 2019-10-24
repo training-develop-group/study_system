@@ -12,15 +12,21 @@ public interface IResourceService {
 //
 //	int deleteResourceByresId(Integer resId);
 	
-	ResourceInfo selectByPrimaryKey(String resId);
-	 
-	int updateByPrimaryKey(Long resId);
+	int uploadResourceInfo(ResourceInfo resourceInfo);		//上传资源 (对应Mapper是insert方法)
 	
-	int deleteByPrimaryKey(Long resId);
+	int deleteResourceInfoByResId(Long resId);		//删除资源 (对应Mapper是deleteByPrimaryKey方法)
 	
-	List<ResourceInfo> selectList();		//查询全部
+	int modifyResourceNameByResId(Long resId);		//修改资源名 (对应Mapper是updateByPrimaryKey方法)
 	
-	int insert(ResourceInfo resourceInfo);		//上传资源
+	ResourceInfo getResourceDetailsByResId(String resId);		//获取资源详情 (对应Mapper是selectByPrimaryKey方法)
+	
+	List<ResourceInfo> getResourceList();		//获取资源列表 (对应Mapper是selectList方法)
+	
+	int getResourceListCount();			//获取资源总数
+
+	
+	
+	
 	
 	
 

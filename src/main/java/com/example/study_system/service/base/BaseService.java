@@ -1,10 +1,12 @@
 package com.example.study_system.service.base;
 
-import com.example.study_system.dao.ResourceInfoMapper;
-import com.example.study_system.dao.UserInfoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.study_system.dao.JUserVideoLogMapper;
+import com.example.study_system.dao.ResourceInfoMapper;
+import com.example.study_system.dao.UserInfoMapper;
 
 /**
  * author lindan.
@@ -19,6 +21,8 @@ public class BaseService {
     @Autowired
     protected ResourceInfoMapper resourceInfoMapper;
 
+    @Autowired
+    protected JUserVideoLogMapper userVideoLogMapper;
 
 
 	

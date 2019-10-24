@@ -41,7 +41,7 @@
         </javaClientGenerator>
 
         <!-- 生成DAO的类文件以及配置文件 -->
-        <table tableName="resource_info" domainObjectName="ResourceInfo"
+        <table tableName="j_user_video_log" domainObjectName="JUserVideoLog"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
