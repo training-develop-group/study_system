@@ -1,7 +1,10 @@
 package com.example.study_system.service.iface.facade;
 
 
+import com.example.study_system.service.iface.IJPaperQuestionService;
 import com.example.study_system.service.iface.ILoginService;
+import com.example.study_system.service.iface.IPaperInfoService;
+import com.example.study_system.service.iface.IQuestionInfoService;
 
 /**
  * author lindan.
@@ -9,4 +12,10 @@ import com.example.study_system.service.iface.ILoginService;
  */
 public interface IServiceFacade {
     ILoginService getUserService();
+    
+    IPaperInfoService getPaperInfoService();
+    
+    IJPaperQuestionService getJPaperQuestionService();
+    
+    IQuestionInfoService getIQuestionInfoService();
 }

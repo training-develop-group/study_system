@@ -14,7 +14,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/manage_system"
+                        connectionURL="jdbc:mysql://localhost:3306/manage_system?serverTimezone=UTC"
                         userId="root"
                         password="123456">
         </jdbcConnection>
@@ -41,7 +41,7 @@
         </javaClientGenerator>
 
         <!-- 生成DAO的类文件以及配置文件 -->
-        <table tableName="user_info" domainObjectName="UserInfo"
+        <table tableName="" domainObjectName=""
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

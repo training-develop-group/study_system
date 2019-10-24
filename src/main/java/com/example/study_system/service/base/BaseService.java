@@ -1,6 +1,10 @@
 package com.example.study_system.service.base;
 
+import com.example.study_system.dao.JPaperQuestionMapper;
+import com.example.study_system.dao.PaperInfoMapper;
+import com.example.study_system.dao.QuestionInfoMapper;
 import com.example.study_system.dao.UserInfoMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,4 +18,13 @@ public class BaseService {
 
     @Autowired
     protected UserInfoMapper userInfoMapper;
+    
+    @Autowired
+    protected PaperInfoMapper paperInfoMapper;
+    
+    @Autowired
+    protected JPaperQuestionMapper jPaperQuestionMapper;
+    
+    @Autowired
+    protected QuestionInfoMapper questionInfoMapper;
 }
