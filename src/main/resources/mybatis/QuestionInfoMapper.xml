@@ -76,6 +76,7 @@
 		<if test="content != null">
 			where
 			content like "%"#{content,jdbcType=LONGVARCHAR}"%"
+			and question_type = #{questionType,jdbcType=INTEGER}
 		</if>
 		ORDER BY question_id ASC
 	</select>

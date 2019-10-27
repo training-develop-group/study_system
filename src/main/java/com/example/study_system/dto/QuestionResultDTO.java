@@ -1,6 +1,9 @@
 package com.example.study_system.dto;
 
 import java.util.Date;
+import java.util.List;
+
+import com.example.study_system.model.JQuestionOption;
 
 public class QuestionResultDTO {
 	private Long questionId;
@@ -11,15 +14,9 @@ public class QuestionResultDTO {
 
 	private Integer difficulty;
 
-	private Integer isRight;
-
-	private String optionType;
-
 	private String content;
 
 	private String analysis;
-
-	private String optionContent;
 
 	private Integer status;
 
@@ -31,7 +28,15 @@ public class QuestionResultDTO {
 
 	private String mUser;
 
-	private Long ref;
+	private List<JQuestionOption> optionInfo;
+
+	public List<JQuestionOption> getOptionInfo() {
+		return optionInfo;
+	}
+
+	public void setOptionInfo(List<JQuestionOption> optionInfo) {
+		this.optionInfo = optionInfo;
+	}
 
 	public String getmUser() {
 		return mUser;
@@ -41,36 +46,25 @@ public class QuestionResultDTO {
 		this.mUser = mUser;
 	}
 
-	public Long getRef() {
-		return ref;
-	}
-
-	public void setRef(Long ref) {
-		this.ref = ref;
-	}
-
 	public QuestionResultDTO() {
 
 	}
 
-	public QuestionResultDTO(Long questionId, Integer questionType, Float score, Integer difficulty, Integer isRight,
-			String optionType, String content, String analysis, String optionCentent, Integer status, Date cTime,
-			Date mTime, String cUser, String mUser, Long ref) {
+	public QuestionResultDTO(Long questionId, Integer questionType, Float score, Integer difficulty, String content,
+			String analysis, Integer status, Date cTime, Date mTime, String cUser, String mUser,
+			List<JQuestionOption> optionInfo) {
 		this.questionId = questionId;
 		this.questionType = questionType;
 		this.score = score;
 		this.difficulty = difficulty;
-		this.isRight = isRight;
-		this.optionType = optionType;
 		this.content = content;
 		this.analysis = analysis;
-		this.optionContent = optionCentent;
 		this.status = status;
 		this.cTime = cTime;
 		this.mTime = mTime;
 		this.cUser = cUser;
 		this.mUser = mUser;
-		this.ref = ref;
+		this.optionInfo =optionInfo;
 	}
 
 	public String getAnalysis() {
@@ -79,14 +73,6 @@ public class QuestionResultDTO {
 
 	public void setAnalysis(String analysis) {
 		this.analysis = analysis;
-	}
-
-	public String getOptionContent() {
-		return optionContent;
-	}
-
-	public void setOptionContent(String optionContent) {
-		this.optionContent = optionContent;
 	}
 
 	public Long getQuestionId() {
@@ -151,22 +137,6 @@ public class QuestionResultDTO {
 
 	public void setcUser(String cUser) {
 		this.cUser = cUser;
-	}
-
-	public Integer getIsRight() {
-		return isRight;
-	}
-
-	public void setIsRight(Integer isRight) {
-		this.isRight = isRight;
-	}
-
-	public String getOptionType() {
-		return optionType;
-	}
-
-	public void setOptionType(String optionType) {
-		this.optionType = optionType;
 	}
 
 	public String getContent() {

@@ -59,11 +59,10 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
 	public ResultDTO updateQeustionInfo(@PathVariable("questionId") Long questionId,
-			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions,
-			@RequestParam("count") Integer count) {
+			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions) {
 		List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
 		QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
-		int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options, count);
+		int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
 		return success(result);
 	}
 
@@ -77,11 +76,11 @@ public class QuestionInfoController extends BaseController {
 	@RequestMapping(value = "/questions", method = RequestMethod.GET)
 	public ResultDTO selectQuestion(@RequestParam(value = "pageNum") Integer pageNum,
 			@RequestParam(value = "pageSize") Integer pageSize,
-			@RequestParam(value = "content", required = false) String content) {
+			@RequestParam(value = "content", required = false) String content,
+			@RequestParam("questionType") Integer questionType) {
 
 		PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum, pageSize,
-				content);
-
+				content, questionType);
 		return success(result);
 	}
 

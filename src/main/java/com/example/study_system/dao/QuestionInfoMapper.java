@@ -24,9 +24,10 @@ public interface QuestionInfoMapper {
 
 	int updateByPrimaryKey(QuestionInfo record);
 
-	List<QuestionInfoWithBLOBs> selectAllQuestion(@Param("content")String content);
+	List<QuestionInfoWithBLOBs> selectAllQuestion(@Param("content") String content,
+			@Param("questionType") Integer type);
 
-	int selectQuestionCount(@Param("questionType")Integer questionType);
+	int selectQuestionCount(@Param("questionType") Integer questionType);
 
-	QuestionInfoWithBLOBs selectAnalysisById(@Param("questionId")Long questionId);
+	List<QuestionInfoWithBLOBs> selectAnalysisById(@Param("questionId") Long questionId);
 }

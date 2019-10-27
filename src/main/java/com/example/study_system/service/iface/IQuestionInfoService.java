@@ -10,17 +10,17 @@ import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.github.pagehelper.PageInfo;
 
 public interface IQuestionInfoService {
-	int addQuestion(QuestionInfoWithBLOBs question,List<JQuestionOption> questionOptions);
+	int addQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions);
 
 	int deleteQuestion(Long questionId);
 
-	int updateQuestion(QuestionInfoWithBLOBs question,List<JQuestionOption> questionOptions,Integer count);
+	int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions);
 
-	PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize,String content);
+	PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize, String content, Integer questionType);
 
 	List<QuestionResultDTO> selectQuestionTitle(Long questionId);
 
 	int selectQuestionCount(Integer questionType);
 
-	QuestionInfoWithBLOBs selectAnalysis(Long questionId);
+	List<QuestionInfoWithBLOBs> selectAnalysis(Long questionId);
 }

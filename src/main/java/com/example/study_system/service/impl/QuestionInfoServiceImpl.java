@@ -21,6 +21,7 @@ import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.example.study_system.service.iface.IQuestionInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zaxxer.hikari.util.SuspendResumeLock;
 
 @Service
 public class QuestionInfoServiceImpl implements IQuestionInfoService {
@@ -54,57 +55,44 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions, Integer count) {
+	public int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
 		Date date = new Date();
+		question.setcTime(date);
 		question.setmTime(date);
 		question.setcUser("未定义");
-		int result = questionInfoMapper.updateByPrimaryKeySelective(question);
-		List<JQuestionOption> options = jQuestionInfoMapper.selectQuestionByQuestionId(question.getQuestionId());
-		questionOptions.forEach(item -> {
-			item.setcUser("未定义");
+		question.setmUser("未定义");
+		int result = questionInfoMapper.deleteByPrimaryKey(question.getQuestionId());
+		questionInfoMapper.insertSelective(question);
+		List<JQuestionOption> options = questionOptions;
+		jQuestionInfoMapper.deleteQuestionOptionByQuestionId(question.getQuestionId());
+		options.forEach(item -> {
 			item.setcTime(date);
-			jQuestionInfoMapper.updateByPrimaryKeySelective(item);
+			item.setmTime(date);
+			item.setcUser("未定义");
+			item.setmUser("未定义");
+			item.setQuestionId(question.getQuestionId());
+			jQuestionInfoMapper.insertSelective(item);
 		});
-		if (count != 0) {
-			if (count > 0) {
-				int index = 0;
-				for (int i = 0; i < count; i++) {
-					index++;
-					questionOptions.get(questionOptions.size() - index).setQuestionId(question.getQuestionId());
-					jQuestionInfoMapper.insertSelective(questionOptions.get(questionOptions.size() - index));
-				}
-			} else {
-				int index = 0;
-				for (int i = 0; i < -(count); i++) {
-					index++;
-					jQuestionInfoMapper.deleteByPrimaryKey(options.get(options.size() - index).getRef());
-					
-				}
-			}
-		}
 		return result;
 	}
 
 	@Override
 	@Transactional
-	public PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize, String content) {
+	public PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize, String content,
+			Integer questionType) {
 		PageHelper.startPage(pageNum, pageSize);
-		List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectAllQuestion(content);
-		List<JQuestionOption> questionOptionList = jQuestionInfoMapper.selectAllQuestionOption();
+		List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectAllQuestion(content, questionType);
 		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
 		questionList.forEach(questionItem -> {
-			questionOptionList.forEach(optionItem -> {
-				if (questionItem.getQuestionId() == optionItem.getQuestionId()) {
-					questionResultDTO.add(new QuestionResultDTO(questionItem.getQuestionId(),
-							questionItem.getQuestionType(), questionItem.getScore(), questionItem.getDifficulty(),
-							optionItem.getIsRight(), optionItem.getOptionType(), questionItem.getContent(),
-							questionItem.getAnalysis(), optionItem.getContent(), questionItem.getStatus(),
-							questionItem.getcTime(), questionItem.getmTime(), questionItem.getcUser(),
-							questionItem.getmUser(), optionItem.getRef()));
-				}
-			});
+			List<JQuestionOption> optionList = jQuestionInfoMapper
+					.selectQuestionByQuestionId(questionItem.getQuestionId());
+			questionResultDTO.add(new QuestionResultDTO(questionItem.getQuestionId(), questionItem.getQuestionType(),
+					questionItem.getScore(), questionItem.getDifficulty(), questionItem.getContent(),
+					questionItem.getAnalysis(), questionItem.getStatus(), questionItem.getcTime(),
+					questionItem.getmTime(), questionItem.getcUser(), questionItem.getmUser(), optionList));
 		});
 		PageInfo<QuestionResultDTO> result = new PageInfo<QuestionResultDTO>(questionResultDTO);
+		result.setTotal(questionInfoMapper.selectQuestionCount(questionType));
 		return result;
 	}
 
@@ -113,17 +101,12 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 		QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(questionId);
 		List<JQuestionOption> questionOptionList = jQuestionInfoMapper.selectQuestionByQuestionId(questionId);
 		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
-
-		questionOptionList.forEach(optionItem -> {
-
-			questionResultDTO.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
-					question.getScore(), question.getDifficulty(), optionItem.getIsRight(), optionItem.getOptionType(),
-					question.getContent(), question.getAnalysis(), optionItem.getContent(), question.getStatus(),
-					question.getcTime(), question.getmTime(), question.getcUser(), question.getmUser(),
-					optionItem.getRef()));
-
+		questionResultDTO.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
+				question.getScore(), question.getDifficulty(), question.getContent(), question.getAnalysis(),
+				question.getStatus(), question.getcTime(), question.getmTime(), question.getcUser(),
+				question.getmUser(), questionOptionList));
+		questionResultDTO.forEach(a -> {
 		});
-
 		return questionResultDTO;
 	}
 
@@ -133,7 +116,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
-	public QuestionInfoWithBLOBs selectAnalysis(Long questionId) {
+	public List<QuestionInfoWithBLOBs> selectAnalysis(Long questionId) {
 		return questionInfoMapper.selectAnalysisById(questionId);
 	}
 }
