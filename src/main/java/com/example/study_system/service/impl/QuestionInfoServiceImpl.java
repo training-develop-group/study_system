@@ -31,6 +31,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	private JQuestionOptionMapper jQuestionInfoMapper;
 
 	@Override
+	@Transactional
 	public int addQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
 		Date date = new Date();
 		question.setcTime(date);
@@ -50,11 +51,12 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	@Transactional
 	public int deleteQuestion(Long questionId) {
 		int result = questionInfoMapper.deleteByPrimaryKey(questionId);
-		jQuestionInfoMapper.deleteByPrimaryKey(questionId);
+		jQuestionInfoMapper.deleteQuestionOptionByQuestionId(questionId);
 		return result;
 	}
 
 	@Override
+	@Transactional
 	public int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
 		Date date = new Date();
 		question.setcTime(date);
@@ -97,6 +99,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	}
 
 	@Override
+	@Transactional
 	public List<QuestionResultDTO> selectQuestionTitle(Long questionId) {
 		QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(questionId);
 		List<JQuestionOption> questionOptionList = jQuestionInfoMapper.selectQuestionByQuestionId(questionId);
