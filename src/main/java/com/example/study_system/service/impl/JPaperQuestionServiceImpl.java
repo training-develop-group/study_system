@@ -13,4 +13,9 @@ public class JPaperQuestionServiceImpl extends BaseService implements IJPaperQue
     public int insertSelective(JPaperQuestion record) {
 		return jPaperQuestionMapper.insertSelective(record);
     }
+	
+	@Override
+    public int insert(JPaperQuestion record) {
+		return jPaperQuestionMapper.insert(record);
+    }
 }

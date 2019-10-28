@@ -4,4 +4,6 @@ import com.example.study_system.model.JPaperQuestion;
 
 public interface IJPaperQuestionService {
 	int insertSelective(JPaperQuestion record);
+	
+	int insert(JPaperQuestion record);
 }

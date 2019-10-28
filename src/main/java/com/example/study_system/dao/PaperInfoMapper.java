@@ -22,5 +22,7 @@ public interface PaperInfoMapper {
     
     List<PaperInfo> select();
     
-    PaperInfo selectTwo(Long paperId , Integer questionType);
+    int selectAllQuestionInfoSingle(Long paperId);
+    
+    int selectAllQuestionInfoMany(Long paperId);
 }

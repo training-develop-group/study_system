@@ -21,7 +21,7 @@ public class ServiceFacadeImpl implements IServiceFacade {
     @Autowired
     IJPaperQuestionService jPaperQuestionService;
     @Autowired
-    IQuestionInfoService iQuestionInfoService;
+    IQuestionInfoService questionInfoService;
 
     @Override
     public ILoginService getUserService() {
@@ -40,6 +40,6 @@ public class ServiceFacadeImpl implements IServiceFacade {
     
     @Override
     public IQuestionInfoService getIQuestionInfoService() {
-        return iQuestionInfoService;
+        return questionInfoService;
     }
 }

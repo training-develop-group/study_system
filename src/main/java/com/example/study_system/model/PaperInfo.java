@@ -15,13 +15,13 @@ public class PaperInfo {
 		this.questionId = questionId;
 	}
 	
-	private Long questionType;
+	private Integer questionType;
 	
-	public Long getQuestionType() {
+	public Integer getQuestionType() {
 		return questionType;
 	}
 
-	public void setQuestionType(Long questionType) {
+	public void setQuestionType(Integer questionType) {
 		this.questionType = questionType;
 	}
 

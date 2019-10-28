@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.PaperInfo;
 import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IPaperInfoService;
@@ -42,7 +43,17 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
     }
 	
 	@Override
-    public PaperInfo selectTwo(Long paperId , Integer questionType) {
-		return paperInfoMapper.selectTwo(paperId , questionType);
+    public int selectAllQuestionInfoSingle(Long paperId) {
+		return paperInfoMapper.selectAllQuestionInfoSingle(paperId);
+    }
+	
+	@Override
+    public int selectAllQuestionInfoMany(Long paperId) {
+		return paperInfoMapper.selectAllQuestionInfoMany(paperId);
+    }
+	
+	@Override
+    public int insertJPQ(JPaperQuestion record) {
+		return jPaperQuestionMapper.insert(record);
     }
 }

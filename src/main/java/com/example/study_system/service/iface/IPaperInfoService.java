@@ -2,6 +2,7 @@ package com.example.study_system.service.iface;
 
 import java.util.List;
 
+import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.PaperInfo;
 
 public interface IPaperInfoService {
@@ -16,7 +17,11 @@ public interface IPaperInfoService {
 	
 	List<PaperInfo> selectAllPaperInfo();
 	
+	int selectAllQuestionInfoSingle(Long paperId);
+	
+	int selectAllQuestionInfoMany(Long paperId);
+	
 	List<PaperInfo> select();
 	
-	PaperInfo selectTwo(Long paperId , Integer questionType);
+	int insertJPQ(JPaperQuestion record);
 }

@@ -28,24 +28,38 @@
     	b.question_id , 
     	a.paper_id , 
     	a.STATUS 
-    from manage_system.paper_info a ,
-    	manage_system.j_paper_question b,
-    	manage_system.question_info c 
+    from paper_info a ,
+    	j_paper_question b,
+    	question_info c 
     where 
     	a.paper_id = b.paper_id and b.question_id = c.question_id;
   </select>
-  <select id="selectTwo" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  <select id="selectAllQuestionInfoSingle" resultType="Integer">
     select 
-    count(c.question_type) 
+    count(0) 
     from 
-    	manage_system.paper_info a ,
-    	manage_system.j_paper_question b,
-    	manage_system.question_info c 
+    	paper_info a ,
+    	j_paper_question b,
+    	question_info c 
     where 
     a.paper_id = b.paper_id 
     and b.question_id = c.question_id 
-    and c.question_type = #{questionType,jdbcType=INTEGER}
-    and a.paper_id = #{paperId,jdbcType=BIGINT};
+    and c.question_type = 1
+    and a.paper_id = #{paperId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAllQuestionInfoMany" resultType="Integer">
+    select 
+    count(0) 
+    from 
+    	paper_info a ,
+    	j_paper_question b,
+    	question_info c 
+    where 
+    a.paper_id = b.paper_id 
+    and b.question_id = c.question_id 
+    and c.question_type = 2
+    and a.paper_id = #{paperId,jdbcType=BIGINT}
+    
   </select>
   <select id="selectAllPaperInfo" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
