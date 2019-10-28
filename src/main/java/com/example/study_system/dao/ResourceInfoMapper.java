@@ -11,9 +11,9 @@ public interface ResourceInfoMapper {
     
     int deleteByPrimaryKey(Long resId);		//删除资源
     
-    int updateByPrimaryKey(Long resId);		//修改资源名
+    int updateByPrimaryKey(Long resId, String resName);		//修改资源名
 
-    ResourceInfo selectByPrimaryKey(String resId);		//获取资源详情
+    ResourceInfo selectByPrimaryKey(Long resId);		//获取资源详情
     
     List<ResourceInfo> selectList();		//获取资源列表
     

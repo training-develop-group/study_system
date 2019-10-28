@@ -4,5 +4,5 @@ import com.example.study_system.model.JUserVideoLog;
 
 public interface IJUserVideoLogService {
 
-	int getVideoPlaybackTime(JUserVideoLog seconds);
+	int getVideoPlaybackTime();
 }

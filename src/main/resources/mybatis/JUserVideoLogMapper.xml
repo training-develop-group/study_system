@@ -23,15 +23,13 @@
     delete from j_user_video_log
     where ref = #{ref,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.example.study_system.model.JUserVideoLog" >
+  <insert id="insertVideoPlaybackTime" parameterType="com.example.study_system.model.JUserVideoLog" >
     insert into j_user_video_log (ref, user_id, task_id, 
       res_id, seconds, c_time, 
       m_time)
-    values (#{ref,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{taskId,jdbcType=BIGINT}, 
-      #{resId,jdbcType=BIGINT}, #{seconds,jdbcType=BIGINT}, #{cTime,jdbcType=TIMESTAMP}, 
-      #{mTime,jdbcType=TIMESTAMP})
+    values (null, '测试', 11, 1, #{seconds,jdbcType=BIGINT}, now(), now())
   </insert>
-  <insert id="insertVideoPlaybackTime" parameterType="com.example.study_system.model.JUserVideoLog" >
+  <insert id="insert" parameterType="com.example.study_system.model.JUserVideoLog" >
     insert into j_user_video_log (ref, user_id, task_id, 
       res_id, seconds, c_time, 
       m_time)

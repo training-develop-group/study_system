@@ -15,5 +15,5 @@ public interface JUserVideoLogMapper {
 //
 //    int updateByPrimaryKey(JUserVideoLog record);
 	
-	int insertVideoPlaybackTime(JUserVideoLog seconds);
+	int insertVideoPlaybackTime(Long seconds);
 }

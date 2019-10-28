@@ -2,22 +2,20 @@ package com.example.study_system.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.catalina.connector.Request;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.study_system.common.ResultDTO;
@@ -36,13 +34,14 @@ public class ResourceInfoController extends BaseController {
 	 * @throws IOException 
 	 * @throws IllegalStateException 
 	 */
-//	@SuppressWarnings("deprecation")
+
 	@RequestMapping(value = "/resource", method = RequestMethod.POST)
 //	@ResponseBody
-	public ResourceInfo uploadResourceInfo(MultipartFile file,HttpServletRequest request) throws IllegalStateException, IOException {
+	
+	public ResultDTO uploadResourceInfo(MultipartFile file) throws IllegalStateException, IOException {
 		String oriName = "";	//原名称
 		String desFilePath = "";	//系统生成的名称
-		Integer resType =null;
+		Integer resType = 1;
 		ResourceInfo result = new ResourceInfo();
 		Map<String, String> dataMap = new HashMap<>();
 		ResourceInfo imgResult = new ResourceInfo();
@@ -60,14 +59,26 @@ public class ResourceInfoController extends BaseController {
 			String extName = oriName.substring(oriName.lastIndexOf("."));	//获取源文件后缀名		
 			String uuid = UUID.randomUUID().toString().replaceAll("-","");	//生成UUID
 			String newName = uuid + extName;	//UUID生成的新名字+后缀名
+			MultipartConfigFactory factory = new MultipartConfigFactory();
+	        //文件最大  
+//	        factory.setMaxFileSize("100MB"); //KB,MB
+	        /// 设置总上传数据总大小  
+//	        factory.setMaxRequestSize("102400KB");  
+//	        return factory.createMultipartConfig();  
+
 			try {
 				String filePath = "C:\\study\\files\\";	//获取要保存的路径文件夹
 				//保存文件
 				desFilePath = filePath + newName;	//保存文件路径
-			    File desFile = new File(desFilePath);	
+			    File desFile = new File(desFilePath);
+			    if(desFile.createNewFile()) {
+			    	desFile.setExecutable(true);
+				    desFile.setReadable(true);
+				    desFile.setWritable(true);
+				    System.out.println("is execute allow : " + desFile.canExecute());
+			    }
 			    file.transferTo(desFile);
-			    logger.info(desFilePath);
-			    long resId = 123;
+			    logger.info("保存文件路径:" + desFilePath);
 			    result.setResName(uuid);	//添加文件名
 			    result.setResType(resType);	//添加文件类型
 			    result.setPath(desFilePath);	//添加保存文件路径
@@ -75,22 +86,20 @@ public class ResourceInfoController extends BaseController {
 			    result.setResExt(extName);	//添加后缀名
 			    result.setResSize(resSize);	//添加文件大小
 			    result.setStatus(1);
-//			    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-//			    System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
 			    Date date = new Date(4000);
 			    result.setcTime(date);
 			    result.setmTime(date);
 			    result.setcUser("123");
 			    result.setmUser("456");
-			    int res = serviceFacade.getResourceService().uploadResourceInfo(result);
-			    System.out.println(resType);
+			    int res = serviceFacade.getResourceService().uploadResourceInfo(result,desFilePath,"C:\\\\Users\\\\CloudEasyServer\\\\Desktop\\\\ffmpeg-4.2.1-win64-static\\\\bin\\\\ffmpeg.exe");
+			    System.out.println("文件类型"+"resType:" + resType);
 			} catch (IllegalStateException e){
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		    return result;  
+		    return success(result);  
 	}
 
 
@@ -111,8 +120,10 @@ public class ResourceInfoController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/res-name", method = RequestMethod.POST)
-	public int modifyResourceNameByResId(@RequestParam(value = "resId", required = true) Long resId) {
-		int resource = serviceFacade.getResourceService().modifyResourceNameByResId(resId);
+	public int modifyResourceNameByResId(@RequestParam("resId") Long resId,
+										@RequestParam("resName") String resName) {
+		System.out.println(resId);
+		int resource = serviceFacade.getResourceService().modifyResourceNameByResId(resId,resName);
 		return resource;
 	}
 
@@ -122,8 +133,8 @@ public class ResourceInfoController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{resId}", method = RequestMethod.GET)
-	public ResultDTO getResourceDetailsByResId(@PathVariable("resId") String resId) {
-		ResourceInfo result = serviceFacade.getResourceService().getResourceDetailsByResId(resId);
+	public ResultDTO getResourceDetailByResId(@PathVariable("resId") Long resId) {
+		ResourceInfo result = serviceFacade.getResourceService().getResourceDetailByResId(resId);
 		if (result == null) {
 			return noData();
 		}
@@ -136,11 +147,11 @@ public class ResourceInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/resources", method = RequestMethod.GET)
 	public ResultDTO getResourceList() {
-		List<ResourceInfo> resource = serviceFacade.getResourceService().getResourceList();
-		if (resource == null) {
+		List<ResourceInfo> res = serviceFacade.getResourceService().getResourceList();
+		if (res == null) {
 			return noData();
 		}
-		return success(resource);
+		return success(res);
 	}
 	
 	/**
@@ -149,15 +160,19 @@ public class ResourceInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResultDTO getResourceCount() {
-			int resource = serviceFacade.getResourceService().getResourceListCount();
+		int resource = serviceFacade.getResourceService().getResourceListCount();
 		System.out.println(resource);
 		return success(resource);
 	}
 	
-	
+	/**
+	 * 记录视频播放时长
+	 * @param seconds
+	 * @return
+	 */
 	@RequestMapping(value = "/view", method = RequestMethod.POST)
-	public ResultDTO getVideoPlaybackTime(@RequestBody JUserVideoLog seconds) {
-		int result = serviceFacade.getJUserVideoLogService().getVideoPlaybackTime(seconds);
+	public ResultDTO getVideoPlaybackTime() {
+		long result = serviceFacade.getJUserVideoLogService().getVideoPlaybackTime();
 		return success(result);
 	}
 	

@@ -29,6 +29,8 @@
   	select
   	<include refid="Base_Column_List" />
   	from resource_info
+  	where 1=1
+  	
   </select>
   <select id="selectListCount" resultType="java.lang.Integer" >
   	select count(res_id)
@@ -169,17 +171,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.study_system.model.ResourceInfo" >
     update resource_info
-    set res_name = #{resName,jdbcType=VARCHAR},
-      res_type = #{resType,jdbcType=INTEGER},
-      path = #{path,jdbcType=VARCHAR},
-      img_path = #{imgPath,jdbcType=VARCHAR},
-      res_ext = #{resExt,jdbcType=VARCHAR},
-      res_size = #{resSize,jdbcType=BIGINT},
-      STATUS = #{status,jdbcType=INTEGER},
-      c_time = #{cTime,jdbcType=TIMESTAMP},
-      m_time = #{mTime,jdbcType=TIMESTAMP},
-      c_user = #{cUser,jdbcType=VARCHAR},
-      m_user = #{mUser,jdbcType=VARCHAR}
+    set res_name = #{resName,jdbcType=VARCHAR}
     where res_id = #{resId,jdbcType=BIGINT}
   </update>
+
 </mapper>
