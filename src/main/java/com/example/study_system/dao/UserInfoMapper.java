@@ -2,6 +2,9 @@ package com.example.study_system.dao;
 
 import com.example.study_system.model.UserInfo;
 import com.example.study_system.model.UserInfoWithBLOBs;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -20,5 +23,7 @@ public interface UserInfoMapper {
 
     int updateByPrimaryKey(UserInfo record);
 
+    List<UserInfo> selectUserAll();
+    
     UserInfo selectByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
 }

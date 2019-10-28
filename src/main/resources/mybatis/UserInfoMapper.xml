@@ -26,6 +26,10 @@
   <sql id="Blob_Column_List" >
     role_id, group_id, remark
   </sql>
+    <select id="selectUserAll" resultMap="BaseResultMap">
+  	select   user_id, user_name, password,status
+  	from user_info
+  </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
