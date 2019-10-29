@@ -32,10 +32,14 @@ public class QuestionInfoController extends BaseController {
 	@RequestMapping(value = "/question", method = RequestMethod.POST)
 	public ResultDTO addQuestion(@RequestParam("question") String question,
 			@RequestParam("questionOption") String questionOptions) {
-		List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
-		QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
-		int result = serviceFacade.getQuestionInfoService().addQuestion(questionInfo, options);
-		return success(result);
+		if (question == null || questionOptions == null) {
+			return noData();
+		} else {
+			List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
+			QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
+			int result = serviceFacade.getQuestionInfoService().addQuestion(questionInfo, options);
+			return success(result);
+		}
 	}
 
 	/**
@@ -47,7 +51,11 @@ public class QuestionInfoController extends BaseController {
 
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.DELETE)
 	public ResultDTO deleteQuestion(@PathVariable("questionId") Long questionId) {
-		return success(serviceFacade.getQuestionInfoService().deleteQuestion(questionId));
+		if (questionId == null) {
+			return noData();
+		} else {
+			return success(serviceFacade.getQuestionInfoService().deleteQuestion(questionId));
+		}
 	}
 
 	/**
@@ -60,10 +68,14 @@ public class QuestionInfoController extends BaseController {
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
 	public ResultDTO updateQeustionInfo(@PathVariable("questionId") Long questionId,
 			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions) {
-		List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
-		QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
-		int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
-		return success(result);
+		if (questionId == null || question == null || questionOptions == null) {
+			return noData();
+		} else {
+			List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
+			QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
+			int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
+			return success(result);
+		}
 	}
 
 	/**
@@ -78,10 +90,13 @@ public class QuestionInfoController extends BaseController {
 			@RequestParam(value = "pageSize") Integer pageSize,
 			@RequestParam(value = "content", required = false) String content,
 			@RequestParam("questionType") Integer questionType) {
-
-		PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum, pageSize,
-				content, questionType);
-		return success(result);
+		if (pageSize == null || content == null || pageNum == null || questionType == null) {
+			return noData();
+		} else {
+			PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum,
+					pageSize, content, questionType);
+			return success(result);
+		}
 	}
 
 	/**
@@ -92,7 +107,11 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.GET)
 	public ResultDTO selectQuestionDetailed(@PathVariable("questionId") Long questionId) {
-		return success(serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId));
+		if (questionId == null) {
+			return noData();
+		} else {
+			return success(serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId));
+		}
 	}
 
 	/**
@@ -103,7 +122,11 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResultDTO selectQuestionCount(@RequestParam(value = "questionType", required = false) Integer questionType) {
-		return success(serviceFacade.getQuestionInfoService().selectQuestionCount(questionType));
+		if (questionType == null) {
+			return noData();
+		} else {
+			return success(serviceFacade.getQuestionInfoService().selectQuestionCount(questionType));
+		}
 	}
 
 	/**
@@ -114,7 +137,11 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/answer", method = RequestMethod.GET)
 	public ResultDTO selectAnalysis(@RequestParam("questionId") Long questionId) {
-		return success(serviceFacade.getQuestionInfoService().selectAnalysis(questionId));
+		if (questionId == null) {
+			return noData();
+		} else {
+			return success(serviceFacade.getQuestionInfoService().selectAnalysis(questionId));
+		}
 	}
 
 }

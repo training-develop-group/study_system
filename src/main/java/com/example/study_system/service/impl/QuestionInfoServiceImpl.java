@@ -18,17 +18,15 @@ import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
 import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
+import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IQuestionInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zaxxer.hikari.util.SuspendResumeLock;
 
 @Service
-public class QuestionInfoServiceImpl implements IQuestionInfoService {
-	@Resource
-	private QuestionInfoMapper questionInfoMapper;
-	@Resource
-	private JQuestionOptionMapper jQuestionInfoMapper;
+public class QuestionInfoServiceImpl extends BaseService implements IQuestionInfoService {
+	
 
 	@Override
 	@Transactional
@@ -41,7 +39,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 			item.setcUser("未定义");
 			item.setcTime(date);
 			item.setQuestionId(question.getQuestionId());
-			jQuestionInfoMapper.insertSelective(item);
+			jQuestionOptionMapper.insertSelective(item);
 		});
 
 		return result;
@@ -51,7 +49,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	@Transactional
 	public int deleteQuestion(Long questionId) {
 		int result = questionInfoMapper.deleteByPrimaryKey(questionId);
-		jQuestionInfoMapper.deleteQuestionOptionByQuestionId(questionId);
+		jQuestionOptionMapper.deleteQuestionOptionByQuestionId(questionId);
 		return result;
 	}
 
@@ -66,14 +64,14 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 		int result = questionInfoMapper.deleteByPrimaryKey(question.getQuestionId());
 		questionInfoMapper.insertSelective(question);
 		List<JQuestionOption> options = questionOptions;
-		jQuestionInfoMapper.deleteQuestionOptionByQuestionId(question.getQuestionId());
+		jQuestionOptionMapper.deleteQuestionOptionByQuestionId(question.getQuestionId());
 		options.forEach(item -> {
 			item.setcTime(date);
 			item.setmTime(date);
 			item.setcUser("未定义");
 			item.setmUser("未定义");
 			item.setQuestionId(question.getQuestionId());
-			jQuestionInfoMapper.insertSelective(item);
+			jQuestionOptionMapper.insertSelective(item);
 		});
 		return result;
 	}
@@ -86,7 +84,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 		List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectAllQuestion(content, questionType);
 		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
 		questionList.forEach(questionItem -> {
-			List<JQuestionOption> optionList = jQuestionInfoMapper
+			List<JQuestionOption> optionList = jQuestionOptionMapper
 					.selectQuestionByQuestionId(questionItem.getQuestionId());
 			questionResultDTO.add(new QuestionResultDTO(questionItem.getQuestionId(), questionItem.getQuestionType(),
 					questionItem.getScore(), questionItem.getDifficulty(), questionItem.getContent(),
@@ -102,7 +100,7 @@ public class QuestionInfoServiceImpl implements IQuestionInfoService {
 	@Transactional
 	public List<QuestionResultDTO> selectQuestionTitle(Long questionId) {
 		QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(questionId);
-		List<JQuestionOption> questionOptionList = jQuestionInfoMapper.selectQuestionByQuestionId(questionId);
+		List<JQuestionOption> questionOptionList = jQuestionOptionMapper.selectQuestionByQuestionId(questionId);
 		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
 		questionResultDTO.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
 				question.getScore(), question.getDifficulty(), question.getContent(), question.getAnalysis(),
