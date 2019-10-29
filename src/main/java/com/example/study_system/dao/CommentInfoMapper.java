@@ -1,5 +1,7 @@
 package com.example.study_system.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.study_system.model.CommentInfo;
@@ -19,4 +21,6 @@ public interface CommentInfoMapper {
 	int updateByPrimaryKeyWithBLOBs(CommentInfo record);
 
 	int updateByPrimaryKey(CommentInfo record);
+	
+	List<CommentInfo> selectCommentByTaskId(Long taskId);
 }

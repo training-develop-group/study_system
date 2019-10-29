@@ -30,4 +30,6 @@ public interface QuestionInfoMapper {
 	int selectQuestionCount(@Param("questionType") Integer questionType);
 
 	List<QuestionInfoWithBLOBs> selectAnalysisById(@Param("questionId") Long questionId);
+
+	int updateQuestionScore(@Param("score") Float score, @Param("questionId") Long questionId);
 }

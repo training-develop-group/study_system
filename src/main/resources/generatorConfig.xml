@@ -41,7 +41,7 @@
         </javaClientGenerator>
 
         <!-- 生成DAO的类文件以及配置文件 -->
-        <table tableName="comment_info" domainObjectName="CommentInfo"
+        <table tableName="j_user_task" domainObjectName="JUserTask"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

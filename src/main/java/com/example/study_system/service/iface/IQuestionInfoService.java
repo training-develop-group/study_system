@@ -3,6 +3,8 @@ package com.example.study_system.service.iface;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
 import com.example.study_system.model.QuestionInfo;
@@ -23,4 +25,6 @@ public interface IQuestionInfoService {
 	int selectQuestionCount(Integer questionType);
 
 	List<QuestionInfoWithBLOBs> selectAnalysis(Long questionId);
+
+	int updateQuestionScore(Float score, Long questionId);
 }

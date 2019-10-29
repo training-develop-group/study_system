@@ -26,7 +26,11 @@ import com.zaxxer.hikari.util.SuspendResumeLock;
 
 @Service
 public class QuestionInfoServiceImpl extends BaseService implements IQuestionInfoService {
-	
+
+	@Override
+	public int updateQuestionScore(Float score, Long questionId) {
+		return questionInfoMapper.updateQuestionScore(score, questionId);
+	}
 
 	@Override
 	@Transactional

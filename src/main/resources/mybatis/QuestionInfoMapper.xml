@@ -254,4 +254,11 @@
 		where
 		question_id = #{questionId,jdbcType=BIGINT}
 	</update>
+	<update id="updateQuestionScore"
+		parameterType="com.example.study_system.model.QuestionInfo">
+		update question_info
+		set score =#{score,jdbcType=REAL}
+		where
+		question_id = #{questionId,jdbcType=BIGINT}
+	</update>
 </mapper>
