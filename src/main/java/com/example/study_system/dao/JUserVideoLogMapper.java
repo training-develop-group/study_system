@@ -1,5 +1,7 @@
 package com.example.study_system.dao;
 
+import java.util.List;
+
 import com.example.study_system.model.JUserVideoLog;
 
 public interface JUserVideoLogMapper {
@@ -9,11 +11,11 @@ public interface JUserVideoLogMapper {
 //
 //    int insertSelective(JUserVideoLog record);
 //
-//    JUserVideoLog selectByPrimaryKey(Long ref);
+	List<JUserVideoLog>selectByPrimaryKey(Long ref);
 //
 //    int updateByPrimaryKeySelective(JUserVideoLog record);
 //
 //    int updateByPrimaryKey(JUserVideoLog record);
 	
-	int insertVideoPlaybackTime(Long seconds);
+	long insertVideoPlaybackTime(Long seconds);
 }

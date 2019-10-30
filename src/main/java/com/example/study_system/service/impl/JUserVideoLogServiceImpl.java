@@ -3,6 +3,7 @@ package com.example.study_system.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -16,28 +17,16 @@ import it.sauronsoftware.jave.Encoder;
 public class JUserVideoLogServiceImpl extends BaseService implements IJUserVideoLogService {
 
 	@Override
-	public int getVideoPlaybackTime() {
-		
-		File source = new File("C:\\Users\\CloudEasyServer\\Desktop\\movie.mp4");
-
-		Encoder encoder = new Encoder();
-
-		long duration = 0;
-
-		try {
-
-			it.sauronsoftware.jave.MultimediaInfo m = encoder.getInfo(source);
-
-			duration = m.getDuration() / 1000;
-			
-			logger.info("此视频时长为:" + duration + "秒！");
-			
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-		System.out.println(duration);
-		return userVideoLogMapper.insertVideoPlaybackTime(duration);
+	public long recordVideoPlaybackTime(Long seconds) {
+		return userVideoLogMapper.insertVideoPlaybackTime(seconds);
 	}
+	
+	
+	@Override
+	public long getVideoPlaybackTime(Long ref) {
+		List<JUserVideoLog> a = userVideoLogMapper.selectByPrimaryKey(ref);
+		return a.get(0).getSeconds();
+	}
+	
+	
 }

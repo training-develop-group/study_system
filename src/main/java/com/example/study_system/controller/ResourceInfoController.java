@@ -38,68 +38,67 @@ public class ResourceInfoController extends BaseController {
 	@RequestMapping(value = "/resource", method = RequestMethod.POST)
 //	@ResponseBody
 	
-	public ResultDTO uploadResourceInfo(MultipartFile file) throws IllegalStateException, IOException {
-		String oriName = "";	//原名称
-		String desFilePath = "";	//系统生成的名称
-		Integer resType = 1;
-		ResourceInfo result = new ResourceInfo();
-		Map<String, String> dataMap = new HashMap<>();
-		ResourceInfo imgResult = new ResourceInfo();
-		if(file != null){
-			oriName = file.getOriginalFilename();	//获取原文件名
-			long resSize = Math.round(file.getSize()/1024);	//获取文件大小
-			String fileType = file.getContentType();	//获取文件类型
-			String subFileType = fileType.substring(0, fileType.indexOf("/"));	//截取文件类型
-			//判断文件类型
-			if(subFileType.equals("video")) {
-				subFileType = "2";
-				resType = Integer.valueOf(subFileType);
-			}
-			
-			String extName = oriName.substring(oriName.lastIndexOf("."));	//获取源文件后缀名		
-			String uuid = UUID.randomUUID().toString().replaceAll("-","");	//生成UUID
-			String newName = uuid + extName;	//UUID生成的新名字+后缀名
-			MultipartConfigFactory factory = new MultipartConfigFactory();
-	        //文件最大  
-//	        factory.setMaxFileSize("100MB"); //KB,MB
-	        /// 设置总上传数据总大小  
-//	        factory.setMaxRequestSize("102400KB");  
-//	        return factory.createMultipartConfig();  
-
-			try {
-				String filePath = "C:\\study\\files\\";	//获取要保存的路径文件夹
-				//保存文件
-				desFilePath = filePath + newName;	//保存文件路径
-			    File desFile = new File(desFilePath);
-			    if(desFile.createNewFile()) {
-			    	desFile.setExecutable(true);
-				    desFile.setReadable(true);
-				    desFile.setWritable(true);
-				    System.out.println("is execute allow : " + desFile.canExecute());
-			    }
-			    file.transferTo(desFile);
-			    logger.info("保存文件路径:" + desFilePath);
-			    result.setResName(uuid);	//添加文件名
-			    result.setResType(resType);	//添加文件类型
-			    result.setPath(desFilePath);	//添加保存文件路径
-			    result.setImgPath("123");
-			    result.setResExt(extName);	//添加后缀名
-			    result.setResSize(resSize);	//添加文件大小
-			    result.setStatus(1);
-			    Date date = new Date(4000);
-			    result.setcTime(date);
-			    result.setmTime(date);
-			    result.setcUser("123");
-			    result.setmUser("456");
-			    int res = serviceFacade.getResourceService().uploadResourceInfo(result,desFilePath,"C:\\\\Users\\\\CloudEasyServer\\\\Desktop\\\\ffmpeg-4.2.1-win64-static\\\\bin\\\\ffmpeg.exe");
-			    System.out.println("文件类型"+"resType:" + resType);
-			} catch (IllegalStateException e){
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		    return success(result);  
+	public ResultDTO uploadResourceInfo(ResourceInfo resourceInfo, MultipartFile file,String ffmpeg_path) throws IllegalStateException, IOException {
+//		String oriName = "";	//原名称
+//		String desFilePath = "";	//系统生成的名称
+//		Integer resType = 1;
+//		ResourceInfo result = new ResourceInfo();
+//		if(file != null){
+//			oriName = file.getOriginalFilename();	//获取原文件名
+//			long resSize = Math.round(file.getSize()/1024);	//获取文件大小
+//			String fileType = file.getContentType();	//获取文件类型
+//			String subFileType = fileType.substring(0, fileType.indexOf("/"));	//截取文件类型
+//			//判断文件类型
+//			if(subFileType.equals("video")) {
+//				subFileType = "2";
+//				resType = Integer.valueOf(subFileType);
+//			}
+//			
+//			String extName = oriName.substring(oriName.lastIndexOf("."));	//获取源文件后缀名		
+//			String uuid = UUID.randomUUID().toString().replaceAll("-","");	//生成UUID
+//			String newName = uuid + extName;	//UUID生成的新名字+后缀名
+//			MultipartConfigFactory factory = new MultipartConfigFactory();
+//	        //文件最大  
+////	        factory.setMaxFileSize("100MB"); //KB,MB
+//	        /// 设置总上传数据总大小  
+////	        factory.setMaxRequestSize("102400KB");  
+////	        return factory.createMultipartConfig();  
+//
+//			try {
+//				String filePath = "C:\\study\\files\\";	//获取要保存的路径文件夹
+//				//保存文件
+//				desFilePath = filePath + newName;	//保存文件路径
+//			    File desFile = new File(desFilePath);
+//			    if(desFile.createNewFile()) {
+//			    	desFile.setExecutable(true);
+//				    desFile.setReadable(true);
+//				    desFile.setWritable(true);
+//				    System.out.println("is execute allow : " + desFile.canExecute());
+//			    }
+//			    file.transferTo(desFile);
+//			    logger.info("保存文件路径:" + desFilePath);
+//			    result.setResName(uuid);	//添加文件名
+//			    result.setResType(resType);	//添加文件类型
+//			    result.setPath(desFilePath);	//添加保存文件路径
+//			    result.setImgPath("123");
+//			    result.setResExt(extName);	//添加后缀名
+//			    result.setResSize(resSize);	//添加文件大小
+//			    result.setStatus(1);
+//			    Date date = new Date(4000);
+//			    result.setcTime(date);
+//			    result.setmTime(date);
+//			    result.setcUser("123");
+//			    result.setmUser("456");
+//			    int res = serviceFacade.getResourceService().uploadResourceInfo(result,desFilePath,"C:\\\\Users\\\\CloudEasyServer\\\\Desktop\\\\ffmpeg-4.2.1-win64-static\\\\bin\\\\ffmpeg.exe");
+//			    System.out.println("文件类型"+"resType:" + resType);
+//			} catch (IllegalStateException e){
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+		int res = serviceFacade.getResourceService().uploadResourceInfo(resourceInfo, file, "C:\\Users\\CloudEasyServer\\Desktop\\ffmpeg-4.2.1-win64-static\\bin\\ffmpeg.exe");
+		    return success(resourceInfo);  
 	}
 
 
@@ -111,7 +110,12 @@ public class ResourceInfoController extends BaseController {
 	@RequestMapping(value = "/{resId}", method = RequestMethod.DELETE)
 	public ResultDTO deleteResourceInfoByResId(@PathVariable("resId") Long resId) {
 		int result = serviceFacade.getResourceService().deleteResourceInfoByResId(resId);
-		return success(result);
+		if(resId != 0) {
+			return success(result);
+		} else {
+			return success(resId);
+		}
+		
 	}
 
 	/**
@@ -160,28 +164,33 @@ public class ResourceInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResultDTO getResourceCount() {
-		int resource = serviceFacade.getResourceService().getResourceListCount();
-		System.out.println(resource);
-		return success(resource);
+		int count = serviceFacade.getResourceService().getResourceListCount();
+		System.out.println(count);
+		return success(count);
 	}
 	
 	/**
-	 * 记录视频播放时长
+	 * 记录视频播放时间
 	 * @param seconds
 	 * @return
 	 */
 	@RequestMapping(value = "/view", method = RequestMethod.POST)
-	public ResultDTO getVideoPlaybackTime() {
-		long result = serviceFacade.getJUserVideoLogService().getVideoPlaybackTime();
+	public ResultDTO recordVideoPlaybackTime(@RequestParam("seconds") Long seconds) {
+		long result = serviceFacade.getJUserVideoLogService().recordVideoPlaybackTime(seconds);
 		return success(result);
 	}
 	
 	
-	
-//	@RequestMapping(value = "/view", method = RequestMethod.GET)
-//	public ResultDTO getVideoPlaybackRecord() {
-//		
-//	}
+	/**
+	 * 获取视频播放时间
+	 * @param ref
+	 * @return
+	 */
+	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	public ResultDTO getVideoPlaybackTime(@RequestParam("ref") Long ref) {
+		Long result = serviceFacade.getJUserVideoLogService().getVideoPlaybackTime(ref);
+		return success(result);
+	}
 	
 
 }
