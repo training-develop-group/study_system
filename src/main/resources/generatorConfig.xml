@@ -16,7 +16,11 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/manage_system?serverTimezone=UTC"
                         userId="root"
+<<<<<<< HEAD
                         password="123456">
+=======
+                        password="root">
+>>>>>>> remotes/origin/dev-wtq
         </jdbcConnection>
         <!--默认false
            Java type resolver will always use java.math.BigDecimal if the database column is of type DECIMAL or NUMERIC.
@@ -41,7 +45,11 @@
         </javaClientGenerator>
 
         <!-- 生成DAO的类文件以及配置文件 -->
+<<<<<<< HEAD
         <table tableName="" domainObjectName=""
+=======
+        <table tableName="j_paper_question" domainObjectName="JPaperQuestion"
+>>>>>>> remotes/origin/dev-wtq
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

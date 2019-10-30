@@ -1,7 +1,10 @@
 package com.example.study_system.service.base;
 
+<<<<<<< HEAD
 import com.example.study_system.dao.JPaperQuestionMapper;
 import com.example.study_system.dao.PaperInfoMapper;
+=======
+>>>>>>> remotes/origin/dev-wtq
 import com.example.study_system.dao.QuestionInfoMapper;
 import com.example.study_system.dao.UserInfoMapper;
 
@@ -10,12 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * author lindan.
- * date 2019/10/10.
+ * author lindan. date 2019/10/10.
  */
 public class BaseService {
-    protected Logger logger = LoggerFactory.getLogger(getClass());
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 
+<<<<<<< HEAD
     @Autowired
     protected UserInfoMapper userInfoMapper;
     
@@ -27,4 +30,10 @@ public class BaseService {
     
     @Autowired
     protected QuestionInfoMapper questionInfoMapper;
+=======
+	@Autowired
+	protected UserInfoMapper userInfoMapper;
+	@Autowired
+	protected QuestionInfoMapper questionInfoMapper;
+>>>>>>> remotes/origin/dev-wtq
 }
