@@ -17,7 +17,11 @@
                         connectionURL="jdbc:mysql://localhost:3306/manage_system?serverTimezone=UTC"
                         userId="root"
 <<<<<<< HEAD
+<<<<<<< HEAD
                         password="123456">
+=======
+                        password="root">
+>>>>>>> remotes/origin/dev-wtq
 =======
                         password="root">
 >>>>>>> remotes/origin/dev-wtq
@@ -46,7 +50,11 @@
 
         <!-- 生成DAO的类文件以及配置文件 -->
 <<<<<<< HEAD
+<<<<<<< HEAD
         <table tableName="" domainObjectName=""
+=======
+        <table tableName="j_paper_question" domainObjectName="JPaperQuestion"
+>>>>>>> remotes/origin/dev-wtq
 =======
         <table tableName="j_paper_question" domainObjectName="JPaperQuestion"
 >>>>>>> remotes/origin/dev-wtq

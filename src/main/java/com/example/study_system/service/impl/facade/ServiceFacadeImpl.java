@@ -1,11 +1,14 @@
 package com.example.study_system.service.impl.facade;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.example.study_system.service.iface.IJPaperQuestionService;
 import com.example.study_system.service.iface.ILoginService;
 import com.example.study_system.service.iface.IPaperInfoService;
 import com.example.study_system.service.iface.IQuestionInfoService;
 =======
+=======
+>>>>>>> remotes/origin/dev-wtq
 import com.example.study_system.service.iface.IJQuestionOptionService;
 import com.example.study_system.service.iface.ILoginService;
 import com.example.study_system.service.iface.IQuestionInfoService;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ServiceFacadeImpl implements IServiceFacade {
+<<<<<<< HEAD
 <<<<<<< HEAD
     @Autowired
     ILoginService userService;
@@ -51,6 +55,9 @@ public class ServiceFacadeImpl implements IServiceFacade {
     }
 =======
 
+=======
+
+>>>>>>> remotes/origin/dev-wtq
 	@Autowired
 	IQuestionInfoService questionInfoService;
 	@Autowired
@@ -73,5 +80,8 @@ public class ServiceFacadeImpl implements IServiceFacade {
 		return jQuestionOptionService;
 	}
 
+<<<<<<< HEAD
+>>>>>>> remotes/origin/dev-wtq
+=======
 >>>>>>> remotes/origin/dev-wtq
 }

@@ -1,8 +1,11 @@
 package com.example.study_system.service.base;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.example.study_system.dao.JPaperQuestionMapper;
 import com.example.study_system.dao.PaperInfoMapper;
+=======
+>>>>>>> remotes/origin/dev-wtq
 =======
 >>>>>>> remotes/origin/dev-wtq
 import com.example.study_system.dao.QuestionInfoMapper;
@@ -19,6 +22,7 @@ public class BaseService {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Autowired
     protected UserInfoMapper userInfoMapper;
     
@@ -31,9 +35,14 @@ public class BaseService {
     @Autowired
     protected QuestionInfoMapper questionInfoMapper;
 =======
+=======
+>>>>>>> remotes/origin/dev-wtq
 	@Autowired
 	protected UserInfoMapper userInfoMapper;
 	@Autowired
 	protected QuestionInfoMapper questionInfoMapper;
+<<<<<<< HEAD
+>>>>>>> remotes/origin/dev-wtq
+=======
 >>>>>>> remotes/origin/dev-wtq
 }
