@@ -26,12 +26,17 @@ import com.zaxxer.hikari.util.SuspendResumeLock;
 
 @Service
 public class QuestionInfoServiceImpl extends BaseService implements IQuestionInfoService {
-
+	/**
+	 * 修改试题分数 score:分数   questionId:试题id
+	 */
 	@Override
 	public int updateQuestionScore(Float score, Long questionId) {
 		return questionInfoMapper.updateQuestionScore(score, questionId);
 	}
 
+	/**
+	 * 添加试题 question:试题对象 questionOptions:试题内选项集合
+	 */
 	@Override
 	@Transactional
 	public int addQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
@@ -49,6 +54,9 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		return result;
 	}
 
+	/**
+	 * 删除试题
+	 */
 	@Override
 	@Transactional
 	public int deleteQuestion(Long questionId) {
@@ -57,6 +65,9 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		return result;
 	}
 
+	/**
+	 * 修改试题 question:试题对象 questionOptions:试题内选项集合
+	 */
 	@Override
 	@Transactional
 	public int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
@@ -80,6 +91,9 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		return result;
 	}
 
+	/**
+	 * 查看试题列表 pageNum：当前页数 pageSize：当前页面的数据数量 content:题目 questionType:试题类型 1单选 2多选
+	 */
 	@Override
 	@Transactional
 	public PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize, String content,
@@ -100,6 +114,9 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		return result;
 	}
 
+	/**
+	 * 查看试题详细 questionId:试题id
+	 */
 	@Override
 	@Transactional
 	public List<QuestionResultDTO> selectQuestionTitle(Long questionId) {
@@ -115,10 +132,17 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		return questionResultDTO;
 	}
 
+	/**
+	 * 查询试题数量 questionType:试题类型 1单选 2多选
+	 */
 	@Override
 	public int selectQuestionCount(Integer questionType) {
 		return questionInfoMapper.selectQuestionCount(questionType);
 	}
+
+	/**
+	 * 查询试题答案解析 questionId:试题id
+	 */
 
 	@Override
 	public List<QuestionInfoWithBLOBs> selectAnalysis(Long questionId) {

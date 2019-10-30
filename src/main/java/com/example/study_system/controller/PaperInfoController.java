@@ -132,7 +132,7 @@ public class PaperInfoController extends BaseController {
 	public ResultDTO answer(@RequestParam("jUserPaper") String jUserPaper,
 			@RequestParam("jUserQuesAnswerRecord") String jUserQuesAnswerRecord) {
 		if (jUserPaper == null || jUserQuesAnswerRecord == null) {
-			return noData();
+			return validationError();
 		} else {
 			JUserPaper jUserPaperInfo = JSON.parseObject(jUserPaper, JUserPaper.class);
 			List<JUserQuesAnswerRecord> jUserQuesAnswerRecordInfo = JSON.parseArray(jUserQuesAnswerRecord,
@@ -150,7 +150,7 @@ public class PaperInfoController extends BaseController {
 	@RequestMapping(value = "/question/score", method = RequestMethod.POST)
 	public ResultDTO score(@RequestParam("score") Float score, @RequestParam("questionId") Long questionId) {
 		if (score == null || questionId == null) {
-			return noData();
+			return validationError();
 		}
 		return success(serviceFacade.getQuestionInfoService().updateQuestionScore(score, questionId));
 	}

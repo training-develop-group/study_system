@@ -1,10 +1,6 @@
 package com.example.study_system.service.impl.facade;
 
 import com.example.study_system.service.iface.ICommentInfoService;
-import com.example.study_system.service.iface.IJPaperQuestionService;
-import com.example.study_system.service.iface.IJQuestionOptionService;
-import com.example.study_system.service.iface.IJUserPaperService;
-import com.example.study_system.service.iface.IJUserQuesAnswerRecordService;
 import com.example.study_system.service.iface.ILoginService;
 import com.example.study_system.service.iface.IPaperInfoService;
 import com.example.study_system.service.iface.IQuestionInfoService;
@@ -21,11 +17,7 @@ import org.springframework.stereotype.Service;
 public class ServiceFacadeImpl implements IServiceFacade {
 
 	@Autowired
-	ICommentInfoService commentInfoService;
-	@Autowired
 	IQuestionInfoService questionInfoService;
-	@Autowired
-	IJQuestionOptionService jQuestionOptionService;
 	@Autowired
 	ILoginService userService;
 	@Autowired
@@ -33,35 +25,16 @@ public class ServiceFacadeImpl implements IServiceFacade {
 	@Autowired
 	IPaperInfoService paperInfoService;
 	@Autowired
-	IJPaperQuestionService jPaperQuestionService;
-	@Autowired
-	IJUserPaperService jUserPaperService;
-	@Autowired
-	IJUserQuesAnswerRecordService jUserQuesAnswerRecordService;
+	ICommentInfoService commentInfoService;
 
 	@Override
-	public IJUserQuesAnswerRecordService getJUserQuesAnswerRecordService() {
-		return jUserQuesAnswerRecordService;
-	}
-
-	@Override
-	public IJUserPaperService getJUserPaperService() {
-		return jUserPaperService;
-	}
-
-	@Override
-	public IJPaperQuestionService getJPaperQuestionService() {
-		return jPaperQuestionService;
+	public ICommentInfoService getCommentInfoService() {
+		return commentInfoService;
 	}
 
 	@Override
 	public IPaperInfoService getPaperInfoService() {
 		return paperInfoService;
-	}
-
-	@Override
-	public ICommentInfoService getCommentInfoService() {
-		return commentInfoService;
 	}
 
 	@Override
@@ -78,10 +51,4 @@ public class ServiceFacadeImpl implements IServiceFacade {
 	public IQuestionInfoService getQuestionInfoService() {
 		return questionInfoService;
 	}
-
-	@Override
-	public IJQuestionOptionService getJQuestionOptionService() {
-		return jQuestionOptionService;
-	}
-
 }

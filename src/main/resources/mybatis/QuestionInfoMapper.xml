@@ -56,15 +56,15 @@
 	</select>
 	<select id="selectAnalysisById" resultMap="ResultMapWithBLOBs"
 		parameterType="java.lang.Long">
-		select a.analysis,b.ref,b.option_type from
+		select question.analysis,qOption.ref,qOption.option_type from
 		question_info
-		a left
+		question left
 		join
-		j_question_option b on a.question_id = b.question_id
+		j_question_option qOption on question.question_id = qOption.question_id
 		where
-		b.is_right = 1 and a.question_id = #{questionId,jdbcType=BIGINT}
+		qOption.is_right = 1 and question.question_id = #{questionId,jdbcType=BIGINT}
 		ORDER
-		BY a.question_id ASC;
+		BY question.question_id ASC;
 	</select>
 	<select id="selectAllQuestion" resultMap="ResultMapWithBLOBs"
 		parameterType="java.lang.String">

@@ -92,7 +92,7 @@ public class TaskController extends BaseController {
 	@RequestMapping(value = "/comments", method = RequestMethod.GET)
 	public ResultDTO getComments(@RequestParam("taskId") Long taskId) {
 		if (taskId == null) {
-			return noData();
+			return validationError();
 		} else {
 			System.out.println(serviceFacade.getCommentInfoService().selectCommentByTaskId(taskId).get(0).getCommentType());
 			return success(serviceFacade.getCommentInfoService().selectCommentByTaskId(taskId));
@@ -101,8 +101,8 @@ public class TaskController extends BaseController {
 
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
 	public ResultDTO addComments(@RequestBody CommentInfo record) {
-		if (record == null) {
-			return noData();
+		if (record.getTaskId() == null || record.getCommentUserId() == null) {
+			return validationError();
 		} else {
 			return success(serviceFacade.getCommentInfoService().insertSelective(record));
 		}
@@ -110,8 +110,8 @@ public class TaskController extends BaseController {
 
 	@RequestMapping(value = "/comment/{commentId}", method = RequestMethod.POST)
 	public ResultDTO updataComments(@PathVariable("commentId") Long ref, @RequestBody CommentInfo record) {
-		if (ref == null || record == null) {
-			return noData();
+		if (ref == null || record.getTaskId() == null || record.getCommentUserId() == null) {
+			return validationError();
 		} else {
 			record.setRef(ref);
 			return success(serviceFacade.getCommentInfoService().updateByPrimaryKeySelective(record));

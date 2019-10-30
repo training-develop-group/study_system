@@ -67,7 +67,10 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 	}
 
 	float score = 0;
-
+	
+	/**
+	 * 提交答案
+	 */
 	@Override
 	@Transactional
 	public float answer(JUserPaper jUserPaperInfo, List<JUserQuesAnswerRecord> jUserQuesAnswerRecordInfo) {
@@ -86,7 +89,9 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		jUserPaperMapper.updateScore(score, jUserPaperInfo.getUserId(), jUserPaperInfo.getTaskId());
 		return score;
 	}
-
+	/**
+	 * 搜索试卷数量
+	 */
 	@Override
 	public int selectPaperCount() {
 		return paperInfoMapper.selectPaperCount();

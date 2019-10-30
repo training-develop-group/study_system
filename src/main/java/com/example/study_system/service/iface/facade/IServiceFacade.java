@@ -1,10 +1,6 @@
 package com.example.study_system.service.iface.facade;
 
 import com.example.study_system.service.iface.ICommentInfoService;
-import com.example.study_system.service.iface.IJPaperQuestionService;
-import com.example.study_system.service.iface.IJQuestionOptionService;
-import com.example.study_system.service.iface.IJUserPaperService;
-import com.example.study_system.service.iface.IJUserQuesAnswerRecordService;
 import com.example.study_system.service.iface.ILoginService;
 import com.example.study_system.service.iface.IPaperInfoService;
 import com.example.study_system.service.iface.IQuestionInfoService;
@@ -19,17 +15,10 @@ public interface IServiceFacade {
 
 	IQuestionInfoService getQuestionInfoService();
 
-	IJQuestionOptionService getJQuestionOptionService();
-
 	ITaskService getTaskService();
 
+	IPaperInfoService getPaperInfoService();
+	
 	ICommentInfoService getCommentInfoService();
 
-	IPaperInfoService getPaperInfoService();
-
-	IJPaperQuestionService getJPaperQuestionService();
-
-	IJUserPaperService getJUserPaperService();
-
-	IJUserQuesAnswerRecordService getJUserQuesAnswerRecordService();
 }
