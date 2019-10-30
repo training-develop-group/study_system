@@ -14,6 +14,6 @@ public class UserServiceImpl extends BaseService implements IUserService {
 
     @Override
     public UserInfo selectById(Integer userId) {
-        return userInfoMapper.selectByPrimaryKey(userId);
+    	return userInfoMapper.selectByPrimaryKey(userId);
     }
 }
