@@ -149,7 +149,10 @@ public class PaperInfoController extends BaseController {
 
 	@RequestMapping(value = "/question/score", method = RequestMethod.POST)
 	public ResultDTO score(@RequestParam("score") Float score, @RequestParam("questionId") Long questionId) {
-		return success(serviceFacade.getQuestionInfoService().updateQuestionScore(score,questionId));
+		if (score == null || questionId == null) {
+			return noData();
+		}
+		return success(serviceFacade.getQuestionInfoService().updateQuestionScore(score, questionId));
 	}
 
 }

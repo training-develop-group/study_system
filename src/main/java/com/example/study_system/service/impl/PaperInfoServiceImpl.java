@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
@@ -68,13 +69,12 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 	float score = 0;
 
 	@Override
+	@Transactional
 	public float answer(JUserPaper jUserPaperInfo, List<JUserQuesAnswerRecord> jUserQuesAnswerRecordInfo) {
 		Date date = new Date();
 		jUserPaperInfo.setcTime(date);
 		jUserPaperMapper.insertSelective(jUserPaperInfo);
-
 		jUserQuesAnswerRecordInfo.forEach(item -> {
-
 			if (item.getIsRight() == 1) {
 				score += item.getScord();
 			}

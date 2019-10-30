@@ -1,5 +1,6 @@
 package com.example.study_system.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -17,11 +18,13 @@ public class CommentInfoServiceImpl extends BaseService implements ICommentInfoS
 
 	@Override
 	public int insertSelective(CommentInfo record) {
+		record.setcTime(new Date());
 		return commentInfoMapper.insertSelective(record);
 	}
 
 	@Override
 	public int updateByPrimaryKeySelective(CommentInfo record) {
+		record.setcTime(new Date());
 		return commentInfoMapper.updateByPrimaryKeySelective(record);
 	}
 }
