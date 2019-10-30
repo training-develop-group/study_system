@@ -25,4 +25,6 @@ public interface PaperInfoMapper {
     int selectAllQuestionInfoSingle(Long paperId);
     
     int selectAllQuestionInfoMany(Long paperId);
+    
+    int selectPaperCount();
 }

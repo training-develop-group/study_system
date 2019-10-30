@@ -34,12 +34,12 @@ public class ServiceFacadeImpl implements IServiceFacade {
     }
     
     @Override
-    public IJPaperQuestionService getJPaperQuestionService() {
+    public IJPaperQuestionService getPaperQuestionService() {
         return jPaperQuestionService;
     }
     
     @Override
-    public IQuestionInfoService getIQuestionInfoService() {
+    public IQuestionInfoService getQuestionInfoService() {
         return questionInfoService;
     }
 }

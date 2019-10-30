@@ -15,7 +15,7 @@ public interface IServiceFacade {
     
     IPaperInfoService getPaperInfoService();
     
-    IJPaperQuestionService getJPaperQuestionService();
+    IJPaperQuestionService getPaperQuestionService();
     
-    IQuestionInfoService getIQuestionInfoService();
+    IQuestionInfoService getQuestionInfoService();
 }
