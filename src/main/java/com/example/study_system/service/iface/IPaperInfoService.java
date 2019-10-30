@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
 import com.example.study_system.model.JUserQuesAnswerRecord;
@@ -21,7 +22,7 @@ public interface IPaperInfoService {
 	int deleteTestPaper(Long paperId);
 
 //	获取试卷详情
-	PaperInfo detailsOfExaminationPapers(Long paperId);
+	PaperResultDTO detailsOfExaminationPapers(Long paperId);
 
 	List<PaperInfo> selectAllPaperInfo();
 

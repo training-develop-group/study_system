@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
+import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
 import com.example.study_system.model.JUserQuesAnswerRecord;
@@ -68,7 +69,7 @@ public class PaperInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/{paperId}", method = RequestMethod.GET)
 	public ResultDTO detailsOfExaminationPapers(@PathVariable("paperId") Long paperId) {
-		PaperInfo paperInfo = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
+		PaperResultDTO paperInfo = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
 		if (paperInfo == null) {
 			return noData();
 		}

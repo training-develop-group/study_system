@@ -43,10 +43,14 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		Date date = new Date();
 		question.setcTime(date);
 		question.setcUser("未定义");
+		question.setmTime(date);
+		question.setmUser("未定义");
 		int result = questionInfoMapper.insertSelective(question);
 		questionOptions.forEach(item -> {
 			item.setcUser("未定义");
 			item.setcTime(date);
+			item.setmUser("未定义");
+			item.setmTime(date);
 			item.setQuestionId(question.getQuestionId());
 			jQuestionOptionMapper.insertSelective(item);
 		});
