@@ -16,5 +16,4 @@ public class UserServiceImpl extends BaseService implements IUserService {
     public UserInfo selectById(Integer userId) {
         return userInfoMapper.selectByPrimaryKey(userId);
     }
-
 }

@@ -1,6 +1,8 @@
 package com.example.study_system.service.base;
 
 import com.example.study_system.dao.UserInfoMapper;
+import com.example.study_system.model.UserInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,4 +16,10 @@ public class BaseService {
 
     @Autowired
     protected UserInfoMapper userInfoMapper;
+
+	public UserInfo selectById(Integer paperId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
