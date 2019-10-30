@@ -44,7 +44,7 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 	@Override
 	@Transactional
 	public PaperResultDTO detailsOfExaminationPapers(Long paperId) {
-
+		
 		PaperInfo paper = paperInfoMapper.selectByPrimaryKey(paperId);// 取該试卷所有信息
 		List<QuestionResultDTO> questionInfo = new ArrayList<QuestionResultDTO>();
 		jPaperQuestionMapper.selectQuestionByPaperId(paperId).forEach(item -> {// 通過試卷ID取所有試題ID
