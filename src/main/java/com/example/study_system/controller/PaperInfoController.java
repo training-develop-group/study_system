@@ -69,11 +69,10 @@ public class PaperInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/{paperId}", method = RequestMethod.GET)
 	public ResultDTO detailsOfExaminationPapers(@PathVariable("paperId") Long paperId) {
-		PaperResultDTO paperInfo = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
-		if (paperInfo == null) {
-			return noData();
+		if (paperId == null) {
+			return validationError();
 		}
-		return success(paperInfo);
+		return success(serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId));
 	}
 
 	/**
