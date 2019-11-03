@@ -18,6 +18,7 @@
                         userId="root"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         password="123456">
 =======
                         password="root">
@@ -25,6 +26,9 @@
 =======
                         password="root">
 >>>>>>> remotes/origin/dev-wtq
+=======
+                        password="123456">
+>>>>>>> dev-wtq
         </jdbcConnection>
         <!--默认false
            Java type resolver will always use java.math.BigDecimal if the database column is of type DECIMAL or NUMERIC.
@@ -51,6 +55,7 @@
         <!-- 生成DAO的类文件以及配置文件 -->
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <table tableName="" domainObjectName=""
 =======
         <table tableName="j_paper_question" domainObjectName="JPaperQuestion"
@@ -58,6 +63,9 @@
 =======
         <table tableName="j_paper_question" domainObjectName="JPaperQuestion"
 >>>>>>> remotes/origin/dev-wtq
+=======
+        <table tableName="j_user_task" domainObjectName="JUserTask"
+>>>>>>> dev-wtq
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

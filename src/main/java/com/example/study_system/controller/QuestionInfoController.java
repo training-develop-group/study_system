@@ -32,10 +32,21 @@ public class QuestionInfoController extends BaseController {
 	@RequestMapping(value = "/question", method = RequestMethod.POST)
 	public ResultDTO addQuestion(@RequestParam("question") String question,
 			@RequestParam("questionOption") String questionOptions) {
+<<<<<<< HEAD
 		List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
 		QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
 		int result = serviceFacade.getQuestionInfoService().addQuestion(questionInfo, options);
 		return success(result);
+=======
+		if (question == null || questionOptions == null) {
+			return validationError();
+		} else {
+			List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
+			QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
+			int result = serviceFacade.getQuestionInfoService().addQuestion(questionInfo, options);
+			return success(result);
+		}
+>>>>>>> dev-wtq
 	}
 
 	/**
@@ -47,7 +58,15 @@ public class QuestionInfoController extends BaseController {
 
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.DELETE)
 	public ResultDTO deleteQuestion(@PathVariable("questionId") Long questionId) {
+<<<<<<< HEAD
 		return success(serviceFacade.getQuestionInfoService().deleteQuestion(questionId));
+=======
+		if (questionId == null) {
+			return validationError();
+		} else {
+			return success(serviceFacade.getQuestionInfoService().deleteQuestion(questionId));
+		}
+>>>>>>> dev-wtq
 	}
 
 	/**
@@ -59,12 +78,24 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
 	public ResultDTO updateQeustionInfo(@PathVariable("questionId") Long questionId,
+<<<<<<< HEAD
 			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions,
 			@RequestParam("count") Integer count) {
 		List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
 		QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
 		int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options, count);
 		return success(result);
+=======
+			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions) {
+		if (questionId == null || question == null || questionOptions == null) {
+			return validationError();
+		} else {
+			List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
+			QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
+			int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
+			return success(result);
+		}
+>>>>>>> dev-wtq
 	}
 
 	/**
@@ -77,12 +108,26 @@ public class QuestionInfoController extends BaseController {
 	@RequestMapping(value = "/questions", method = RequestMethod.GET)
 	public ResultDTO selectQuestion(@RequestParam(value = "pageNum") Integer pageNum,
 			@RequestParam(value = "pageSize") Integer pageSize,
+<<<<<<< HEAD
 			@RequestParam(value = "content", required = false) String content) {
 
 		PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum, pageSize,
 				content);
 
 		return success(result);
+=======
+			@RequestParam(value = "content", required = false) String content,
+			@RequestParam(value = "questionType", required = false) Integer questionType) {
+//			@RequestParam("questionType") Integer questionType) {
+//		if (pageSize == null || content == null || pageNum == null || questionType == null) {
+		if (pageSize == null || content == null || pageNum == null) {
+			return validationError();
+		} else {
+			PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum,
+					pageSize, content, questionType);
+			return success(result);
+		}
+>>>>>>> dev-wtq
 	}
 
 	/**
@@ -93,7 +138,15 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/{questionId}", method = RequestMethod.GET)
 	public ResultDTO selectQuestionDetailed(@PathVariable("questionId") Long questionId) {
+<<<<<<< HEAD
 		return success(serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId));
+=======
+		if (questionId == null) {
+			return validationError();
+		} else {
+			return success(serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId));
+		}
+>>>>>>> dev-wtq
 	}
 
 	/**
@@ -104,7 +157,15 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/count", method = RequestMethod.GET)
 	public ResultDTO selectQuestionCount(@RequestParam(value = "questionType", required = false) Integer questionType) {
+<<<<<<< HEAD
 		return success(serviceFacade.getQuestionInfoService().selectQuestionCount(questionType));
+=======
+		if (questionType == null) {
+			return validationError();
+		} else {
+			return success(serviceFacade.getQuestionInfoService().selectQuestionCount(questionType));
+		}
+>>>>>>> dev-wtq
 	}
 
 	/**
@@ -115,7 +176,15 @@ public class QuestionInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/answer", method = RequestMethod.GET)
 	public ResultDTO selectAnalysis(@RequestParam("questionId") Long questionId) {
+<<<<<<< HEAD
 		return success(serviceFacade.getQuestionInfoService().selectAnalysis(questionId));
+=======
+		if (questionId == null) {
+			return validationError();
+		} else {
+			return success(serviceFacade.getQuestionInfoService().selectAnalysis(questionId));
+		}
+>>>>>>> dev-wtq
 	}
 
 }
