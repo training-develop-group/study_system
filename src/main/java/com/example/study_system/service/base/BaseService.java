@@ -7,8 +7,10 @@ import com.example.study_system.dao.JUserPaperMapper;
 import com.example.study_system.dao.JUserQuesAnswerRecordMapper;
 import com.example.study_system.dao.JUserTaskInfoMapper;
 import com.example.study_system.dao.JUserTaskMapper;
+import com.example.study_system.dao.JUserVideoLogMapper;
 import com.example.study_system.dao.PaperInfoMapper;
 import com.example.study_system.dao.QuestionInfoMapper;
+import com.example.study_system.dao.ResourceInfoMapper;
 import com.example.study_system.dao.TaskInfoMapper;
 import com.example.study_system.dao.UserInfoMapper;
 import org.slf4j.Logger;
@@ -43,4 +45,16 @@ public class BaseService {
 	protected JUserQuesAnswerRecordMapper jUserQuesAnswerRecordMapper;
 	@Autowired
 	protected JUserTaskMapper jUserTaskMapper;
+	  @Autowired
+	    protected ResourceInfoMapper resourceInfoMapper;
+	  @Autowired
+	    protected JUserVideoLogMapper userVideoLogMapper;
 }
+    
+  
+
+  
+
+
+	
+

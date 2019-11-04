@@ -10,11 +10,16 @@ import com.example.study_system.service.iface.facade.IServiceFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.study_system.service.iface.IJUserVideoLogService;
+import com.example.study_system.service.iface.IResourceService;
+
 /**
  * author lindan. date 2019/6/4.
  */
 @Service
 public class ServiceFacadeImpl implements IServiceFacade {
+    @Autowired
+    ILoginService loginService;
 
 	@Autowired
 	IQuestionInfoService questionInfoService;
@@ -60,7 +65,23 @@ public class ServiceFacadeImpl implements IServiceFacade {
 	}
 
 	@Override
-	public ILoginService getLoginService() {
-		return userService;
-	}
+    public ILoginService getLoginService() {
+        return loginService;
+    }
+    
+    @Autowired
+    IResourceService resourceService;
+
+    @Override
+    public IResourceService getResourceService() {
+        return resourceService;
+    }
+    
+    @Autowired
+    IJUserVideoLogService userVideoLogService;
+
+    @Override
+    public IJUserVideoLogService getJUserVideoLogService() {
+        return userVideoLogService;
+    }
 }

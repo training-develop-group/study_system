@@ -10,8 +10,10 @@ public class ResourceInfo {
     private Integer resType;
 
     private String path;
+    
+    private String imgPath;
 
-    private String resExt;
+	private String resExt;
 
     private Long resSize;
 
@@ -56,6 +58,14 @@ public class ResourceInfo {
     public void setPath(String path) {
         this.path = path == null ? null : path.trim();
     }
+    
+    public String getImgPath() {
+		return imgPath;
+	}
+
+	public void setImgPath(String imgPath) {
+		this.imgPath = imgPath;
+	}
 
     public String getResExt() {
         return resExt;

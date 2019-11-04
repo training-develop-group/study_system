@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -77,6 +77,31 @@
             <scope>test</scope>
         </dependency>
         <!--pageHelper end -->
+
+
+
+
+        <!--JSON处理-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
+        <!--JSON处理-->
+        <!--start:视频获取某一帧的图片-->
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacv</artifactId>
+			<version>1.4.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.bytedeco.javacpp-presets</groupId>
+			<artifactId>ffmpeg-platform</artifactId>
+			<version>4.0.2-1.4.3</version>
+		</dependency>
+		<!--end:视频获取某一帧的图片-->
+		
     </dependencies>
 
     <build>
@@ -135,5 +160,5 @@
             <url>https://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
+

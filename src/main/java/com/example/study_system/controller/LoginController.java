@@ -42,6 +42,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/user",method = RequestMethod.GET)
     public ResultDTO getUser(HttpServletRequest request) {
         UserInfo userInfo = UserUtil.getUser(request);
+        System.err.println(userInfo);
         if (userInfo == null) {
             return noData();
         }

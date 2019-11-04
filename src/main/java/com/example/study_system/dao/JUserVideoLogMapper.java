@@ -1,9 +1,8 @@
 package com.example.study_system.dao;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
 
 import com.example.study_system.model.JUserVideoLog;
-@Mapper
 
 public interface JUserVideoLogMapper {
     int deleteByPrimaryKey(Long ref);
@@ -17,4 +16,8 @@ public interface JUserVideoLogMapper {
     int updateByPrimaryKeySelective(JUserVideoLog record);
 
     int updateByPrimaryKey(JUserVideoLog record);
+
+	long insertVideoPlaybackTime(Long resId, Long seconds);
+
+	List<JUserVideoLog> selectByResId(Long resId);
 }
