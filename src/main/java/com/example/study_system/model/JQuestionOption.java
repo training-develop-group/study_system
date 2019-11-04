@@ -3,93 +3,104 @@ package com.example.study_system.model;
 import java.util.Date;
 
 public class JQuestionOption {
-    private Long ref;
+	private Long ref;
 
-    private Long questionId;
+	private Long questionId;
 
-    private Integer isRight;
+	private Integer isRight;
 
-    private String optionType;
+	private String optionType;
 
-    private Date cTime;
+	private Date cTime;
 
-    private Date mTime;
+	private Date mTime;
 
-    private String cUser;
+	private String cUser;
 
-    private String mUser;
+	private String mUser;
 
-    private String content;
+	private String content;
 
-    public Long getRef() {
-        return ref;
-    }
+	public JQuestionOption() {
 
-    public void setRef(Long ref) {
-        this.ref = ref;
-    }
+	}
 
-    public Long getQuestionId() {
-        return questionId;
-    }
+	public JQuestionOption(Long questionId, String content, Integer isRight, String optionType) {
+		this.questionId = questionId;
+		this.content = content;
+		this.isRight = isRight;
+		this.optionType = optionType;
+	}
 
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
-    }
+	public Long getRef() {
+		return ref;
+	}
 
-    public Integer getIsRight() {
-        return isRight;
-    }
+	public void setRef(Long ref) {
+		this.ref = ref;
+	}
 
-    public void setIsRight(Integer isRight) {
-        this.isRight = isRight;
-    }
+	public Long getQuestionId() {
+		return questionId;
+	}
 
-    public String getOptionType() {
-        return optionType;
-    }
+	public void setQuestionId(Long questionId) {
+		this.questionId = questionId;
+	}
 
-    public void setOptionType(String optionType) {
-        this.optionType = optionType == null ? null : optionType.trim();
-    }
+	public Integer getIsRight() {
+		return isRight;
+	}
 
-    public Date getcTime() {
-        return cTime;
-    }
+	public void setIsRight(Integer isRight) {
+		this.isRight = isRight;
+	}
 
-    public void setcTime(Date cTime) {
-        this.cTime = cTime;
-    }
+	public String getOptionType() {
+		return optionType;
+	}
 
-    public Date getmTime() {
-        return mTime;
-    }
+	public void setOptionType(String optionType) {
+		this.optionType = optionType == null ? null : optionType.trim();
+	}
 
-    public void setmTime(Date mTime) {
-        this.mTime = mTime;
-    }
+	public Date getcTime() {
+		return cTime;
+	}
 
-    public String getcUser() {
-        return cUser;
-    }
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
+	}
 
-    public void setcUser(String cUser) {
-        this.cUser = cUser == null ? null : cUser.trim();
-    }
+	public Date getmTime() {
+		return mTime;
+	}
 
-    public String getmUser() {
-        return mUser;
-    }
+	public void setmTime(Date mTime) {
+		this.mTime = mTime;
+	}
 
-    public void setmUser(String mUser) {
-        this.mUser = mUser == null ? null : mUser.trim();
-    }
+	public String getcUser() {
+		return cUser;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public void setcUser(String cUser) {
+		this.cUser = cUser == null ? null : cUser.trim();
+	}
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
-    }
+	public String getmUser() {
+		return mUser;
+	}
+
+	public void setmUser(String mUser) {
+		this.mUser = mUser == null ? null : mUser.trim();
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content == null ? null : content.trim();
+	}
 }

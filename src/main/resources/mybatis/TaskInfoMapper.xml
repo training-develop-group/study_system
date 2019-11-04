@@ -25,6 +25,19 @@
   <sql id="Blob_Column_List"  >
     task_remark
   </sql>
+  <select id="selectByTaskIdusers">
+  select 
+  a.user_name ,  d.STATUS  , c.score 
+  from manage_system.task_info b, manage_system.j_user_paper c ,manage_system.user_info a ,manage_system.j_user_task d 
+  where 
+  b.task_id = c.task_id 
+  and a.user_id = c.user_id 
+  and a.user_id=d.user_id
+  and d.task_id=b.task_id
+  <if test="taskId!=null">
+  and b.task_id=#{taskId,jdbcType=BIGINT};
+  </if>
+  </select>
   <update id="updateByIdTaskName" parameterType="com.example.study_system.model.TaskInfo">
   update task_info set task_name = #{taskName,jdbcType=VARCHAR}
     where task_id = #{taskId,jdbcType=BIGINT}
@@ -58,10 +71,9 @@
       start_time, end_time, c_time, 
       m_time, c_user, m_user, 
       task_remark)
-    values (#{taskId,jdbcType=BIGINT}, #{resId,jdbcType=BIGINT}, #{paperId,jdbcType=BIGINT}, 
+    values (null, #{resId,jdbcType=BIGINT}, #{paperId,jdbcType=BIGINT}, 
       #{taskType,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{cTime,jdbcType=TIMESTAMP}, 
-      #{mTime,jdbcType=TIMESTAMP}, #{cUser,jdbcType=VARCHAR}, #{mUser,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, now(), now(), 'a','a',
       #{taskRemark,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.study_system.model.TaskInfo" >

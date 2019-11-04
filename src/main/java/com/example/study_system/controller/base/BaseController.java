@@ -25,4 +25,7 @@ public class BaseController {
     protected <T> ResultDTO<T> success(T data) {
         return new ResultDTO<>(ResultEmun.SUCCESS, data);
     }
+    protected <T> ResultDTO<T> validationError() {
+        return new ResultDTO<>(ResultEmun.VALIDATION_ERROR);
+    }
 }

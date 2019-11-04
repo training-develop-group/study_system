@@ -3,21 +3,27 @@ package com.example.study_system.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.study_system.model.UserInfo;
+import com.example.study_system.model.UserInfoWithBLOBs;
 @Mapper
 public interface UserInfoMapper {
-    int deleteByPrimaryKey(Integer userId);
+    int deleteByPrimaryKey(String userId);
 
-    int insert(UserInfo record);
+    int insert(UserInfoWithBLOBs record);
 
-    int insertSelective(UserInfo record);
+    int insertSelective(UserInfoWithBLOBs record);
 
-    UserInfo selectByPrimaryKey(Integer userId);
+    UserInfoWithBLOBs selectByPrimaryKey(String userId);
 
-    int updateByPrimaryKeySelective(UserInfo record);
+    int updateByPrimaryKeySelective(UserInfoWithBLOBs record);
+
+    int updateByPrimaryKeyWithBLOBs(UserInfoWithBLOBs record);
 
     int updateByPrimaryKey(UserInfo record);
     
     List<UserInfo> selectUserAll(); 
+
+    UserInfo selectByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
 }

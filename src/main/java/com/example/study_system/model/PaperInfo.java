@@ -5,7 +5,28 @@ import java.util.Date;
 public class PaperInfo {
     private Long paperId;
 
-    private String paperName;
+    
+    private Long questionId;
+
+    public Long getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(Long questionId) {
+		this.questionId = questionId;
+	}
+	
+	private Integer questionType;
+	
+	public Integer getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(Integer questionType) {
+		this.questionType = questionType;
+	}
+
+	private String paperName;
 
     private Float score;
 

@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.study_system.model.UserActionLog;
 @Mapper
+
 public interface UserActionLogMapper {
     int deleteByPrimaryKey(Long ref);
 

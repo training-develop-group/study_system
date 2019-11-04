@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.example.study_system.model.JUserVideoLog;
 @Mapper
+
 public interface JUserVideoLogMapper {
     int deleteByPrimaryKey(Long ref);
 

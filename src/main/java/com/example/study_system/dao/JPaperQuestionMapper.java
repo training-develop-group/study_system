@@ -1,19 +1,25 @@
 package com.example.study_system.dao;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
 
 import com.example.study_system.model.JPaperQuestion;
-@Mapper
+
 public interface JPaperQuestionMapper {
-    int deleteByPrimaryKey(Long ref);
+	int deleteByPrimaryKey(Long ref);
+	
+	int delete(Long paperId , Long questionId);
 
-    int insert(JPaperQuestion record);
+	int insert(JPaperQuestion record);
 
-    int insertSelective(JPaperQuestion record);
+	int insertSelective(JPaperQuestion record);
 
-    JPaperQuestion selectByPrimaryKey(Long ref);
+	JPaperQuestion selectByPrimaryKey(Long ref);
 
-    int updateByPrimaryKeySelective(JPaperQuestion record);
+	int updateByPrimaryKeySelective(JPaperQuestion record);
 
-    int updateByPrimaryKey(JPaperQuestion record);
+	int updateByPrimaryKey(JPaperQuestion record);
+
+	List<JPaperQuestion> selectQuestionByPaperId(Long paperId);
+	
+	int updateScore(Long paperId , Long questionId , Float score);
 }

@@ -1,19 +1,40 @@
 package com.example.study_system.dao;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.example.study_system.model.PaperInfo;
-@Mapper
+
 public interface PaperInfoMapper {
-    int deleteByPrimaryKey(Long paperId);
+//	删除试卷
+	int deleteByPrimaryKey(Long paperId);
 
-    int insert(PaperInfo record);
+	int insert(String paperName , String cUser);
 
-    int insertSelective(PaperInfo record);
+//	新建试卷
+	int insertSelective(PaperInfo record);
 
-    PaperInfo selectByPrimaryKey(Long paperId);
+//	获取试卷详情
+	PaperInfo selectByPrimaryKey(Long paperId);
 
-    int updateByPrimaryKeySelective(PaperInfo record);
+//	修改试卷名
+	int updateByPrimaryKeySelective(PaperInfo record);
 
-    int updateByPrimaryKey(PaperInfo record);
+	int updateByPrimaryKey(PaperInfo record);
+
+	List<PaperInfo> selectPaperInfo(@Param("paperName")String paperName);
+//	查询总条数
+	int selectAllPaperInfo(@Param("paperName")String paperName);
+
+	List<PaperInfo> select();
+
+	int selectAllQuestionInfoSingle(Long paperId);
+
+	int selectAllQuestionInfoMany(Long paperId);
+
+	int selectPaperCount();
+	
+	Long selectPaperScore(Long paperId);
+
 }
