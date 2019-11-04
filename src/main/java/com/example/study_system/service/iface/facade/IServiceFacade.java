@@ -10,7 +10,7 @@ import com.example.study_system.service.iface.IResourceService;
  * date 2019/6/4.
  */
 public interface IServiceFacade {
-    ILoginService getUserService();
+    ILoginService getLoginService();
     
     IResourceService getResourceService();
     

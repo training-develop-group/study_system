@@ -13,10 +13,11 @@ spring:
     hikari:
       connection-timeout: 3000
       connection-test-query: SELECT 1
-servlet:
-  multipart:
-   max-file-size: 20MB
-   max-request-size: 20MB    
+  servlet:
+    multipart:
+     enabled: true
+     max-file-size: 50MB
+     max-request-size: 50MB    
       
 mybatis:
   mapper-locations: classpath:mybatis/*Mapper.xml
@@ -30,5 +31,7 @@ logging:
 #pagehelper分页插件配置
 pagehelper:
   helperDialect: mysql
+  
+
   
   

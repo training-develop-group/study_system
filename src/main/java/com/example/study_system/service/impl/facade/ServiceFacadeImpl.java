@@ -15,11 +15,11 @@ import com.example.study_system.service.iface.facade.IServiceFacade;
 @Service
 public class ServiceFacadeImpl implements IServiceFacade {
     @Autowired
-    ILoginService userService;
+    ILoginService loginService;
 
     @Override
-    public ILoginService getUserService() {
-        return userService;
+    public ILoginService getLoginService() {
+        return loginService;
     }
     
     @Autowired

@@ -25,16 +25,22 @@
     from resource_info
     where res_id = #{resId,jdbcType=BIGINT}
   </select>
-  <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.String">
   	select
   	<include refid="Base_Column_List" />
   	from resource_info
-  	where 1=1
+  	where 1=1 
+  	<if test="resName != null">
+  	and res_name like '%${resName}%'
+  	</if>
+  	<if test="resType != null">
+  	and res_type = ${resType}
+  	</if>
   	
   </select>
   <select id="selectListCount" resultType="java.lang.Integer" >
   	select count(res_id)
-  	<include refid="Base_Column_List" />
+  	<include refid="Base_Column_List" />	
   	from resource_info
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >

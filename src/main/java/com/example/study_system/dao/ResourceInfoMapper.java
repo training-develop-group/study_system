@@ -2,6 +2,8 @@ package com.example.study_system.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.example.study_system.model.ResourceInfo;
 
 public interface ResourceInfoMapper {
@@ -15,7 +17,7 @@ public interface ResourceInfoMapper {
 
     ResourceInfo selectByPrimaryKey(Long resId);		//获取资源详情
     
-    List<ResourceInfo> selectList();		//获取资源列表
+    List<ResourceInfo> selectList(@Param("resName")String resName, @Param("resType")Integer resType);		//获取资源列表
     
     int selectListCount();			//获取资源总数
     
