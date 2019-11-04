@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-package com.example.study_system.dao;
-
-import com.example.study_system.model.TaskInfo;
-
-public interface TaskInfoMapper {
-    int deleteByPrimaryKey(Long taskId);
-
-    int insert(TaskInfo record);
-
-    int insertSelective(TaskInfo record);
-
-    TaskInfo selectByPrimaryKey(Long taskId);
-
-    int updateByPrimaryKeySelective(TaskInfo record);
-
-    int updateByPrimaryKeyWithBLOBs(TaskInfo record);
-
-    int updateByPrimaryKey(TaskInfo record);
-=======
 package com.example.study_system.dao;
 
 import java.util.List;
@@ -46,5 +26,4 @@ public interface TaskInfoMapper {
     int updateByIdTaskName(TaskInfo record);
     
     int selectTaskCount();
->>>>>>> dev-wtq
 }
