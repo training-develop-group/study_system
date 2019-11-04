@@ -36,6 +36,7 @@
   	<if test="resType != null">
   	and res_type = ${resType}
   	</if>
+  	order by m_time DESC, res_id DESC
   	
   </select>
   <select id="selectListCount" resultType="java.lang.Integer" >

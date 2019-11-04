@@ -83,7 +83,7 @@
 		where 1 = 1
 		<if test="paperName != null || paperName != null || paperName != undefined">
 			and paper_name like '%${paperName}%'
-			ORDER BY c_time desc
+			ORDER BY c_time desc , paper_id desc
 		</if>
 	</select>
 	<select id="selectAllPaperInfo" resultType="java.lang.Integer"
@@ -103,10 +103,10 @@
 	<insert id="insert"
 		parameterType="com.example.study_system.model.PaperInfo">
 		insert into paper_info (paper_name,
-		STATUS, c_time,
+		STATUS, c_time, m_time,
 		c_user)
 		values (#{paperName,jdbcType=VARCHAR},
-		1, now(),
+		1, now(), now(),
 		#{cUser,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"

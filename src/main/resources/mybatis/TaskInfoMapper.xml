@@ -53,6 +53,14 @@
     where task_id = #{taskId,jdbcType=BIGINT}
   </select>
   
+  <select id="selectAll" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task_info
+  </select>
+  
   <select id="selectTaskCount" resultType="Integer">
    select  count(0) from task_info
    

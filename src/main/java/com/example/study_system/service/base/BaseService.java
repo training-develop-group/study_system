@@ -49,6 +49,7 @@ public class BaseService {
 	    protected ResourceInfoMapper resourceInfoMapper;
 	  @Autowired
 	    protected JUserVideoLogMapper userVideoLogMapper;
+
 }
     
   

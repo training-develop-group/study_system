@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.study_system.service.iface.IJUserVideoLogService;
 import com.example.study_system.service.iface.IResourceService;
+import com.example.study_system.service.iface.ITaskInfoService;
 
 /**
  * author lindan. date 2019/6/4.
@@ -83,5 +84,14 @@ public class ServiceFacadeImpl implements IServiceFacade {
     @Override
     public IJUserVideoLogService getJUserVideoLogService() {
         return userVideoLogService;
+    }
+
+
+    @Autowired
+    ITaskInfoService taskInfoService;
+
+    @Override
+    public ITaskInfoService getTaskInfoService() {
+        return taskInfoService;
     }
 }

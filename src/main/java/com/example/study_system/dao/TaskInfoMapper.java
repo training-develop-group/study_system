@@ -29,5 +29,6 @@ public interface TaskInfoMapper {
     
     int selectTaskCount();
     
+    List<TaskInfo> selectAll();
 //    TaskInfo taskDetails(Long taskId);
 }
