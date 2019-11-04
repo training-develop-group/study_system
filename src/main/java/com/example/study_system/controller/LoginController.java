@@ -30,7 +30,7 @@ public class LoginController extends BaseController {
             return new ResultDTO(ResultEmun.VALIDATION_ERROR);
         }
         logger.info("用户名："+userName+ ",密码: " +password);
-        UserInfo userInfo = serviceFacade.getUserService().selectUser(userName,password);
+        UserInfo userInfo = serviceFacade.getLoginService().selectUser(userName,password);
         if (userInfo == null) {
             return noData();
         }

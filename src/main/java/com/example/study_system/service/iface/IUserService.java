@@ -10,10 +10,9 @@ import com.example.study_system.model.UserInfoWithBLOBs;
  * date 2019/6/4.
  */
 public interface IUserService {
-    UserInfo selectById(String userId);
+      UserInfo selectById(String userId);
 
-	List<UserInfo> selectUserAll();
-    
+	List<UserInfo> selectUserAll(String userName);
    
     
 }

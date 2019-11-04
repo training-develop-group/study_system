@@ -3,13 +3,15 @@ package com.example.study_system.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.study_system.model.TaskInfo;
+import com.example.study_system.model.UserTaskRelationInfo;
 @Mapper
 public interface TaskInfoMapper {
     int deleteByPrimaryKey(Long taskId);
 
-    int insert(TaskInfo record);
+    Long insert(TaskInfo record);
 
     int insertSelective(TaskInfo record);
 
@@ -21,9 +23,11 @@ public interface TaskInfoMapper {
 
     int updateByPrimaryKey(TaskInfo record);
     
-    List<TaskInfo> selectTaskAll();
+    List<TaskInfo> selectTaskAll(@Param("taskName")String taskName);
    
     int updateByIdTaskName(TaskInfo record);
     
     int selectTaskCount();
+    
+//    TaskInfo taskDetails(Long taskId);
 }

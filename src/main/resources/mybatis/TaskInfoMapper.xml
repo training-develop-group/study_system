@@ -25,30 +25,25 @@
   <sql id="Blob_Column_List"  >
     task_remark
   </sql>
-  <select id="selectByTaskIdusers">
-  select 
-  a.user_name ,  d.STATUS  , c.score 
-  from manage_system.task_info b, manage_system.j_user_paper c ,manage_system.user_info a ,manage_system.j_user_task d 
-  where 
-  b.task_id = c.task_id 
-  and a.user_id = c.user_id 
-  and a.user_id=d.user_id
-  and d.task_id=b.task_id
-  <if test="taskId!=null">
-  and b.task_id=#{taskId,jdbcType=BIGINT};
-  </if>
-  </select>
+ 
   <update id="updateByIdTaskName" parameterType="com.example.study_system.model.TaskInfo">
   update task_info set task_name = #{taskName,jdbcType=VARCHAR}
     where task_id = #{taskId,jdbcType=BIGINT}
   </update>
-  <select id="selectTaskAll" resultMap="ResultMapWithBLOBs">
+  <select id="selectTaskAll" resultMap="ResultMapWithBLOBs" parameterType="String">
   select 
    <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from task_info
+    from task_info a
+    where 
+    1=1 
+    <if test="taskName!=''||taskName!=null">
+    and a.task_name like '%${taskName}%'
+    </if>
   </select>
+  
+  
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -57,6 +52,7 @@
     from task_info
     where task_id = #{taskId,jdbcType=BIGINT}
   </select>
+  
   <select id="selectTaskCount" resultType="Integer">
    select  count(0) from task_info
    
@@ -65,7 +61,7 @@
     delete from task_info
     where task_id = #{taskId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.example.study_system.model.TaskInfo" >
+  <insert id="insert" parameterType="com.example.study_system.model.TaskInfo"  keyColumn="task_id" keyProperty="taskId" useGeneratedKeys="true">
     insert into task_info (task_id, res_id, paper_id, 
       task_type, task_name, STATUS, 
       start_time, end_time, c_time, 
@@ -75,6 +71,7 @@
       #{taskType,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, now(), now(), 'a','a',
       #{taskRemark,jdbcType=LONGVARCHAR})
+      
   </insert>
   <insert id="insertSelective" parameterType="com.example.study_system.model.TaskInfo" >
     insert into task_info

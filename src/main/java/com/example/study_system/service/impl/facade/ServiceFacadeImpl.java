@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ServiceFacadeImpl implements IServiceFacade {
+
 	@Autowired
 	IQuestionInfoService questionInfoService;
 	@Autowired
@@ -24,8 +25,15 @@ public class ServiceFacadeImpl implements IServiceFacade {
 	@Autowired
 	IPaperInfoService paperInfoService;
 	@Autowired
+	IUserService taskUserService;
+	@Autowired
 	ICommentInfoService commentInfoService;
 
+	public IUserService getUseService() {
+		return taskUserService;
+	};
+
+	
 	@Override
 	public ICommentInfoService getCommentInfoService() {
 		return commentInfoService;
@@ -42,7 +50,7 @@ public class ServiceFacadeImpl implements IServiceFacade {
 	}
 
 	@Override
-	public ILoginService getLoginService() {
+	public ILoginService getUserService() {
 		return userService;
 	}
 
@@ -50,5 +58,9 @@ public class ServiceFacadeImpl implements IServiceFacade {
 	public IQuestionInfoService getQuestionInfoService() {
 		return questionInfoService;
 	}
-	
+
+	@Override
+	public ILoginService getLoginService() {
+		return userService;
+	}
 }

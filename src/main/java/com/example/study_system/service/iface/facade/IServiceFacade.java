@@ -11,16 +11,18 @@ import com.example.study_system.service.iface.IUserService;
  * author lindan. date 2019/6/4.
  */
 public interface IServiceFacade {
-
-	ITaskService getTaskService();
-
+	ILoginService getUserService();
 
 	IQuestionInfoService getQuestionInfoService();
 
-	ILoginService getLoginService();
-		
+	ITaskService getTaskService();
+
 	IPaperInfoService getPaperInfoService();
 	
 	ICommentInfoService getCommentInfoService();
+	
+	IUserService getUseService();
+	
+	ILoginService getLoginService();
 
 }
