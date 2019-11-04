@@ -1,4 +1,4 @@
-package com.example.study_system.controller;
+﻿package com.example.study_system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.study_system.common.ResultDTO;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
