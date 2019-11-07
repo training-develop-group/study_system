@@ -17,7 +17,14 @@ public class PaperResultDTO {
 	private String mUser;
 
 	private Integer Single;
+	private Float userScore;
+	public Float getUserScore() {
+		return userScore;
+	}
 
+	public void setUserScore(Float userScore) {
+		userScore = this.userScore;
+	}
 	public Integer getSingle() {
 		return Single;
 	}
@@ -93,6 +100,20 @@ public class PaperResultDTO {
 		this.status = status;
 		this.Many = many;
 		this.Single = single;
+	}
+	
+	public PaperResultDTO(Long paperId, String paperName, Float score, Integer status, Date cTime, Date mTime,
+			String cUser, String mUser, List<QuestionResultDTO> questions , float userScore) {
+		this.paperId = paperId;
+		this.paperName = paperName;
+		this.score = score;
+		this.status = status;
+		this.cTime = cTime;
+		this.mTime = mTime;
+		this.cUser = cUser;
+		this.mUser = mUser;
+		this.questions = questions;
+		this.userScore = userScore;
 	}
 
 	public Long getPaperId() {

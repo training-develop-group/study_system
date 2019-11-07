@@ -20,6 +20,7 @@ public class JQuestionOption {
 	private String mUser;
 
 	private String content;
+	
 
 	public JQuestionOption() {
 

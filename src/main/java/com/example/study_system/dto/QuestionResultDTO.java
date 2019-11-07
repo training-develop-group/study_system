@@ -39,7 +39,15 @@ public class QuestionResultDTO {
 	private String mUser;
 
 	private List<JQuestionOption> optionInfo;
+	private String userAnswer;
 
+	public String getUserAnswer() {
+		return userAnswer;
+	}
+	
+	public void setUserAnswer(String userAnswer) {
+		this.userAnswer = userAnswer;
+	}
 	public List<JQuestionOption> getOptionInfo() {
 		return optionInfo;
 	}
@@ -94,6 +102,25 @@ public class QuestionResultDTO {
 		this.optionInfo =optionInfo;
 		this.newScore = score1;
 	}
+	
+	public QuestionResultDTO(Long questionId, Integer questionType, Float score, Integer difficulty, String content,
+			String analysis, Integer status, Date cTime, Date mTime, String cUser, String mUser,
+			List<JQuestionOption> optionInfo , Float score1 , String userAnswer) {
+		this.questionId = questionId;
+		this.questionType = questionType;
+		this.score = score;
+		this.difficulty = difficulty;
+		this.content = content;
+		this.analysis = analysis;
+		this.status = status;
+		this.cTime = cTime;
+		this.mTime = mTime;
+		this.cUser = cUser;
+		this.mUser = mUser;
+		this.optionInfo =optionInfo;
+		this.newScore = score1;
+		this.userAnswer = userAnswer;
+	}
 
 	public String getAnalysis() {
 		return analysis;
@@ -119,7 +146,7 @@ public class QuestionResultDTO {
 		this.questionType = questionType;
 	}
 
-	public Float getScore() {
+	public Float jUserTaskQuestionz() {
 		return score;
 	}
 

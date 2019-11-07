@@ -7,6 +7,7 @@ import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
 import com.example.study_system.model.JUserQuesAnswerRecord;
+import com.example.study_system.model.JUserTaskQuestionsInfoMapper;
 import com.example.study_system.model.PaperInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -31,7 +32,7 @@ public interface IPaperInfoService {
 
 	int insertJPQ(JPaperQuestion record);
 
-	float answer(JUserPaper jUserPaperInfo, List<JUserQuesAnswerRecord> jUserQuesAnswerRecordInfo);
+	PaperResultDTO answer(String userId, Long paperId, Long taskId, List<JUserTaskQuestionsInfoMapper> jUserQuesAnswerRecordInfo);
 	
 	int selectPaperCount();
 	
@@ -42,4 +43,6 @@ public interface IPaperInfoService {
 	int addOrRemoveRelationships(List<JPaperQuestion> JPaperQuestionList, List<PaperQuestionPesultDTO> PaperQuestionPesultList, List<PaperQuestionPesultDTO> questionScore , List<JPaperQuestion> sorting);
 //	设置试题分数
 	int updateScore(Long paperId , Long questionId , Float score);
+
+	
 }

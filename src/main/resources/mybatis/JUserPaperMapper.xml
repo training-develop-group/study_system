@@ -26,14 +26,15 @@
 		where ref = #{ref,jdbcType=BIGINT}
 	</delete>
 	<insert id="insert"
-		parameterType="com.example.study_system.model.JUserPaper">
+		parameterType="com.example.study_system.model.JUserPaper" 
+		  keyColumn="ref" keyProperty="ref" useGeneratedKeys="true">
 		insert into j_user_paper (ref, user_id, paper_id,
 		task_id, score, c_time)
-		values (#{ref,jdbcType=BIGINT},
+		values (null,
 		#{userId,jdbcType=VARCHAR},
 		#{paperId,jdbcType=BIGINT},
 		#{taskId,jdbcType=BIGINT}, #{score,jdbcType=REAL},
-		#{cTime,jdbcType=TIMESTAMP})
+		now())
 	</insert>
 	<insert id="insertSelective"
 		parameterType="com.example.study_system.model.JUserPaper"

@@ -48,27 +48,27 @@ public class TaskController extends BaseController {
 		}
 	//查询任务总条数
 		@RequestMapping(value = "/count", method = RequestMethod.GET)
-		public int selectTaskCount() {
+		public ResultDTO<Integer> selectTaskCount() {
 			int taskCount =  serviceFacade.getTaskService().selectTaskCount();
-			return taskCount;
+			return success(taskCount);
 		}
 	//查询任务类型
 		@RequestMapping(value = "/type", method = RequestMethod.GET)
-		public List<String> selectTaskType() {
-			List<String> taskCount =  serviceFacade.getTaskService().taskTypeEnum();
-			return taskCount;
+		public ResultDTO<List<String>> selectTaskType() {
+			List<String> taskType =  serviceFacade.getTaskService().taskTypeEnum();
+			return success(taskType);
 		}
 	//查询所有任务对象 
 		@RequestMapping(value = "/users", method = RequestMethod.GET)
-		public List<UserInfo> selectAllUser(@RequestParam("userName")String userName){
+		public ResultDTO<List<UserInfo>> selectAllUser(@RequestParam("userName")String userName){
 			List<UserInfo> allUser = serviceFacade.getUseService().selectUserAll(userName);
-			return allUser;
+			return success(allUser);
 		}
 	//查询任务完成度
 		@RequestMapping(value = "/user-ok", method = RequestMethod.GET)
-		public List<JUserTaskInfo> selectTaskUsers(@RequestParam("taskId")Long taskId){
+		public ResultDTO<List<JUserTaskInfo>> selectTaskUsers(@RequestParam("taskId")Long taskId){
 			List<JUserTaskInfo> users = serviceFacade.getTaskService().selectTaskUsers(taskId);
-			return users;
+			return success(users);
 		}
 	//查询end
 		
@@ -76,9 +76,9 @@ public class TaskController extends BaseController {
 	//删除from
 	//点击删除用Id删除
 		@RequestMapping(value = "/{taskId}", method = RequestMethod.DELETE)
-		public int deleteTask(@PathVariable("taskId")Long taskId) {
+		public ResultDTO<Integer> deleteTask(@PathVariable("taskId")Long taskId) {
 			int deleteTask = serviceFacade.getTaskService().deleteTaskById(taskId);
-			return deleteTask;
+			return success(deleteTask);
 		}
 	//删除end
 		

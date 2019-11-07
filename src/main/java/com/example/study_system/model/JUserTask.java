@@ -2,6 +2,10 @@ package com.example.study_system.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class JUserTask {
     private Long ref;
 
@@ -10,7 +14,8 @@ public class JUserTask {
     private Long taskId;
 
     private Integer status;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cTime;
 
     private String cUser;

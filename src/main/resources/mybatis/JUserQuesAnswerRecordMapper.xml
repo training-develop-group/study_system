@@ -35,9 +35,9 @@
     insert into j_user_ques_answer_record (ref, user_id, answer_value, 
       question_id, is_right, scord, 
       c_time, answer)
-    values (#{ref,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{answerValue,jdbcType=BIGINT}, 
+    values (null, #{userId,jdbcType=VARCHAR}, #{answerValue,jdbcType=BIGINT}, 
       #{questionId,jdbcType=BIGINT}, #{isRight,jdbcType=INTEGER}, #{scord,jdbcType=REAL}, 
-      #{cTime,jdbcType=TIMESTAMP}, #{answer,jdbcType=LONGVARCHAR})
+      now(), #{answer,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.study_system.model.JUserQuesAnswerRecord" >
     insert into j_user_ques_answer_record

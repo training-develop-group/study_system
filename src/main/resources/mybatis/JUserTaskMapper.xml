@@ -34,8 +34,8 @@
 		values (#{ref,jdbcType=BIGINT},
 		#{userId,jdbcType=VARCHAR},
 		#{taskId,jdbcType=BIGINT},
-		#{status,jdbcType=INTEGER}, #{cTime,jdbcType=TIMESTAMP},
-		#{cUser,jdbcType=VARCHAR}
+		0, now(),
+		'a'
 		)
 	</insert>
 	<insert id="insertSelective"

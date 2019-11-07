@@ -76,7 +76,7 @@
       m_time, c_user, m_user, 
       task_remark)
     values (null, #{resId,jdbcType=BIGINT}, #{paperId,jdbcType=BIGINT}, 
-      #{taskType,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{taskType,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR},1, 
       #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, now(), now(), 'a','a',
       #{taskRemark,jdbcType=LONGVARCHAR})
       

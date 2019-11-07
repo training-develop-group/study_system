@@ -26,9 +26,12 @@
   <sql id="Blob_Column_List" >
     role_id, group_id, remark
   </sql>
-    <select id="selectUserAll" resultMap="BaseResultMap">
+    <select id="selectUserAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
   	select   user_id, user_name, password,status
   	from user_info 
+  	  where 1=1
+    and user_name like '%${userName}%'
+    and st_role_id = 2
   </select>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
@@ -38,7 +41,7 @@
     from user_info
     where 1=1
     and user_name like '%${userName}%'
-    where user_id = #{userId,jdbcType=VARCHAR}
+   
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from user_info

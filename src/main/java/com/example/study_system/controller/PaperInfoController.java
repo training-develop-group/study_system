@@ -18,6 +18,7 @@ import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
 import com.example.study_system.model.JUserQuesAnswerRecord;
+import com.example.study_system.model.JUserTaskQuestionsInfoMapper;
 import com.example.study_system.model.PaperInfo;
 import com.github.pagehelper.PageInfo;
 
@@ -119,17 +120,20 @@ public class PaperInfoController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/answers", method = RequestMethod.POST)
-	public ResultDTO answer(@RequestParam("jUserPaper") String jUserPaper,
+	public ResultDTO answer(@RequestParam("userId") String userId,
+						@RequestParam("paperId") Long paperId,
+						@RequestParam("taskId") Long taskId,
 			@RequestParam("jUserQuesAnswerRecord") String jUserQuesAnswerRecord) {
-		if (jUserPaper == null || jUserQuesAnswerRecord == null) {
-			return validationError();
-		} else {
-			JUserPaper jUserPaperInfo = JSON.parseObject(jUserPaper, JUserPaper.class);
-			List<JUserQuesAnswerRecord> jUserQuesAnswerRecordInfo = JSON.parseArray(jUserQuesAnswerRecord,
-					JUserQuesAnswerRecord.class);
-			float result = serviceFacade.getPaperInfoService().answer(jUserPaperInfo, jUserQuesAnswerRecordInfo);
+
+			List<JUserTaskQuestionsInfoMapper> jUserQuesAnswerRecordInfo = JSON.parseArray(jUserQuesAnswerRecord,
+					JUserTaskQuestionsInfoMapper.class);
+			JUserPaper jUserPaperInfo = new JUserPaper();
+			jUserPaperInfo.setUserId(userId);
+			jUserPaperInfo.setPaperId(paperId);
+			jUserPaperInfo.setTaskId(taskId);
+			PaperResultDTO result = serviceFacade.getPaperInfoService().answer(userId,paperId,taskId, jUserQuesAnswerRecordInfo);
 			return success(result);
-		}
+//		}
 	}
 	
 	/**
