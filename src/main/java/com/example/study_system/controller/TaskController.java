@@ -70,13 +70,20 @@ public class TaskController extends BaseController {
 			   
 			
 		}
-	//查询任务总条数
+	
+		/**
+		    *  查询任务总条数
+		 * @return
+		 */
 		@RequestMapping(value = "/count", method = RequestMethod.GET)
 		public ResultDTO<Integer> selectTaskCount() {
 			int taskCount =  serviceFacade.getTaskService().selectTaskCount();
 			return success(taskCount);
 		}
-	//查询任务类型
+		/**
+		 * 查询任务类型
+		 * @return
+		 */
 		@RequestMapping(value = "/type", method = RequestMethod.GET)
 		public ResultDTO<List<String>> selectTaskType() {
 			List<String> taskType =  serviceFacade.getTaskService().taskTypeEnum();

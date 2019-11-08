@@ -116,42 +116,55 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 	@Transactional
 	public PaperResultDTO answer(String userId, Long paperId, Long taskId,
 			List<JUserTaskQuestionsInfoMapper> jUserQuesAnswerRecordInfo) {
+		//总分
 		float score = 0;
+		//查找试卷所有信息(根据id查)
 		PaperResultDTO paperResultDTO = detailsOfExaminationPapers(paperId);
+		//用来存正确答案
 		Map<Long, JUserTaskQuestionsInfoMapper> isRight = new HashMap<Long, JUserTaskQuestionsInfoMapper>();
 		paperResultDTO.getQuestions().forEach(item -> {
+			//正确答案字符串
 			String isRighta = "";
+			//拼接正确答案
 			for (JQuestionOption Option : item.getOptionInfo()) {
 				if (Option.getIsRight() == 1) {
 					isRighta += (Option.getOptionType() + "|");
 				}
 			}
+			//添加到Map
 			JUserTaskQuestionsInfoMapper jUserTask = new JUserTaskQuestionsInfoMapper();
 			jUserTask.setAnswer(isRighta);
 			jUserTask.setScore((item).getNewScore());
 			isRight.put(item.getQuestionId(), jUserTask);
 		});
+		//下面是用拼接的字符串来比较
 		for (JUserTaskQuestionsInfoMapper jUserTask : jUserQuesAnswerRecordInfo) {
+			//为用户试题赋初始值
 			jUserTask.setScore((float) 0.0);
+			//判断是否相等
 			if (isRight.get(jUserTask.getQuestionId()).getAnswer().equals(jUserTask.getAnswer())) {
+				//加分
 				score += isRight.get(jUserTask.getQuestionId()).getScore();
+				//修改他到正确
 				jUserTask.setIsRight(1);
+				//获取当前题目的分数
 				jUserTask.setScore(isRight.get(jUserTask.getQuestionId()).getScore());
 			};
 			for (QuestionResultDTO xx : paperResultDTO.getQuestions()) {
 				if (jUserTask.getQuestionId() == xx.getQuestionId()) {
+					//添加用户选择答案到paperResultDTO里面
 					xx.setUserAnswer(jUserTask.getAnswer());
 				}
 			}
 		}
 		;
-
+		//下面是添加部分
 		JUserPaper jUserPaper = new JUserPaper();
 		jUserPaper.setUserId(userId);
 		jUserPaper.setPaperId(paperId);
 		jUserPaper.setTaskId(taskId);
 		jUserPaper.setScore(score);
-		System.out.println(jUserPaper.getScore() + "asda");
+//		System.out.println(jUserPaper.getScore() + "记录");
 		for (JUserTaskQuestionsInfoMapper jUserQuesAnswerRecord : jUserQuesAnswerRecordInfo) {
 			JUserQuesAnswerRecord TSJUserQuesAnswerRecord = new JUserQuesAnswerRecord();
 			TSJUserQuesAnswerRecord.setAnswerValue(jUserPaper.getRef());
@@ -163,10 +176,13 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 			}
 			TSJUserQuesAnswerRecord.setIsRight(jUserQuesAnswerRecord.getIsRight());
 			TSJUserQuesAnswerRecord.setScord(jUserQuesAnswerRecord.getScore());
+			//添加每道题的情况
 			jUserQuesAnswerRecordMapper.insert(TSJUserQuesAnswerRecord);
 		}
+		//修改他已经完成
 		jUserTaskMapper.updateStatus(userId, taskId);
 		paperResultDTO.setUserScore(score);
+		//返回处理完的DTO
 		return paperResultDTO;
 	}
 
