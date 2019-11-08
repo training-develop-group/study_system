@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/login")
 public class LoginController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
-    public ResultDTO login(HttpSession session,
+    public ResultDTO login(HttpServletRequest request,
                            @RequestParam("userName") String userName,
                            @RequestParam("password") String password) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
@@ -36,6 +36,7 @@ public class LoginController extends BaseController {
         }
         userInfo.setPassword("");
         String sessionUser = JSONObject.toJSONString(userInfo);
+        HttpSession session = request.getSession();
         session.setAttribute("user",sessionUser);
         return success(userInfo);
     }
