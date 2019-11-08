@@ -56,6 +56,7 @@ public final class UserUtil {
     }
     public static void main(String args[]){
         System.out.println("-----------main-----------");
+//        getUser();
         System.out.println(EncoderByMd5("123456"));
 
     }

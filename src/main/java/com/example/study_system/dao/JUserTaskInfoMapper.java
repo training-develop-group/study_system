@@ -9,4 +9,5 @@ import com.example.study_system.model.JUserTaskInfo;
 @Mapper
 public interface JUserTaskInfoMapper {
 	List<JUserTaskInfo> selectByTaskIdusers(@Param("taskId")Long taskId);
+
 }

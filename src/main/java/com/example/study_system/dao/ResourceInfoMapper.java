@@ -21,9 +21,6 @@ public interface ResourceInfoMapper {
     
     int selectListCount();			//获取资源总数
     
-    
-    
-    
-    
-
+//	修改发布
+    int updateStatus(Long resId);
 }

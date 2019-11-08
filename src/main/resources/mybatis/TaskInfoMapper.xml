@@ -26,10 +26,24 @@
     task_remark
   </sql>
  
-  <update id="updateByIdTaskName" parameterType="com.example.study_system.model.TaskInfo">
+  <update id="updateByIdTaskName" parameterType="com.example.study_system.model.TaskInfo" >
   update task_info set task_name = #{taskName,jdbcType=VARCHAR}
     where task_id = #{taskId,jdbcType=BIGINT}
   </update>
+  
+
+   <select id="selectUserTask" parameterType="String" resultMap="BaseResultMap">
+ 	select 
+   a.status,a.task_type,a.task_id,a.res_id,a.paper_id,a.start_time,a.end_time,b.user_id,a.task_name
+    from
+    manage_system.j_user_task b,
+    manage_system.task_info a 
+    where a.task_id = b.task_id and 
+    b.STATUS = ${stutas} and 
+    b.user_id = '${userId}' 
+  </select>
+   
+  
   <select id="selectTaskAll" resultMap="ResultMapWithBLOBs" parameterType="String">
   select 
    <include refid="Base_Column_List" />
@@ -41,6 +55,7 @@
     <if test="taskName!=''||taskName!=null">
     and a.task_name like '%${taskName}%'
     </if>
+    
   </select>
   
   

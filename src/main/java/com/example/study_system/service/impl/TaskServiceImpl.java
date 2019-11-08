@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.study_system.dao.JUserTaskInfoMapper;
 import com.example.study_system.emun.TaskEnum;
 import com.example.study_system.model.JUserTask;
 import com.example.study_system.model.JUserTaskInfo;
@@ -33,7 +34,13 @@ public class TaskServiceImpl extends BaseService implements ITaskService {
 		PageInfo<TaskInfo> result = new PageInfo<>(TaskList);
 		return result;
 	}
-
+	@Override
+	public PageInfo<TaskInfo> selectUserTask(Integer pageNum, Integer pageSize,Integer status,String userId){
+		PageHelper.startPage(pageNum, pageSize);
+		List<TaskInfo> TaskList = taskInfoMapper.selectUserTask(status, userId);
+		PageInfo<TaskInfo> result = new PageInfo<>(TaskList);
+		return result;
+	}
 	@Override
 	public int selectTaskCount() {
 		return taskInfoMapper.selectTaskCount();
@@ -68,14 +75,20 @@ public class TaskServiceImpl extends BaseService implements ITaskService {
 		for (int u = 1; u < userId.length; u++) {
 			if (userId[u] != null||userId[u] !="") {
 				JUserTask record = new JUserTask();
-//				System.out.println(userId[u]);
 				record.setTaskId(taskInfo.getTaskId());
 				record.setUserId(userId[u]);
-//				System.out.println(insertTask);
 
 				jUserTaskMapper.insert(record);
 
 			}
+			taskInfo.getResId();
+			taskInfo.getPaperId();
+		}
+		if(taskInfo.getPaperId() != null) {
+			paperInfoMapper.updateStatus(taskInfo.getPaperId());
+		}
+		if(taskInfo.getResId() != null) {
+			resourceInfoMapper.updateStatus(taskInfo.getResId());
 		}
 		return 1;
 	}

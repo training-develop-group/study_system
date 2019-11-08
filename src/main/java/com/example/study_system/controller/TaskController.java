@@ -3,6 +3,8 @@ package com.example.study_system.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import com.example.study_system.model.JUserTaskInfo;
 import com.example.study_system.model.TaskInfo;
 import com.example.study_system.model.UserInfo;
 import com.example.study_system.model.UserTaskRelationInfo;
+import com.example.study_system.util.UserUtil;
 import com.github.pagehelper.PageInfo;
 /**
  * author liubo.
@@ -42,9 +45,30 @@ public class TaskController extends BaseController {
 	 */
 
 		@RequestMapping(value = "/tasks", method = RequestMethod.GET)
-		public ResultDTO<PageInfo<TaskInfo>> selectTaskAll(@RequestParam("pageNum")int pageNum,@RequestParam("pageSize")int pageSize,@RequestParam("taskName")String taskName){
-			PageInfo<TaskInfo> TaskList = serviceFacade.getTaskService().selectTaskAll(pageNum, pageSize,taskName);
-			return success(TaskList);
+		public ResultDTO<PageInfo<TaskInfo>> selectTaskAll( HttpServletRequest request,
+				@RequestParam("pageNum")int pageNum,
+				@RequestParam("pageSize")int pageSize,
+				@RequestParam(value="taskName",required = false)String taskName,
+				@RequestParam(value="status",required = false)Integer status,
+				@RequestParam(value="userId",required = false)String userId,
+				@RequestParam(value="userType",required = false)Integer userType){
+			if(userType==1) {
+				PageInfo<TaskInfo> TaskList = serviceFacade.getTaskService().selectUserTask(pageNum, pageSize, status, userId);
+				System.out.println(TaskList);
+				return success(TaskList);
+			}else if(userType==2){
+				UserInfo userInfo = UserUtil.getUser(request);
+				System.err.println(userInfo);
+				
+				PageInfo<TaskInfo> TaskList = serviceFacade.getTaskService().selectTaskAll(pageNum, pageSize,taskName);
+				return success(TaskList);
+			}else {
+				return noData();
+			}
+			
+			
+			   
+			
 		}
 	//查询任务总条数
 		@RequestMapping(value = "/count", method = RequestMethod.GET)

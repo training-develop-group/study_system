@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.example.study_system.model.JUserTaskInfo;
 import com.example.study_system.model.TaskInfo;
 import com.example.study_system.model.UserTaskRelationInfo;
 @Mapper
@@ -28,7 +29,7 @@ public interface TaskInfoMapper {
     int updateByIdTaskName(TaskInfo record);
     
     int selectTaskCount();
-    
+	List<TaskInfo> selectUserTask (@Param("stutas")Integer stutas,@Param("userId")String userId);
     List<TaskInfo> selectAll();
 //    TaskInfo taskDetails(Long taskId);
 }

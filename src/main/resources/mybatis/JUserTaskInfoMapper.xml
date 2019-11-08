@@ -4,18 +4,18 @@
 	namespace="com.example.study_system.dao.JUserTaskInfoMapper">
 	<resultMap id="BaseResultMap"
 		type="com.example.study_system.model.JUserTaskInfo">
-
 		<result column="status" property="status" jdbcType="INTEGER" />
-		<result column="userName" property="user_name"
-			jdbcType="VARCHAR" />
-		<result column="scoure" property="scoure" jdbcType="INTEGER" />
-
+			<result column="taskName" property="task_name" jdbcType="VARCHAR" />
+		<result column="userName" property="user_name" jdbcType="VARCHAR" />
+	
+	
+			<result column="userId" property="user_id" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		user_name , status , scoure
+		user_name , status , scoure,task_type,scoure,task_id,res_id,paper_id,start_time,end_time,user_id
 	</sql>
-
+ 
 	<select id="selectByTaskIdusers" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">
 		select

@@ -205,4 +205,10 @@
 		m_user = #{mUser,jdbcType=VARCHAR}
 		where paper_id = #{paperId,jdbcType=BIGINT}
 	</update>
+	<update id="updateStatus" parameterType="long">
+		update paper_info
+		set 
+		STATUS = 1
+		where paper_id = #{paperId,jdbcType=BIGINT}
+	</update>
 </mapper>

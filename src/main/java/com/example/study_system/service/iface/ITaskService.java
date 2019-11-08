@@ -12,6 +12,8 @@ import com.github.pagehelper.PageInfo;
 public interface ITaskService {
 	//查询全部任务
 	PageInfo<TaskInfo> selectTaskAll(Integer pageNum, Integer pageSize,String taskName);
+	//查询用户任务（根据id查)
+	PageInfo<TaskInfo> selectUserTask(Integer pageNum, Integer pageSize,Integer status,String userId);
 	//查询任务总数
 	int selectTaskCount();
 	

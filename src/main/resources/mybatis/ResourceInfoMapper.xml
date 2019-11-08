@@ -25,6 +25,11 @@
     from resource_info
     where res_id = #{resId,jdbcType=BIGINT}
   </select>
+  <update id="updateResourceStatus" parameterType="java.lang.String">
+  	
+  
+  
+  </update>
   <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.String">
   	select
   	<include refid="Base_Column_List" />
@@ -181,5 +186,11 @@
     set res_name = #{resName,jdbcType=VARCHAR}
     where res_id = #{resId,jdbcType=BIGINT}
   </update>
-
+  
+  <update id="updateStatus" parameterType="long">
+		update resource_info
+		set 
+		STATUS = 1
+		where res_id  = #{resId,jdbcType=BIGINT}
+	</update>
 </mapper>

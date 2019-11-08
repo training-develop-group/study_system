@@ -36,5 +36,6 @@ public interface PaperInfoMapper {
 	int selectPaperCount();
 	
 	Long selectPaperScore(Long paperId);
-
+//	修改发布
+	int updateStatus(Long paperId);
 }
