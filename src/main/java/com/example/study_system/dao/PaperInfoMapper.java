@@ -37,8 +37,5 @@ public interface PaperInfoMapper {
 	
 	Long selectPaperScore(Long paperId);
 
-<<<<<<< HEAD
 	int updateStatus(Long paperId);
-=======
->>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 }

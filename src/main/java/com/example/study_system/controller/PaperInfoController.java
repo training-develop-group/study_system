@@ -150,7 +150,6 @@ public class PaperInfoController extends BaseController {
 	@RequestMapping(value = "/question/score", method = RequestMethod.POST)
 	public ResultDTO score(@RequestParam("paperId") Long paperId , @RequestParam("questionId") Long questionId , @RequestParam("score") Float score) {
 		if (paperId == null || score == null || questionId == null) {
-<<<<<<< HEAD
 			return noData();
 		}
 		int res = serviceFacade.getPaperInfoService().updateScore(paperId, questionId , score);
@@ -169,24 +168,6 @@ public class PaperInfoController extends BaseController {
 		if (paperId == null || questionId == null) {
 			return validationError();
 		}
-=======
-			return validationError();
-		}
-		int res = serviceFacade.getPaperInfoService().updateScore(paperId, questionId , score);
-		return success(res);
-	}
-	
-	/**
-	 * 删除试卷试题
-	 * @param paperId
-	 * @param questionId
-	 * @return
-	 */
-	@RequestMapping(value = "/question", method = RequestMethod.DELETE)
-	public ResultDTO deletePQRelationship(@RequestParam("paperId") Long paperId, 
-										@RequestParam("questionId") Long questionId) {
-		System.out.println(paperId);
->>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 		int res = serviceFacade.getPaperInfoService().deletePQRelationship(paperId , questionId);
 		return success(res);
 	}
@@ -198,12 +179,9 @@ public class PaperInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/score", method = RequestMethod.GET)
 	public ResultDTO selectPaperScore(@RequestParam("paperId") Long paperId) {
-<<<<<<< HEAD
 		if (paperId == null) {
 			return noData();
 		}
-=======
->>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 		Long paperScore = serviceFacade.getPaperInfoService().selectPaperScore(paperId);
 		return success(paperScore);
 	}

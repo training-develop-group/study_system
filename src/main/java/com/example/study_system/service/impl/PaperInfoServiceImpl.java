@@ -73,15 +73,9 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		List<PaperResultDTO> list = new ArrayList<PaperResultDTO>();
 		List<PaperInfo> paperInfo = paperInfoMapper.selectPaperInfo(paperName);
 		paperInfo.forEach(paper -> {
-<<<<<<< HEAD
 			Integer single =  paperInfoMapper.selectAllQuestionInfoSingle(paper.getPaperId());
 			Integer many = paperInfoMapper.selectAllQuestionInfoMany(paper.getPaperId());
 			PaperResultDTO papers = new PaperResultDTO(paper.getPaperId() , paper.getPaperName() , paper.getStatus() , many , single);
-=======
-			Integer Single =  paperInfoMapper.selectAllQuestionInfoSingle(paper.getPaperId());
-			Integer Many = paperInfoMapper.selectAllQuestionInfoMany(paper.getPaperId());
-			PaperResultDTO papers = new PaperResultDTO(paper.getPaperId() , paper.getPaperName() , paper.getStatus() , Many , Single);
->>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 			list.add(papers);
 		});
 		PageInfo<PaperResultDTO> result = new PageInfo<>(list);
@@ -164,15 +158,12 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 			List<PaperQuestionPesultDTO> PaperQuestionPesultList,
 			List<PaperQuestionPesultDTO> questionScoreList,
 			List<JPaperQuestion> sortIng) {
-<<<<<<< HEAD
 //		删除试卷试题关系
 		if (PaperQuestionPesultList.size() != 0) {
 			PaperQuestionPesultList.forEach(item -> {
 				result = jPaperQuestionMapper.delete(item.getPaperId(), item.getQuestionId());
 			});
 		}
-=======
->>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 //		添加试题到试卷
 		if (JPaperQuestionList.size() != 0) {
 			JPaperQuestionList.forEach(item -> {
@@ -195,15 +186,6 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 				result = jPaperQuestionMapper.updateScore(item.getPaperId() , item.getQuestionId() , item.getScore());
 			});
 		}
-<<<<<<< HEAD
-=======
-//		删除试卷试题关系
-		if (PaperQuestionPesultList.size() != 0) {
-			PaperQuestionPesultList.forEach(item -> {
-				result = jPaperQuestionMapper.delete(item.getPaperId(), item.getQuestionId());
-			});
-		}
->>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 		return result;
 	}
 
