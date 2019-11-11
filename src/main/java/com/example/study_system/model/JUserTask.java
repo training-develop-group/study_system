@@ -19,7 +19,25 @@ public class JUserTask {
     private Date cTime;
 
     private String cUser;
+    
+    private String userName;
+    
+    private Float score;
+    public Float getScore() {
+        return score;
+    }
 
+    public void setScore(Float score) {
+        this.score = score;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
     public Long getRef() {
         return ref;
     }

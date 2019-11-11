@@ -3,6 +3,7 @@ package com.example.study_system.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.study_system.model.CommentInfo;
 
@@ -23,4 +24,6 @@ public interface CommentInfoMapper {
 	int updateByPrimaryKey(CommentInfo record);
 	
 	List<CommentInfo> selectCommentByTaskId(Long taskId);
+	
+	int updateJUserTaskStatus(@Param("userId") String userId , @Param("taskId") Long taskId);
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.study_system.dao.JUserPaperMapper;
 import com.example.study_system.dto.PaperQuestionPesultDTO;
 import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.dto.QuestionResultDTO;
@@ -164,9 +165,11 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		jUserPaper.setPaperId(paperId);
 		jUserPaper.setTaskId(taskId);
 		jUserPaper.setScore(score);
+		jUserPaperMapper.insert(jUserPaper);
 //		System.out.println(jUserPaper.getScore() + "记录");
 		for (JUserTaskQuestionsInfoMapper jUserQuesAnswerRecord : jUserQuesAnswerRecordInfo) {
 			JUserQuesAnswerRecord TSJUserQuesAnswerRecord = new JUserQuesAnswerRecord();
+		
 			TSJUserQuesAnswerRecord.setAnswerValue(jUserPaper.getRef());
 			TSJUserQuesAnswerRecord.setAnswer(jUserQuesAnswerRecord.getAnswer());
 			TSJUserQuesAnswerRecord.setUserId(userId);

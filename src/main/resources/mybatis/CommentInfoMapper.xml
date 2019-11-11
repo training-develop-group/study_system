@@ -11,6 +11,8 @@
 		<result column="comment_user_id" property="commentUserId"
 			jdbcType="VARCHAR" />
 		<result column="c_time" property="cTime" jdbcType="TIMESTAMP" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		
 	</resultMap>
 	<resultMap id="ResultMapWithBLOBs"
 		type="com.example.study_system.model.CommentInfo"
@@ -33,12 +35,25 @@
 		from comment_info
 		where ref = #{ref,jdbcType=BIGINT}
 	</select>
+	<update id="updateJUserTaskStatus" parameterType="java.lang.Long">
+	update
+	 manage_system.j_user_task 
+	 set 
+	 STATUS=1 
+	 where 
+	 user_id='${userId}' 
+	 and task_id = ${taskId}
+	
+	
+	</update>
 	<select id="selectCommentByTaskId"
 		resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
 		select
-		ref,task_id,content,comment_type,comment_user_id,c_time
-		from comment_info
-		where task_id = #{taskId,jdbcType=BIGINT}
+		a.ref,a.task_id,a.content,a.comment_type,a.comment_user_id,a.c_time,b.user_name
+		from comment_info a,user_info b
+		where 
+		b.user_id = a.comment_user_id
+		and a.task_id = #{taskId,jdbcType=BIGINT}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from
@@ -50,10 +65,10 @@
 		insert into comment_info (ref, task_id, comment_type,
 		comment_user_id, c_time, content
 		)
-		values (#{ref,jdbcType=BIGINT},
+		values (null,
 		#{taskId,jdbcType=BIGINT},
-		#{commentType,jdbcType=INTEGER},
-		#{commentUserId,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP},
+		null,
+		#{commentUserId,jdbcType=VARCHAR}, now(),
 		#{content,jdbcType=LONGVARCHAR}
 		)
 	</insert>

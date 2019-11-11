@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.study_system.dao.JUserPaperMapper;
 import com.example.study_system.dao.JUserTaskInfoMapper;
 import com.example.study_system.emun.TaskEnum;
+import com.example.study_system.model.JUserPaper;
 import com.example.study_system.model.JUserTask;
 import com.example.study_system.model.JUserTaskInfo;
 import com.example.study_system.model.TaskInfo;
@@ -59,10 +61,24 @@ public class TaskServiceImpl extends BaseService implements ITaskService {
 	public List<UserInfo> selectAllUser(String userName) {
 		return userInfoMapper.selectUserAll(userName);
 	}
-
+	//记得换方法,这个是拟的
 	// 查询查看任务对像
-	public List<JUserTaskInfo> selectTaskUsers(Long taskId) {
-		return jUserTaskInfoMapper.selectByTaskIdusers(taskId);
+	public List<JUserTask> selectTaskUsers(Long taskId) {
+		List<JUserTask> TaskUserList = jUserTaskMapper.selectByTaskIdusers(taskId);
+		for(JUserTask TaskUser :TaskUserList) {
+			if(TaskUser.getStatus()==1) {
+//				JUserPaper userPaper = jUserPaperMapper.selectByUserIdAndTaskId(TaskUser.getUserId(),TaskUser.getTaskId());
+				JUserPaper userPaper = jUserPaperMapper.selectByUserIdAndTaskId("1",(long)3);
+				if(userPaper==null) {
+					userPaper.setScore((float) 0.0);
+				}
+				TaskUser.setScore(userPaper.getScore());
+			}
+		}
+			
+	
+		
+		return TaskUserList;
 	}
 	// 查询end
 

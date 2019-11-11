@@ -1,6 +1,9 @@
 package com.example.study_system.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.study_system.model.JUserTask;
 
@@ -19,4 +22,8 @@ public interface JUserTaskMapper {
 	int updateByPrimaryKey(JUserTask record);
 
 	int updateStatus(String userId, Long taskId);
+	
+	JUserTask selectByTaskIdAndUserId(@Param("userId") String userId,@Param("taskId")Long taskId);
+	
+	List<JUserTask> selectByTaskIdusers(@Param("taskId") Long taskId);
 }

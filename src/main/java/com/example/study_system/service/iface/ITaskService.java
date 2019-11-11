@@ -3,6 +3,7 @@ package com.example.study_system.service.iface;
 import java.util.List;
 import java.util.Map;
 
+import com.example.study_system.model.JUserTask;
 import com.example.study_system.model.JUserTaskInfo;
 import com.example.study_system.model.TaskInfo;
 import com.example.study_system.model.UserInfo;
@@ -18,7 +19,7 @@ public interface ITaskService {
 	int selectTaskCount();
 	
 	//根据id查询所有关联的用户
-	List<JUserTaskInfo> selectTaskUsers(Long taskId);
+	List<JUserTask> selectTaskUsers(Long taskId);
 	//查询所有用户
 	List<UserInfo> selectAllUser(String userName);
 	//查询类型枚举

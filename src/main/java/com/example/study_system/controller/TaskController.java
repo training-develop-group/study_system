@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
 import com.example.study_system.model.CommentInfo;
+import com.example.study_system.model.JUserTask;
 import com.example.study_system.model.JUserTaskInfo;
 import com.example.study_system.model.TaskInfo;
 import com.example.study_system.model.UserInfo;
@@ -82,6 +83,7 @@ public class TaskController extends BaseController {
 		}
 		/**
 		 * 查询任务类型
+		 * 
 		 * @return
 		 */
 		@RequestMapping(value = "/type", method = RequestMethod.GET)
@@ -97,8 +99,8 @@ public class TaskController extends BaseController {
 		}
 	//查询任务完成度
 		@RequestMapping(value = "/user-ok", method = RequestMethod.GET)
-		public ResultDTO<List<JUserTaskInfo>> selectTaskUsers(@RequestParam("taskId")Long taskId){
-			List<JUserTaskInfo> users = serviceFacade.getTaskService().selectTaskUsers(taskId);
+		public ResultDTO<List<JUserTask>> selectTaskUsers(@RequestParam("taskId")Long taskId){
+			List<JUserTask> users = serviceFacade.getTaskService().selectTaskUsers(taskId);
 			return success(users);
 		}
 	//查询end
@@ -141,12 +143,14 @@ public class TaskController extends BaseController {
 
 	// ------------------------------------评论↓
 	@RequestMapping(value = "/comments", method = RequestMethod.GET)
-	public ResultDTO getComments(@RequestParam("taskId") Long taskId) {
+	public ResultDTO getComments(@RequestParam("taskId") Long taskId,@RequestParam("pageNum")int pageNum,@RequestParam("pageSize")int pageSize) {
 		if (taskId == null) {
 			return validationError();
 		} else {
-			System.out.println(serviceFacade.getCommentInfoService().selectCommentByTaskId(taskId).get(0).getCommentType());
-			return success(serviceFacade.getCommentInfoService().selectCommentByTaskId(taskId));
+			System.out.println(taskId);
+//			 TaskList = serviceFacade.getTaskService().selectUserTask();
+			 PageInfo<CommentInfo> conmment = serviceFacade.getCommentInfoService().selectCommentByTaskId(taskId,pageNum, pageSize);
+			return success(conmment);
 		}
 	}
 

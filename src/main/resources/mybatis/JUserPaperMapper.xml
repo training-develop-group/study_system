@@ -13,6 +13,16 @@
 	<sql id="Base_Column_List">
 		ref, user_id, paper_id, task_id, score, c_time
 	</sql>
+	
+	<select id="selectByUserIdAndTaskId"  resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select score from
+		j_user_paper where
+		user_id = '${userId}'
+		and task_id = ${taskId}
+	
+	
+	</select>
+	
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Long">
 		select
