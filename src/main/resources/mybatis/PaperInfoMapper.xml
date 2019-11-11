@@ -80,11 +80,19 @@
 		select
 		<include refid="Base_Column_List" />
 		from paper_info
+<<<<<<< HEAD
 		where 1 = 1 
 		<if test="paperName != null || paperName != null || paperName != undefined">
 			and paper_name like '%${paperName}%'
 		</if>
 		ORDER BY c_time desc , paper_id desc
+=======
+		where 1 = 1
+		<if test="paperName != null || paperName != null || paperName != undefined">
+			and paper_name like '%${paperName}%'
+			ORDER BY c_time desc
+		</if>
+>>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 	</select>
 	<select id="selectAllPaperInfo" resultType="java.lang.Integer"
 		parameterType="java.lang.Integer">
@@ -103,10 +111,17 @@
 	<insert id="insert"
 		parameterType="com.example.study_system.model.PaperInfo">
 		insert into paper_info (paper_name,
+<<<<<<< HEAD
 		STATUS, c_time, m_time,
 		c_user)
 		values (#{paperName,jdbcType=VARCHAR},
 		0, now(), now(),
+=======
+		STATUS, c_time,
+		c_user)
+		values (#{paperName,jdbcType=VARCHAR},
+		1, now(),
+>>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 		#{cUser,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"
@@ -205,10 +220,13 @@
 		m_user = #{mUser,jdbcType=VARCHAR}
 		where paper_id = #{paperId,jdbcType=BIGINT}
 	</update>
+<<<<<<< HEAD
 	<update id="updateStatus" parameterType="long">
 		update paper_info
 		set 
 		STATUS = 1
 		where paper_id = #{paperId,jdbcType=BIGINT}
 	</update>
+=======
+>>>>>>> caa8072d35903f32aea5d24014a89c312b1470ab
 </mapper>
