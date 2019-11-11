@@ -77,13 +77,6 @@
             <scope>test</scope>
         </dependency>
         <!--pageHelper end -->
-        <!--JSON处理-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.47</version>
-        </dependency>
-        <!--JSON处理-->
     </dependencies>
 
     <build>

@@ -19,9 +19,29 @@
     from j_paper_question
     where ref = #{ref,jdbcType=BIGINT}
   </select>
+  <select id="selectRef" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_paper_question
+    where paper_id = #{paperId,jdbcType=BIGINT}
+  </select>
+  <select id="selectQuestionByPaperId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+	question_id,
+	score
+    from j_paper_question
+    where paper_id = #{paperId,jdbcType=BIGINT}
+    ORDER BY order_index ASC;
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from j_paper_question
     where ref = #{ref,jdbcType=BIGINT}
+  </delete>
+  <delete id="delete" parameterType="java.lang.Long">
+    delete from j_paper_question
+    where 
+    paper_id = #{paperId,jdbcType=BIGINT} and
+    question_id = #{questionId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.example.study_system.model.JPaperQuestion" >
     insert into j_paper_question (ref, paper_id, question_id, 
@@ -113,5 +133,11 @@
       c_time = #{cTime,jdbcType=TIMESTAMP},
       c_user = #{cUser,jdbcType=VARCHAR}
     where ref = #{ref,jdbcType=BIGINT}
+  </update>
+  <update id="updateScore" parameterType="com.example.study_system.model.JPaperQuestion" >
+    update manage_system.j_paper_question set 
+    score = #{score,jdbcType=REAL}
+    where question_id = #{questionId,jdbcType=BIGINT}
+    and paper_id = #{paperId,jdbcType=BIGINT}
   </update>
 </mapper>
