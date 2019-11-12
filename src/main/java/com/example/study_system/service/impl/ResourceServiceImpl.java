@@ -103,6 +103,7 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 				resourceInfo.setmTime(date); // 添加当前系统时间
 				resourceInfo.setcUser(resourceInfo.getcUser()); // 添加创建用户
 				resourceInfo.setmUser(resourceInfo.getcUser()); // 添加修改用户
+
 				System.out.println("文件类型" + "resType:" + resType);
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
@@ -267,8 +268,9 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 		System.err.println(filePath);
 		if (file.exists() && file.isFile()) {
 			file.delete();
+			return resourceInfoMapper.deleteByPrimaryKey(resId);
 		}
-		return resourceInfoMapper.deleteByPrimaryKey(resId);
+		return 0;
 	}
 
 	/**
