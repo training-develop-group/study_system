@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +21,10 @@ import com.example.study_system.model.JUserQuesAnswerRecord;
 import com.example.study_system.model.JUserTaskQuestionsInfoMapper;
 import com.example.study_system.model.PaperInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
+import com.example.study_system.model.UserInfo;
 import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IPaperInfoService;
+import com.example.study_system.util.UserUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -29,9 +33,9 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 
 //	新建试卷
 	@Override
-	public int insert(String paperName) {
-		String cUser = "mc";
-		return paperInfoMapper.insert(paperName, cUser);
+	public int insert(HttpServletRequest request , String paperName) {
+		UserInfo userInfo = UserUtil.getUser(request);
+		return paperInfoMapper.insert(paperName, userInfo.getUserName());
 	}
 
 //	修改试卷名
@@ -151,10 +155,10 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 				//获取当前题目的分数
 				jUserTask.setScore(isRight.get(jUserTask.getQuestionId()).getScore());
 			};
-			for (QuestionResultDTO xx : paperResultDTO.getQuestions()) {
-				if (jUserTask.getQuestionId() == xx.getQuestionId()) {
+			for (QuestionResultDTO QuestionResult : paperResultDTO.getQuestions()) {
+				if (jUserTask.getQuestionId() == QuestionResult.getQuestionId()) {
 					//添加用户选择答案到paperResultDTO里面
-					xx.setUserAnswer(jUserTask.getAnswer());
+					QuestionResult.setUserAnswer(jUserTask.getAnswer());
 				}
 			}
 		}
@@ -215,42 +219,43 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 	}
 
 	// 修改试卷
-	int result = 0;
+		int result = 0;
 
-	@Override
-	@Transactional
-	public int addOrRemoveRelationships(List<JPaperQuestion> JPaperQuestionList,
-			List<PaperQuestionPesultDTO> PaperQuestionPesultList, List<PaperQuestionPesultDTO> questionScoreList,
-			List<JPaperQuestion> sortIng) {
-//		添加试题到试卷
-		if (JPaperQuestionList.size() != 0) {
-			JPaperQuestionList.forEach(item -> {
-				result = jPaperQuestionMapper.insertSelective(item);
-			});
+		@Override
+		@Transactional
+		public int addOrRemoveRelationships(List<JPaperQuestion> JPaperQuestionList,
+				List<PaperQuestionPesultDTO> PaperQuestionPesultList,
+				List<PaperQuestionPesultDTO> questionScoreList,
+				List<JPaperQuestion> sortIng) {
+//			删除试卷试题关系
+			if (PaperQuestionPesultList.size() != 0) {
+				PaperQuestionPesultList.forEach(item -> {
+					result = jPaperQuestionMapper.delete(item.getPaperId(), item.getQuestionId());
+				});
+			}
+//			添加试题到试卷
+			if (JPaperQuestionList.size() != 0) {
+				JPaperQuestionList.forEach(item -> {
+					result = jPaperQuestionMapper.insertSelective(item);
+				});
+			}
+//			排序
+			if (sortIng.size() != 0) {
+				sortIng.forEach(item -> {
+					System.out.println(item.getPaperId() + ' ' + item.getQuestionId());
+//					先删除
+					result = jPaperQuestionMapper.delete(item.getPaperId(), item.getQuestionId());
+//					在添加
+					result = jPaperQuestionMapper.insertSelective(item);
+				});
+			}
+//			设置试卷里试题的分值
+			if (questionScoreList.size() != 0) {
+				questionScoreList.forEach(item -> {
+					result = jPaperQuestionMapper.updateScore(item.getPaperId() , item.getQuestionId() , item.getScore());
+				});
+			}
+			return result;
 		}
-//		排序
-		if (sortIng.size() != 0) {
-			sortIng.forEach(item -> {
-				System.out.println(item.getPaperId() + ' ' + item.getQuestionId());
-//				先删除
-				result = jPaperQuestionMapper.delete(item.getPaperId(), item.getQuestionId());
-//				在添加
-				result = jPaperQuestionMapper.insertSelective(item);
-			});
-		}
-//		设置试卷里试题的分值
-		if (questionScoreList.size() != 0) {
-			questionScoreList.forEach(item -> {
-				result = jPaperQuestionMapper.updateScore(item.getPaperId(), item.getQuestionId(), item.getScore());
-			});
-		}
-//		删除试卷试题关系
-		if (PaperQuestionPesultList.size() != 0) {
-			PaperQuestionPesultList.forEach(item -> {
-				result = jPaperQuestionMapper.delete(item.getPaperId(), item.getQuestionId());
-			});
-		}
-		return result;
+
 	}
-
-}

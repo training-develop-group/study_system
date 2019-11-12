@@ -1,17 +1,21 @@
 package com.example.study_system.util;
 
+import com.example.study_system.emun.StRoleEmun;
 import com.example.study_system.model.UserInfo;
 import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.util.StringUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import com.alibaba.fastjson.JSON;
 
 /**
- * author lindan.
+ * author lindan
  * date 2019/10/15.
  */
 public final class UserUtil {
@@ -19,7 +23,15 @@ public final class UserUtil {
     public static UserInfo getUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String user = (String)session.getAttribute("user");
-        UserInfo userInfo = JSON.parseObject(user,UserInfo.class);
+        UserInfo userInfo;
+        if(StringUtils.isEmpty(user)) {
+        	userInfo = new UserInfo();
+        	userInfo.setUserId("76b9e812-0496-11ea-a3a7-00ffa210afd0");
+        	userInfo.setUserName("張三");
+        	userInfo.setStRoleId(StRoleEmun.USER.getStRoleId());
+        } else {
+        	userInfo = JSON.parseObject(user,UserInfo.class);
+        }
         return userInfo;
     }
     /**

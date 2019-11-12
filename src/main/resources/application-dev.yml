@@ -1,7 +1,7 @@
-server:
+﻿server:
   port: 8888
   servlet:
-    context-path: /manage_system
+   context-path: /manage_system
 
 
 spring:
@@ -26,9 +26,8 @@ mybatis:
 #show sql
 logging:
   level:
-    com.example.study_system.dao: debug
+   com.example.study_system.dao: debug
 
 #pagehelper分页插件配置
 pagehelper:
   helperDialect: mysql
-  

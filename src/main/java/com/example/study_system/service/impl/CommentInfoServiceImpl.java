@@ -33,10 +33,12 @@ public class CommentInfoServiceImpl extends BaseService implements ICommentInfoS
 	@Override
 	public int insertSelective(CommentInfo record) {
 		record.setcTime(new Date());
+		
 		int flag = commentInfoMapper.insertSelective(record);
 		JUserTask jUserPaper = jUserTaskMapper.selectByTaskIdAndUserId(record.getCommentUserId(), record.getTaskId());
 		if(flag==1) {
-			if(jUserPaper.getStatus()!=1) {
+			
+			if(jUserPaper!=null && jUserPaper.getStatus()!=1) {
 				commentInfoMapper.updateJUserTaskStatus(record.getCommentUserId(), record.getTaskId());
 			}
 		}

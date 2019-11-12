@@ -133,6 +133,5 @@
     score = #{score,jdbcType=REAL}
     where question_id = #{questionId,jdbcType=BIGINT}
     and paper_id = #{paperId,jdbcType=BIGINT}
->>>>>>> refs/remotes/origin/dev-mc
   </update>
 </mapper>

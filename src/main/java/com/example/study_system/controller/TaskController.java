@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
+import com.example.study_system.emun.StRoleEmun;
 import com.example.study_system.model.CommentInfo;
 import com.example.study_system.model.JUserTask;
 import com.example.study_system.model.JUserTaskInfo;
@@ -51,14 +52,16 @@ public class TaskController extends BaseController {
 				@RequestParam("pageSize")int pageSize,
 				@RequestParam(value="taskName",required = false)String taskName,
 				@RequestParam(value="status",required = false)Integer status,
-				@RequestParam(value="userId",required = false)String userId,
-				@RequestParam(value="userType",required = false)Integer userType){
-			if(userType==1) {
-				PageInfo<TaskInfo> TaskList = serviceFacade.getTaskService().selectUserTask(pageNum, pageSize, status, userId);
+				@RequestParam(value="userId",required = false)String userId
+			){
+			UserInfo userInfo = UserUtil.getUser(request);
+			
+			if(userInfo.getStRoleId() != null && userInfo.getStRoleId() == StRoleEmun.USER.getStRoleId()) {
+				PageInfo<TaskInfo> TaskList = serviceFacade.getTaskService().selectUserTask(pageNum, pageSize, status, userInfo.getUserId());
 				System.out.println(TaskList);
 				return success(TaskList);
-			}else if(userType==2){
-				UserInfo userInfo = UserUtil.getUser(request);
+			}else if(userInfo.getStRoleId() != null && userInfo.getStRoleId() == StRoleEmun.MANAGER.getStRoleId()){
+			
 				System.err.println(userInfo);
 				
 				PageInfo<TaskInfo> TaskList = serviceFacade.getTaskService().selectTaskAll(pageNum, pageSize,taskName);
@@ -120,6 +123,7 @@ public class TaskController extends BaseController {
 	//根据Id修改任务名
 		@RequestMapping(value = "/task/{taskId}", method = RequestMethod.POST)
 		public ResultDTO<Integer> deleteTask( @PathVariable("taskId") Long taskId , @RequestParam("taskName") String taskName) {
+			
 			int updateTaskName = serviceFacade.getTaskService().updateTaskById(taskId, taskName);
 			return success(updateTaskName);
 		}
@@ -127,9 +131,11 @@ public class TaskController extends BaseController {
 	//添加from
 	//添加任务 (待完善)
 		@RequestMapping(value = "/tasks" , method = RequestMethod.POST)
-		public ResultDTO<Integer> insertTask(@RequestBody UserTaskRelationInfo taskInfo) {
+		public ResultDTO<Integer> insertTask(HttpServletRequest request,@RequestBody UserTaskRelationInfo taskInfo) {
 			if (taskInfo.getUserId()!=null) {
 //				System.out.println("aasdasd");
+				UserInfo userInfo = UserUtil.getUser(request);
+				taskInfo.setcUser(userInfo.getUserName());
 				Integer result=serviceFacade.getTaskService().insertTask(taskInfo);
 				return success(result);
 			}else {
@@ -155,7 +161,9 @@ public class TaskController extends BaseController {
 	}
 
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
-	public ResultDTO addComments(@RequestBody CommentInfo record) {
+	public ResultDTO addComments(HttpServletRequest request,@RequestBody CommentInfo record) {
+		UserInfo userInfo = UserUtil.getUser(request);
+		record.setCommentUserId(userInfo.getUserId());
 		if (record.getTaskId() == null || record.getCommentUserId() == null) {
 			return validationError();
 		} else {
