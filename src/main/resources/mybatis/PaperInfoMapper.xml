@@ -106,7 +106,7 @@
 		STATUS, c_time, m_time,
 		c_user)
 		values (#{paperName,jdbcType=VARCHAR},
-		1, now(), now(),
+		0, now(), now(),
 		#{cUser,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"

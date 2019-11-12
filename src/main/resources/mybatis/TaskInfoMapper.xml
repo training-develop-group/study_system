@@ -40,7 +40,8 @@
     manage_system.task_info a 
     where a.task_id = b.task_id and 
     b.STATUS = ${stutas} and 
-    b.user_id = '${userId}' 
+    b.user_id = '${userId}' ORDER BY a.c_time desc , a.task_id desc
+    
   </select>
    
   
@@ -92,7 +93,7 @@
       task_remark)
     values (null, #{resId,jdbcType=BIGINT}, #{paperId,jdbcType=BIGINT}, 
       #{taskType,jdbcType=INTEGER}, #{taskName,jdbcType=VARCHAR},1, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, now(), now(), 'a','a',
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, now(), now(),    #{cUser,jdbcType=VARCHAR},   #{cUser,jdbcType=VARCHAR},
       #{taskRemark,jdbcType=LONGVARCHAR})
       
   </insert>

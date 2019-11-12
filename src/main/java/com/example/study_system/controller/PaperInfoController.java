@@ -3,6 +3,8 @@ package com.example.study_system.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,8 @@ import com.example.study_system.model.JUserPaper;
 import com.example.study_system.model.JUserQuesAnswerRecord;
 import com.example.study_system.model.JUserTaskQuestionsInfoMapper;
 import com.example.study_system.model.PaperInfo;
+import com.example.study_system.model.UserInfo;
+import com.example.study_system.util.UserUtil;
 import com.github.pagehelper.PageInfo;
 
 @RestController
@@ -32,12 +36,14 @@ public class PaperInfoController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/paper", method = RequestMethod.POST)
-	public ResultDTO add(@RequestParam(value = "paperName")String paperName) {
+	public ResultDTO add(HttpServletRequest request , @RequestParam(value = "paperName")String paperName) {
 		if (paperName == null) {
 			return noData();
 		}
-		int res = serviceFacade.getPaperInfoService().insert(paperName);
-		return success(res);
+		
+		
+		int insertPaper = serviceFacade.getPaperInfoService().insert(request,paperName);
+		return success(insertPaper);
 	}
 
 	/**
@@ -51,8 +57,8 @@ public class PaperInfoController extends BaseController {
 		if (paperInfo == null) {
 			return noData();
 		}
-		int res = serviceFacade.getPaperInfoService().modifyTestPaperName(paperInfo);
-		return success(res);
+		int updatePaperName = serviceFacade.getPaperInfoService().modifyTestPaperName(paperInfo);
+		return success(updatePaperName);
 	}
 
 	/**
@@ -66,8 +72,8 @@ public class PaperInfoController extends BaseController {
 		if (paperId == null) {
 			return noData();
 		}
-		int res = serviceFacade.getPaperInfoService().deleteTestPaper(paperId);
-		return success(res);
+		int deletePaperById = serviceFacade.getPaperInfoService().deleteTestPaper(paperId);
+		return success(deletePaperById);
 	}
 
 	/**
@@ -81,8 +87,8 @@ public class PaperInfoController extends BaseController {
 		if (paperId == null) {
 			return noData();
 		}
-		PaperResultDTO paperInfo = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
-		return success(paperInfo);
+		PaperResultDTO PaperParticulars = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
+		return success(PaperParticulars);
 	}
 
 	/**
@@ -94,8 +100,8 @@ public class PaperInfoController extends BaseController {
 	public ResultDTO<PageInfo<PaperResultDTO>> selectPaperInfos(@RequestParam(value = "pageNum")Integer pageNum , 
 			@RequestParam(value = "pageSize")Integer pageSize , 
 			@RequestParam(value = "paperName" , required = false)String paperName) {
-		PageInfo<PaperResultDTO> page = serviceFacade.getPaperInfoService().selectPaperInfos(pageNum, pageSize , paperName);
-		return success(page);
+		PageInfo<PaperResultDTO> paperList = serviceFacade.getPaperInfoService().selectPaperInfos(pageNum, pageSize , paperName);
+		return success(paperList);
 	}
 
 	/**
@@ -109,8 +115,8 @@ public class PaperInfoController extends BaseController {
 		if (JPaperQuestion == null) {
 			return noData();
 		}
-		int res = serviceFacade.getPaperInfoService().insertJPQ(JPaperQuestion);
-		return success(res);
+		int insertQuestionArrivePaper = serviceFacade.getPaperInfoService().insertJPQ(JPaperQuestion);
+		return success(insertQuestionArrivePaper);
 	}
 
 	/**
@@ -156,8 +162,8 @@ public class PaperInfoController extends BaseController {
 		if (paperId == null || score == null || questionId == null) {
 			return validationError();
 		}
-		int res = serviceFacade.getPaperInfoService().updateScore(paperId, questionId , score);
-		return success(res);
+		int setGoals = serviceFacade.getPaperInfoService().updateScore(paperId, questionId , score);
+		return success(setGoals);
 	}
 	
 	/**
@@ -170,8 +176,8 @@ public class PaperInfoController extends BaseController {
 	public ResultDTO deletePQRelationship(@RequestParam("paperId") Long paperId, 
 										@RequestParam("questionId") Long questionId) {
 		System.out.println(paperId);
-		int res = serviceFacade.getPaperInfoService().deletePQRelationship(paperId , questionId);
-		return success(res);
+		int deletePaperQuestion = serviceFacade.getPaperInfoService().deletePQRelationship(paperId , questionId);
+		return success(deletePaperQuestion);
 	}
 	
 	/**
@@ -202,7 +208,7 @@ public class PaperInfoController extends BaseController {
 		List<PaperQuestionPesultDTO> paperQuestionPesultList = JSON.parseArray(PaperQuestionPesult, PaperQuestionPesultDTO.class);
 		List<PaperQuestionPesultDTO> questionScoreList = JSON.parseArray(questionScore, PaperQuestionPesultDTO.class);
 		List<JPaperQuestion> sortIng = JSON.parseArray(sorting, JPaperQuestion.class);
-		int result = serviceFacade.getPaperInfoService().addOrRemoveRelationships(jPaperQuestionList , paperQuestionPesultList , questionScoreList , sortIng);
-		return success(result);
+		int updatePaper = serviceFacade.getPaperInfoService().addOrRemoveRelationships(jPaperQuestionList , paperQuestionPesultList , questionScoreList , sortIng);
+		return success(updatePaper);
 	}
 }

@@ -2,6 +2,8 @@ package com.example.study_system.service.iface;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.example.study_system.dto.PaperQuestionPesultDTO;
 import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.model.JPaperQuestion;
@@ -13,7 +15,7 @@ import com.github.pagehelper.PageInfo;
 
 public interface IPaperInfoService {
 //	新建试卷
-	int insert(String paperName);
+	int insert(HttpServletRequest request,String paperName);
 
 //	修改试卷名
 	int modifyTestPaperName(PaperInfo record);
@@ -43,6 +45,8 @@ public interface IPaperInfoService {
 	int addOrRemoveRelationships(List<JPaperQuestion> JPaperQuestionList, List<PaperQuestionPesultDTO> PaperQuestionPesultList, List<PaperQuestionPesultDTO> questionScore , List<JPaperQuestion> sorting);
 //	设置试题分数
 	int updateScore(Long paperId , Long questionId , Float score);
+
+//	int insert( String paperName);
 
 	
 }
