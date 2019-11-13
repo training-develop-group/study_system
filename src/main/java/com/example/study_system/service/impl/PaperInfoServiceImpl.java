@@ -52,7 +52,7 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 
 //	获取试卷详情
 	@Override
-//	@Transactional
+	@Transactional
 	public PaperResultDTO detailsOfExaminationPapers(Long paperId) {
 		// 取该试卷所有信息
 		PaperInfo paper = paperInfoMapper.selectByPrimaryKey(paperId);
