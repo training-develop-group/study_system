@@ -1,5 +1,11 @@
 package com.example.study_system.dto;
 
+
+import java.awt.Choice;
+
+import com.example.study_system.model.JUserQuesAnswerRecord;
+import com.example.study_system.model.JUserTask;
+
 public class UserTaskDTO {
 	private int taskNumber;
 	
@@ -19,11 +25,11 @@ public class UserTaskDTO {
 		this.paperInfoNumber = paperInfoNumber;
 	}
 
-	public float getQuestionNumber() {
+	public int getQuestionNumber() {
 		return questionNumber;
 	}
 
-	public void setQuestionNumber(float questionNumber) {
+	public void setQuestionNumber(int questionNumber) {
 		this.questionNumber = questionNumber;
 	}
 
@@ -53,7 +59,7 @@ public class UserTaskDTO {
 
 	private int paperInfoNumber;
 	
-	private float questionNumber;
+	private int questionNumber;
 	
 	private float questionPercentage;
 	
@@ -65,7 +71,7 @@ public class UserTaskDTO {
 		
 	}
 	
-	public UserTaskDTO(Integer taskNumber , Integer paperInfoNumber , Integer questionNumber , Float answerRecord , Float percentage , String studentName) {
+	public UserTaskDTO(int taskNumber , int paperInfoNumber , int questionNumber , float answerRecord , float percentage , String studentName) {
 		this.setTaskNumber(taskNumber);
 		this.setPaperInfoNumber(paperInfoNumber);
 		this.setQuestionNumber(questionNumber);

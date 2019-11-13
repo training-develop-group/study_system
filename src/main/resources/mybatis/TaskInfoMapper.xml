@@ -46,7 +46,8 @@
     manage_system.task_info a 
     where a.task_id = b.task_id and 
     b.STATUS = ${stutas} and 
-    b.user_id = '${userId}'  ORDER BY a.c_time desc , a.task_id desc
+    b.user_id = '${userId}' ORDER BY a.c_time desc , a.task_id desc
+    
   </select>
    
   

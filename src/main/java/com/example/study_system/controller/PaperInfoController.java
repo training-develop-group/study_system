@@ -1,6 +1,5 @@
 package com.example.study_system.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +18,6 @@ import com.example.study_system.dto.PaperQuestionPesultDTO;
 import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
-import com.example.study_system.model.JUserQuesAnswerRecord;
 import com.example.study_system.model.JUserTaskQuestionsInfoMapper;
 import com.example.study_system.model.PaperInfo;
 import com.example.study_system.model.UserInfo;
@@ -43,6 +41,7 @@ public class PaperInfoController extends BaseController {
 		
 		
 		int insertPaper = serviceFacade.getPaperInfoService().insert(request,paperName);
+
 		return success(insertPaper);
 	}
 

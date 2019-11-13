@@ -66,7 +66,7 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 				resType = Integer.valueOf(fileType);
 			} else if (extName.equals(".txt") || extName.equals(".doc") || extName.equals(".docx")
 					|| extName.equals(".xlsx") || extName.equals(".xls") || extName.equals(".ppt")
-					|| extName.equals(".pptx")) {
+					|| extName.equals(".pptx") || extName.equals(".pdf")) {
 				fileType = "3";
 				resType = Integer.valueOf(fileType);
 			}
@@ -114,7 +114,7 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 		// 判断文件类型是否为视频类型
 		if (resourceInfo.getResType() == 1) {
 			VideoScreenshots(resourceInfo, desFilePath, ffmpeg_path, uuid);
-		} else if (resourceInfo.getResType() == 3) {
+		} else if (resourceInfo.getResType() == 3 && !extName.equals(".pdf")) {
 			if (!extName.equals(".txt")) {
 				String desPath = oriFilePath + uuid + ".pdf";
 				officeOpenPDF(desFilePath, desPath);
@@ -268,6 +268,7 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 		if (file.exists() && file.isFile()) {
 			file.delete();
 			return resourceInfoMapper.deleteByPrimaryKey(resId);
+			
 		}
 		return 0;
 	}

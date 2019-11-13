@@ -53,7 +53,7 @@
     delete from resource_info
     where res_id = #{resId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.example.study_system.model.ResourceInfo" >
+  <insert id="insert" parameterType="com.example.study_system.model.ResourceInfo" useGeneratedKeys="true" keyProperty="resId" >
     insert into resource_info (res_id, res_name, res_type, 
       path, img_path, res_ext, res_size, 
       STATUS, c_time, m_time, 
