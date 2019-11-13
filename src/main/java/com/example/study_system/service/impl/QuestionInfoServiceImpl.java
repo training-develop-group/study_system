@@ -114,7 +114,8 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 					questionItem.getmTime(), questionItem.getcUser(), questionItem.getmUser(), optionList));
 		});
 		PageInfo<QuestionResultDTO> result = new PageInfo<QuestionResultDTO>(questionResultDTO);
-		result.setTotal(questionInfoMapper.selectQuestionCount(questionType));
+		result.setTotal(questionInfoMapper.selectQuestionCountNum(content , questionType));
+//		result.setTotal(questionInfoMapper.selectQuestionCount(questionType));
 		return result;
 	}
 

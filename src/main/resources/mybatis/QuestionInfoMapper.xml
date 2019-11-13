@@ -44,7 +44,17 @@
 		where question_id = #{questionId,jdbcType=BIGINT}
 		ORDER BY question_id ASC
 	</select>
-
+	<select id="selectQuestionCountNum" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select count(question_id) from question_info
+		<if test="content != null">
+			where
+			content like "%"#{content,jdbcType=LONGVARCHAR}"%"
+			<if test="questionType != null">
+				and question_type = #{questionType,jdbcType=INTEGER}
+			</if>
+		</if>
+	</select>
 	<select id="selectQuestionCount" resultType="java.lang.Integer"
 		parameterType="java.lang.Integer">
 		select count(question_id) from question_info
@@ -80,6 +90,18 @@
 				and question_type = #{questionType,jdbcType=INTEGER}
 			</if>
 		</if>
+		ORDER BY question_id ASC
+	</select>
+	<select id="selectByPrimaryKeyPaperInfo" resultMap="ResultMapWithBLOBs">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from question_info
+		where question_id in
+		<foreach collection="list" item="question" index="index" open="(" separator="," close=")">
+			#{question.questionId}
+		</foreach>
 		ORDER BY question_id ASC
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

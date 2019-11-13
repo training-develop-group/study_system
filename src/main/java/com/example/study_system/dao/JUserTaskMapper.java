@@ -26,4 +26,12 @@ public interface JUserTaskMapper {
 	JUserTask selectByTaskIdAndUserId(@Param("userId") String userId,@Param("taskId")Long taskId);
 	
 	List<JUserTask> selectByTaskIdusers(@Param("taskId") Long taskId);
+	
+	JUserTask selectUserTaskProbability();
+
+	float selectJUsePaperPercentage(String userId);
+
+	JUserTask selectJUsePaperPercentage();
+	
+	float selectJUsePaper(String userId);
 }

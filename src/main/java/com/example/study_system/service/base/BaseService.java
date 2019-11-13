@@ -35,28 +35,22 @@ public class BaseService {
 	protected JPaperQuestionMapper jPaperQuestionMapper;
 	@Autowired
 	protected JUserPaperMapper jUserPaperMapper;
-
 	  @Autowired
 	    protected ResourceInfoMapper resourceInfoMapper;
 	  @Autowired
 	    protected JUserVideoLogMapper userVideoLogMapper;
-	  
 	  @Autowired
 		protected UserInfoMapper userInfoMapper;
 		
-		//获取任务类型百分比
 		@Autowired
 		protected QuestionInfoMapper questionInfoMapper;
 		
-		//获取学生任务完成百分比
 		@Autowired
 		protected TaskInfoMapper taskInfoMapper;
 		
-		//获取学生作答正确率
 		@Autowired
 		protected JUserTaskMapper jUserTaskMapper;
 		
-		//使用DTO拼接在一起
 		@Autowired
 		protected JUserQuesAnswerRecordMapper jUserQuesAnswerRecordMapper;
 

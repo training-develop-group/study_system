@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.study_system.dto.PaperQuestionPesultDTO;
 import com.example.study_system.model.JQuestionOption;
 
 @Mapper
@@ -21,6 +22,8 @@ public interface JQuestionOptionMapper {
 	int updateByPrimaryKeyWithBLOBs(JQuestionOption record);
 
 	int updateByPrimaryKey(JQuestionOption record);
+//	试卷详情(用)
+	List<JQuestionOption> selectQuestionByQuestionIdList(List<PaperQuestionPesultDTO> questionIdList);
 	
 	List<JQuestionOption> selectQuestionByQuestionId(Long questionId);
 

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.study_system.model.JQuestionOption;
+import com.example.study_system.model.QuestionInfoWithBLOBs;
 
 public class QuestionResultDTO {
 	private Long questionId;
@@ -13,6 +14,30 @@ public class QuestionResultDTO {
 	private Float score;
 	
 	private Float newScore;
+	
+	private List<PaperQuestionPesultDTO> newScoreList;
+	public List<PaperQuestionPesultDTO> getNewScoreList() {
+		return newScoreList;
+	}
+
+	public void setNewScoreList(List<PaperQuestionPesultDTO> newScoreList) {
+		this.newScoreList = newScoreList;
+	}
+
+	public List<QuestionInfoWithBLOBs> getQuestionList() {
+		return questionList;
+	}
+
+	public void setQuestionList(List<QuestionInfoWithBLOBs> questionList) {
+		this.questionList = questionList;
+	}
+
+	public Float getScore() {
+		return score;
+	}
+
+	private List<QuestionInfoWithBLOBs> questionList;
+	
 
 	public Float getNewScore() {
 		return newScore;
@@ -122,6 +147,12 @@ public class QuestionResultDTO {
 		this.userAnswer = userAnswer;
 	}
 
+	public QuestionResultDTO(List<JQuestionOption> questionOption ,  List<QuestionInfoWithBLOBs> questionList , List<PaperQuestionPesultDTO> scoreList) {
+		this.optionInfo = questionOption;
+		this.questionList = questionList;
+		this.newScoreList = scoreList;
+	}
+	
 	public String getAnalysis() {
 		return analysis;
 	}

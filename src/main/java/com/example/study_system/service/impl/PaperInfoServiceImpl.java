@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.study_system.dao.JUserPaperMapper;
 import com.example.study_system.dto.PaperQuestionPesultDTO;
 import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.dto.QuestionResultDTO;
@@ -52,21 +51,31 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 
 //	获取试卷详情
 	@Override
-//	@Transactional
+	@Transactional
 	public PaperResultDTO detailsOfExaminationPapers(Long paperId) {
 		// 取该试卷所有信息
 		PaperInfo paper = paperInfoMapper.selectByPrimaryKey(paperId);
 		List<QuestionResultDTO> questionInfo = new ArrayList<QuestionResultDTO>();
+		List<PaperQuestionPesultDTO> questionIdList = new ArrayList<PaperQuestionPesultDTO>();
+		List<PaperQuestionPesultDTO> scoreList = new ArrayList<PaperQuestionPesultDTO>();
 		// 通过试卷ID取所有ID
 		jPaperQuestionMapper.selectQuestionByPaperId(paperId).forEach(item -> {
+			questionIdList.add(new PaperQuestionPesultDTO(item.getQuestionId()));
+			scoreList.add(new PaperQuestionPesultDTO(item.getScore()));
 			// 取试题ID
-			QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(item.getQuestionId());
-			questionInfo.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
-					question.getScore(), question.getDifficulty(), question.getContent(), question.getAnalysis(),
-					question.getStatus(), question.getcTime(), question.getmTime(), question.getcUser(),
-					question.getmUser(), jQuestionOptionMapper.selectQuestionByQuestionId(item.getQuestionId()),
-					item.getScore()));
+//			QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(item.getQuestionId());
+//			questionInfo.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
+//					question.getScore(), question.getDifficulty(), question.getContent(), question.getAnalysis(),
+//					question.getStatus(), question.getcTime(), question.getmTime(), question.getcUser(),
+//					question.getmUser(), jQuestionOptionMapper.selectQuestionByQuestionId(item.getQuestionId()),
+//					item.getScore()));
 		});
+		if (questionIdList.isEmpty()) {
+			return null;
+		}
+		List<JQuestionOption> QuestionOption = jQuestionOptionMapper.selectQuestionByQuestionIdList(questionIdList);
+		List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectByPrimaryKeyPaperInfo(questionIdList);
+		questionInfo.add(new QuestionResultDTO(QuestionOption , questionList , scoreList));
 		PaperResultDTO paperResultDTO = new PaperResultDTO(paperId, paper.getPaperName(), paper.getScore(),
 				paper.getStatus(), paper.getcTime(), paper.getmTime(), paper.getcUser(), paper.getmUser(),
 				questionInfo);

@@ -51,8 +51,7 @@ public class TaskController extends BaseController {
 				@RequestParam("pageNum")int pageNum,
 				@RequestParam("pageSize")int pageSize,
 				@RequestParam(value="taskName",required = false)String taskName,
-				@RequestParam(value="status",required = false)Integer status,
-				@RequestParam(value="userId",required = false)String userId
+				@RequestParam(value="status",required = false)Integer status
 			){
 			UserInfo userInfo = UserUtil.getUser(request);
 			

@@ -10,6 +10,8 @@
 		<result column="c_time" property="cTime" jdbcType="TIMESTAMP" />
 		<result column="c_user" property="cUser" jdbcType="VARCHAR" />
 		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="completed" property="completed" jdbcType="REAL" />
+		<result column="notCompleted" property="notCompleted" jdbcType="REAL" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		ref, user_id, task_id, STATUS, c_time, c_user
@@ -51,6 +53,27 @@
 	 task_id = ${taskId}
 	
 	</select>
+	
+	<select id="selectUserTaskProbability" resultMap="BaseResultMap">
+	SELECT ROUND(T1.wc/T2.z*100,1) completed , ROUND(T3.wwc/T2.z*100,1) notCompleted FROM 
+	(SELECT count(*) as wc FROM manage_system.j_user_task where status = 1) T1, 
+	(SELECT count(*) as wwc FROM manage_system.j_user_task where status != 1) T3, 
+	(SELECT count(*) as z FROM manage_system.j_user_task)T2;
+	</select>
+	
+	<select id="selectJUsePaperPercentage"  resultMap="BaseResultMap" parameterType="Integer">
+	SELECT ROUND(T1.wc/T2.z*100,1) completed , ROUND(T3.wwc/T2.z*100,1) notCompleted FROM 
+	(SELECT count(*) as wc FROM manage_system.j_user_task where status = 1) T1, 
+	(SELECT count(*) as wwc FROM manage_system.j_user_task where status != 1) T3, 
+	(SELECT count(*) as z FROM manage_system.j_user_task)T2;
+    </select>
+    
+    <select id="selectJUsePaper"  resultType="float" parameterType="String">
+	SELECT ROUND(T1.wc/T2.z*100,1) completed FROM
+	(SELECT count(*) as wc FROM manage_system.j_user_task where user_id = #{userId,jdbcType=VARCHAR} and status = 1)T1, 
+	(SELECT count(*) as z FROM manage_system.j_user_task)T2;
+    </select>
+	
 	<insert id="insert"
 		parameterType="com.example.study_system.model.JUserTask">
 		insert into j_user_task (ref, user_id, task_id,

@@ -28,7 +28,7 @@ public final class UserUtil {
         	userInfo = new UserInfo();
         	userInfo.setUserId("76b9e812-0496-11ea-a3a7-00ffa210afd0");
         	userInfo.setUserName("張三");
-        	userInfo.setStRoleId(StRoleEmun.USER.getStRoleId());
+        	userInfo.setStRoleId(StRoleEmun.MANAGER.getStRoleId());
         } else {
         	userInfo = JSON.parseObject(user,UserInfo.class);
         }

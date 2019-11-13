@@ -23,7 +23,28 @@ public class JUserTask {
     private String userName;
     
     private Float score;
-    public Float getScore() {
+    
+    private Float completed;
+    
+    private Float notCompleted;
+    
+    public Float getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(Float completed) {
+		this.completed = completed;
+	}
+
+	public Float getNotCompleted() {
+		return notCompleted;
+	}
+
+	public void setNotCompleted(Float notCompleted) {
+		this.notCompleted = notCompleted;
+	}
+
+	public Float getScore() {
         return score;
     }
 

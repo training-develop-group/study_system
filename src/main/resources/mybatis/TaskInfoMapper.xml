@@ -14,6 +14,12 @@
     <result column="m_time" property="mTime" jdbcType="TIMESTAMP" />
     <result column="c_user" property="cUser" jdbcType="VARCHAR" />
     <result column="m_user" property="mUser" jdbcType="VARCHAR" />
+    <result column="xx" property="xx" jdbcType="INTEGER" />
+    <result column="cs" property="cs" jdbcType="INTEGER" />
+    <result column="zh" property="zh" jdbcType="INTEGER" />
+    <result column="comprehensive" property="comprehensive" jdbcType="REAL" />
+    <result column="test" property="test" jdbcType="REAL" />
+    <result column="learning" property="learning" jdbcType="REAL" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.example.study_system.model.TaskInfo" extends="BaseResultMap" >
     <result column="task_remark" property="taskRemark" jdbcType="LONGVARCHAR" />
@@ -80,6 +86,22 @@
    select  count(0) from task_info
    
   </select>
+  
+  <select id="selectTaskInfo" resultMap="ResultMapWithBLOBs" parameterType="String" >
+	SELECT T1.xx , T2.cs , T3.zh
+	FROM (SELECT count(*) as xx FROM manage_system.task_info where c_user = #{cUser,jdbcType=VARCHAR} and task_type = 1) T1,
+	(SELECT count(*) as cs FROM manage_system.task_info where c_user = #{cUser,jdbcType=VARCHAR} and task_type = 2)T2,
+	(SELECT count(*) as zh FROM manage_system.task_info where c_user = #{cUser,jdbcType=VARCHAR} and task_type = 3)T3;
+  </select>
+  
+  <select id="typeTaskInfo" resultMap="BaseResultMap">
+	SELECT ROUND(T1.xx/T4.qb*100,1) comprehensive , ROUND(T2.cs/T4.qb*100,1) learning , ROUND(T3.zh/T4.qb*100,1) test 
+	FROM (SELECT count(*) as xx FROM manage_system.task_info where task_type = 1) T1,
+	(SELECT count(*) as cs FROM manage_system.task_info where task_type = 2)T2,
+	(SELECT count(*) as zh FROM manage_system.task_info where task_type = 3)T3,
+	(SELECT count(*) as qb FROM manage_system.task_info)T4;
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from task_info
     where task_id = #{taskId,jdbcType=BIGINT}

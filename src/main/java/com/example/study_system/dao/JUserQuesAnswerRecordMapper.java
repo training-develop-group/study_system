@@ -19,4 +19,8 @@ public interface JUserQuesAnswerRecordMapper {
 	int updateByPrimaryKeyWithBLOBs(JUserQuesAnswerRecord record);
 
 	int updateByPrimaryKey(JUserQuesAnswerRecord record);
+	
+	Float selectJUserQuesAnswerRecord(String userId);
+	
+	JUserQuesAnswerRecord choiceJUserQuesAnswerRecord();
 }

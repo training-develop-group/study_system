@@ -9,6 +9,8 @@
     <result column="is_right" property="isRight" jdbcType="INTEGER" />
     <result column="scord" property="scord" jdbcType="REAL" />
     <result column="c_time" property="cTime" jdbcType="TIMESTAMP" />
+    <result column="singleElection" property="singleElection" jdbcType="REAL" />
+	<result column="multipleSelection" property="multipleSelection" jdbcType="REAL" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.example.study_system.model.JUserQuesAnswerRecord" extends="BaseResultMap" >
     <result column="answer" property="answer" jdbcType="LONGVARCHAR" />
@@ -27,6 +29,20 @@
     from j_user_ques_answer_record
     where ref = #{ref,jdbcType=BIGINT}
   </select>
+  
+  <select id="selectJUserQuesAnswerRecord" resultType="Float" parameterType="String" >
+   SELECT ROUND(T1.wc/T2.z*100,1) FROM
+   (SELECT count(*) as wc FROM manage_system.j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right != 1) T1,
+   (SELECT count(*) as z FROM manage_system.j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR}) T2;
+   </select>
+   
+   <select id="choiceJUserQuesAnswerRecord" resultMap="BaseResultMap">
+	select ROUND(T1.dx/T3.zs*100,1) singleElection , ROUND(T2.dx/T3.zs*100,1) multipleSelection from
+	(select count(*) dx from manage_system.question_info a,  manage_system.j_user_ques_answer_record b where question_type = 1 and a.question_id=b.question_id and is_right=1)T1,
+	(select count(*) dx from manage_system.question_info a,  manage_system.j_user_ques_answer_record b where question_type = 2 and a.question_id=b.question_id and is_right=1)T2,
+	(select count(*) zs from manage_system.question_info a,  manage_system.j_user_ques_answer_record b where a.question_id=b.question_id and is_right=1) T3;
+   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from j_user_ques_answer_record
     where ref = #{ref,jdbcType=BIGINT}

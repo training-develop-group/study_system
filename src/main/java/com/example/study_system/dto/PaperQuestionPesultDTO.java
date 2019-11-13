@@ -45,4 +45,12 @@ public class PaperQuestionPesultDTO {
 		this.questionId = questionId;
 		this.score = score;
 	}
+	
+	public PaperQuestionPesultDTO(Long questionId) {
+		this.questionId = questionId;
+	}
+	
+	public PaperQuestionPesultDTO(Float score) {
+		this.score = score;
+	}
 }

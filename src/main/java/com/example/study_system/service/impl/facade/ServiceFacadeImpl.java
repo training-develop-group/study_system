@@ -1,18 +1,18 @@
 package com.example.study_system.service.impl.facade;
 
-import com.example.study_system.service.iface.ICommentInfoService;
-import com.example.study_system.service.iface.ILoginService;
-import com.example.study_system.service.iface.IPaperInfoService;
-import com.example.study_system.service.iface.IQuestionInfoService;
-import com.example.study_system.service.iface.ITaskService;
-import com.example.study_system.service.iface.IUserService;
-import com.example.study_system.service.iface.facade.IServiceFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.study_system.service.iface.ICommentInfoService;
 import com.example.study_system.service.iface.IJUserVideoLogService;
+import com.example.study_system.service.iface.ILoginService;
+import com.example.study_system.service.iface.IPaperInfoService;
+import com.example.study_system.service.iface.IQuestionInfoService;
 import com.example.study_system.service.iface.IResourceService;
-import com.example.study_system.service.iface.ITaskInfoService;
+import com.example.study_system.service.iface.IStatService;
+import com.example.study_system.service.iface.ITaskService;
+import com.example.study_system.service.iface.IUserService;
+import com.example.study_system.service.iface.facade.IServiceFacade;
 
 /**
  * author lindan. date 2019/6/4.
@@ -34,7 +34,7 @@ public class ServiceFacadeImpl implements IServiceFacade {
 	IUserService taskUserService;
 	@Autowired
 	ICommentInfoService commentInfoService;
-
+	
 	public IUserService getUseService() {
 		return taskUserService;
 	};
@@ -85,13 +85,11 @@ public class ServiceFacadeImpl implements IServiceFacade {
     public IJUserVideoLogService getJUserVideoLogService() {
         return userVideoLogService;
     }
-
-
+    
     @Autowired
-    ITaskInfoService taskInfoService;
-
+    IStatService statService;
     @Override
-    public ITaskInfoService getTaskInfoService() {
-        return taskInfoService;
-    }
+	public IStatService getStatService() {
+		return statService;
+	}
 }
