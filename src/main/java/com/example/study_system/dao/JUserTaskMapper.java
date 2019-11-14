@@ -1,37 +1,36 @@
 package com.example.study_system.dao;
 
-import java.util.List;
-
+import com.example.study_system.model.JUserTask;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.example.study_system.model.JUserTask;
+import java.util.List;
 
 @Mapper
 public interface JUserTaskMapper {
-	int deleteByPrimaryKey(Long ref);
+    int deleteByPrimaryKey(Long ref);
 
-	int insert(JUserTask record);
+    int insert(JUserTask record);
 
-	int insertSelective(JUserTask record);
+    int insertSelective(JUserTask record);
 
-	JUserTask selectByPrimaryKey(Long ref);
+    JUserTask selectByPrimaryKey(Long ref);
 
-	int updateByPrimaryKeySelective(JUserTask record);
+    int updateByPrimaryKeySelective(JUserTask record);
 
-	int updateByPrimaryKey(JUserTask record);
+    int updateByPrimaryKey(JUserTask record);
 
-	int updateStatus(String userId, Long taskId);
-	
-	JUserTask selectByTaskIdAndUserId(@Param("userId") String userId,@Param("taskId")Long taskId);
-	
-	List<JUserTask> selectByTaskIdusers(@Param("taskId") Long taskId);
-	
-	JUserTask selectUserTaskProbability();
+    int updateStatus(String userId, Long taskId);
 
-	float selectJUsePaperPercentage(String userId);
+    JUserTask selectByTaskIdAndUserId(@Param("userId") String userId, @Param("taskId") Long taskId);
 
-	JUserTask selectJUsePaperPercentage();
-	
-	float selectJUsePaper(String userId);
+    List<JUserTask> selectByTaskIdusers(@Param("taskId") Long taskId);
+
+    JUserTask selectUserTaskProbability();
+
+    float selectJUsePaperPercentage(String userId);
+
+    JUserTask selectJUsePaperPercentage();
+
+    float selectJUsePaper(String userId);
 }

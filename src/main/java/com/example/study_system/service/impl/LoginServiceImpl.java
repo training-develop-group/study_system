@@ -20,10 +20,6 @@ public class LoginServiceImpl extends BaseService implements ILoginService {
     public UserInfo selectUser(String userName, String password) {
         //password 加密
         password = UserUtil.EncoderByMd5(password);
-        return userInfoMapper.selectByUserNameAndPassword(userName,password);
+        return userInfoMapper.selectByUserNameAndPassword(userName, password);
     }
-    @Override
-	public List<UserInfo> selectUserAll() {
-		return userInfoMapper.selectUserAll();
-	}
 }

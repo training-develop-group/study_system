@@ -1,41 +1,44 @@
 package com.example.study_system.dao;
 
-import java.util.List;
-
+import com.example.study_system.model.PaperInfo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.example.study_system.model.PaperInfo;
+import java.util.List;
 
+@Mapper
 public interface PaperInfoMapper {
-//	删除试卷
-	int deleteByPrimaryKey(Long paperId);
+    //	删除试卷
+    int deleteByPrimaryKey(Long paperId);
 
-	int insert(String paperName , String cUser);
+    int insert(String paperName, String cUser);
 
-//	新建试卷
-	int insertSelective(PaperInfo record);
+    //	新建试卷
+    int insertSelective(PaperInfo record);
 
-//	获取试卷详情
-	PaperInfo selectByPrimaryKey(Long paperId);
+    //	获取试卷详情
+    PaperInfo selectByPrimaryKey(Long paperId);
 
-//	修改试卷名
-	int updateByPrimaryKeySelective(PaperInfo record);
+    //	修改试卷名
+    int updateByPrimaryKeySelective(PaperInfo record);
 
-	int updateByPrimaryKey(PaperInfo record);
+    int updateByPrimaryKey(PaperInfo record);
 
-	List<PaperInfo> selectPaperInfo(@Param("paperName")String paperName);
-//	查询总条数
-	int selectAllPaperInfo(@Param("paperName")String paperName);
+    List<PaperInfo> selectPaperInfo(@Param("paperName") String paperName);
 
-	List<PaperInfo> select();
+    //	查询总条数
+    int selectAllPaperInfo(@Param("paperName") String paperName);
 
-	int selectAllQuestionInfoSingle(Long paperId);
+    List<PaperInfo> select();
 
-	int selectAllQuestionInfoMany(Long paperId);
+    int selectAllQuestionInfoSingle(Long paperId);
 
-	int selectPaperCount();
-	
-	Long selectPaperScore(Long paperId);
-//	修改发布
-	int updateStatus(Long paperId);
+    int selectAllQuestionInfoMany(Long paperId);
+
+    int selectPaperCount();
+
+    Long selectPaperScore(Long paperId);
+
+    //	修改发布
+    int updateStatus(Long paperId);
 }
