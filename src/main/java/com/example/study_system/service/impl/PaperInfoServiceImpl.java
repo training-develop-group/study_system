@@ -119,7 +119,7 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 			questionInfoList.add(questionInfo);
 		}
 		//排序
-		questionInfoList = questionInfoList.stream().sorted(Comparator.comparing(QuestionResultDTO::getOrderIndex)).collect(Collectors.toList());
+		questionInfoList.stream().sorted(Comparator.comparing(QuestionResultDTO::getOrderIndex)).collect(Collectors.toList());
 		result.setQuestionList(questionInfoList);
 		return result;
 	}

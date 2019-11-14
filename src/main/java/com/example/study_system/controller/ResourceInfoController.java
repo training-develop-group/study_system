@@ -50,6 +50,9 @@ public class ResourceInfoController extends BaseController {
 		if (resourceInfo == null) {
 			return noData();
 		}
+		if (file == null) {
+			return validationError();
+		}
 		return success(resourceInfo);
 	}
 
