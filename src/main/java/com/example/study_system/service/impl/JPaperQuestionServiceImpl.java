@@ -7,15 +7,15 @@ import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IJPaperQuestionService;
 
 @Service
-public class JPaperQuestionServiceImpl extends BaseService implements IJPaperQuestionService{
+public class JPaperQuestionServiceImpl extends BaseService implements IJPaperQuestionService {
 
-	@Override
+    @Override
     public int insertSelective(JPaperQuestion record) {
-		return jPaperQuestionMapper.insertSelective(record);
+        return jPaperQuestionMapper.insertSelective(record);
     }
-	
-	@Override
+
+    @Override
     public int insert(JPaperQuestion record) {
-		return jPaperQuestionMapper.insert(record);
+        return jPaperQuestionMapper.insert(record);
     }
 }

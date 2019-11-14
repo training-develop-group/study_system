@@ -1,12 +1,13 @@
 package com.example.study_system.dao;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.example.study_system.model.UserInfo;
 import com.example.study_system.model.UserInfoWithBLOBs;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
+@Mapper
 public interface UserInfoMapper {
     int deleteByPrimaryKey(String userId);
 
@@ -22,12 +23,7 @@ public interface UserInfoMapper {
 
     int updateByPrimaryKey(UserInfo record);
 
-    List<UserInfo> selectUserAll();
-    
-    List<UserInfo> selectUserAll(@Param("userName")String userName);
-    
-    UserInfo selectByUserNameAndPassword(@Param("userName") String userName,@Param("password") String password);
+    List<UserInfo> selectUserByName(@Param("userName") String userName);
 
-	List<UserInfo> selectAllUserInfo(@Param("userName")String userName);
-    
+    UserInfo selectByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
 }

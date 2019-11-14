@@ -1,28 +1,18 @@
 package com.example.study_system.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.example.study_system.dao.JQuestionOptionMapper;
-import com.example.study_system.dao.QuestionInfoMapper;
 import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
-import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IQuestionInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.zaxxer.hikari.util.SuspendResumeLock;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class QuestionInfoServiceImpl extends BaseService implements IQuestionInfoService {

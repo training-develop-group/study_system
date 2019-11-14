@@ -1,83 +1,72 @@
 package com.example.study_system.dto;
 
 
-import java.awt.Choice;
-
-import com.example.study_system.model.JUserQuesAnswerRecord;
-import com.example.study_system.model.JUserTask;
-
 public class UserTaskDTO {
-	private int taskNumber;
-	
-	public int getTaskNumber() {
-		return taskNumber;
-	}
+    private int taskNumber;
+    private int paperInfoNumber;
+    private int questionNumber;
+    private float questionPercentage;
+    private float taskPercentage;
+    private String studentName;
+    
+    public UserTaskDTO() {
 
-	public void setTaskNumber(int taskNumber) {
-		this.taskNumber = taskNumber;
-	}
+    }
 
-	public int getPaperInfoNumber() {
-		return paperInfoNumber;
-	}
+    public UserTaskDTO(int taskNumber, int paperInfoNumber, int questionNumber, float answerRecord, float percentage, String studentName) {
+        this.setTaskNumber(taskNumber);
+        this.setPaperInfoNumber(paperInfoNumber);
+        this.setQuestionNumber(questionNumber);
+        this.setQuestionPercentage(answerRecord);
+        this.setTaskPercentage(percentage);
+        this.setStudentName(studentName);
+    }
 
-	public void setPaperInfoNumber(int paperInfoNumber) {
-		this.paperInfoNumber = paperInfoNumber;
-	}
+    public int getTaskNumber() {
+        return taskNumber;
+    }
 
-	public int getQuestionNumber() {
-		return questionNumber;
-	}
+    public void setTaskNumber(int taskNumber) {
+        this.taskNumber = taskNumber;
+    }
 
-	public void setQuestionNumber(int questionNumber) {
-		this.questionNumber = questionNumber;
-	}
+    public int getPaperInfoNumber() {
+        return paperInfoNumber;
+    }
 
-	public float getQuestionPercentage() {
-		return questionPercentage;
-	}
+    public void setPaperInfoNumber(int paperInfoNumber) {
+        this.paperInfoNumber = paperInfoNumber;
+    }
 
-	public void setQuestionPercentage(float answerRecord) {
-		this.questionPercentage = answerRecord;
-	}
+    public int getQuestionNumber() {
+        return questionNumber;
+    }
 
-	public float getTaskPercentage() {
-		return taskPercentage;
-	}
+    public void setQuestionNumber(int questionNumber) {
+        this.questionNumber = questionNumber;
+    }
 
-	public void setTaskPercentage(float percentage) {
-		this.taskPercentage = percentage;
-	}
-	
-	public String getStudentName() {
-		return studentName;
-	}
+    public float getQuestionPercentage() {
+        return questionPercentage;
+    }
 
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
-	}
+    public void setQuestionPercentage(float answerRecord) {
+        this.questionPercentage = answerRecord;
+    }
 
-	private int paperInfoNumber;
-	
-	private int questionNumber;
-	
-	private float questionPercentage;
-	
-	private float taskPercentage;
-	
-	private String studentName;
+    public float getTaskPercentage() {
+        return taskPercentage;
+    }
 
-	public UserTaskDTO() {
-		
-	}
-	
-	public UserTaskDTO(int taskNumber , int paperInfoNumber , int questionNumber , float answerRecord , float percentage , String studentName) {
-		this.setTaskNumber(taskNumber);
-		this.setPaperInfoNumber(paperInfoNumber);
-		this.setQuestionNumber(questionNumber);
-		this.setQuestionPercentage(answerRecord);
-		this.setTaskPercentage(percentage);
-		this.setStudentName(studentName);
-	}
+    public void setTaskPercentage(float percentage) {
+        this.taskPercentage = percentage;
+    }
 
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
 }

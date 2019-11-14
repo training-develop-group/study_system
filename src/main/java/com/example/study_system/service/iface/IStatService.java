@@ -8,13 +8,13 @@ import com.github.pagehelper.PageInfo;
 
 public interface IStatService {
 
-	TaskInfo selectStat();
-	
-	JUserTask selectJUsePaperPercentage();
-	
-	TaskInfo selectTaskInfo(String cUser);
+    TaskInfo selectStat();
 
-	PageInfo<UserTaskDTO> statisticalList(String userName, Integer pageNum, Integer pageSize);
+    JUserTask selectJUsePaperPercentage();
 
-	JUserQuesAnswerRecord choiceJUserQuesAnswerRecord();
+    TaskInfo selectTaskInfo(String cUser);
+
+    PageInfo<UserTaskDTO> statisticalList(String userName, Integer pageNum, Integer pageSize);
+
+    JUserQuesAnswerRecord choiceJUserQuesAnswerRecord();
 }

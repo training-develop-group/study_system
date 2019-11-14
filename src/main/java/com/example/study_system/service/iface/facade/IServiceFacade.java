@@ -1,36 +1,24 @@
 package com.example.study_system.service.iface.facade;
 
-import com.example.study_system.service.iface.ICommentInfoService;
-import com.example.study_system.service.iface.IJUserVideoLogService;
-import com.example.study_system.service.iface.ILoginService;
-import com.example.study_system.service.iface.IPaperInfoService;
-import com.example.study_system.service.iface.IQuestionInfoService;
-import com.example.study_system.service.iface.IResourceService;
-import com.example.study_system.service.iface.IStatService;
-import com.example.study_system.service.iface.ITaskService;
-import com.example.study_system.service.iface.IUserService;
+import com.example.study_system.service.iface.*;
 
 /**
  * author lindan. date 2019/6/4.
  */
 public interface IServiceFacade {
-	ILoginService getUserService();
+    IQuestionInfoService getQuestionInfoService();
 
-	IQuestionInfoService getQuestionInfoService();
+    ITaskService getTaskService();
 
-	ITaskService getTaskService();
+    IPaperInfoService getPaperInfoService();
 
-	IPaperInfoService getPaperInfoService();
-	
-	ICommentInfoService getCommentInfoService();
-	
-	IUserService getUseService();
-	
-	ILoginService getLoginService();
-    
+    ICommentInfoService getCommentInfoService();
+
+    ILoginService getLoginService();
+
     IResourceService getResourceService();
-    
+
     IJUserVideoLogService getJUserVideoLogService();
-    
+
     IStatService getStatService();
 }
