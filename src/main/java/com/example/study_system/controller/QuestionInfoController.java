@@ -90,13 +90,14 @@ public class QuestionInfoController extends BaseController {
 			@RequestParam(value = "pageSize") Integer pageSize,
 			@RequestParam(value = "content", required = false) String content,
 			@RequestParam(value = "questionType", required = false) Integer questionType) {
-//			@RequestParam("questionType") Integer questionType) {
-//		if (pageSize == null || content == null || pageNum == null || questionType == null) {
-		if (pageSize == null || content == null || pageNum == null) {
+		if (pageSize == null || pageNum == null) {
 			return validationError();
 		} else {
 			PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum,
 					pageSize, content, questionType);
+			if (result == null) {
+				return noData();
+			}
 			return success(result);
 		}
 	}
@@ -112,6 +113,9 @@ public class QuestionInfoController extends BaseController {
 		if (questionId == null) {
 			return validationError();
 		} else {
+			if (serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId) == null) {
+				return noData();
+			}
 			return success(serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId));
 		}
 	}
@@ -142,6 +146,9 @@ public class QuestionInfoController extends BaseController {
 		if (questionId == null) {
 			return validationError();
 		} else {
+			if (serviceFacade.getQuestionInfoService().selectAnalysis(questionId) == null) {
+				return noData();
+			}
 			return success(serviceFacade.getQuestionInfoService().selectAnalysis(questionId));
 		}
 	}

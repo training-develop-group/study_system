@@ -41,8 +41,8 @@ public class ResourceInfoController extends BaseController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/resource", method = RequestMethod.POST)
-	public ResultDTO uploadResourceInfo(HttpServletRequest request,ResourceInfo resourceInfo, MultipartFile file, String ffmpeg_path)
-			throws IllegalStateException, IOException {
+	public ResultDTO uploadResourceInfo(HttpServletRequest request, ResourceInfo resourceInfo, MultipartFile file,
+			String ffmpeg_path) throws IllegalStateException, IOException {
 		UserInfo userInfo = UserUtil.getUser(request);
 		resourceInfo.setcUser(userInfo.getUserName());
 		int res = serviceFacade.getResourceService().uploadResourceInfo(resourceInfo, file,
@@ -79,7 +79,7 @@ public class ResourceInfoController extends BaseController {
 	public ResultDTO<Integer> modifyResourceNameByResId(@RequestParam("resId") Long resId,
 			@RequestParam("resName") String resName) {
 		int resource = serviceFacade.getResourceService().modifyResourceNameByResId(resId, resName);
-		if (resId == null || resName.equals("")) {
+		if (resId == null || resName == null) {
 			return validationError();
 		}
 		return success(resource);
@@ -99,7 +99,7 @@ public class ResourceInfoController extends BaseController {
 		if (resId == null) {
 			return validationError();
 		}
-		if (result == null) {
+		if (result == null || userInfo == null) {
 			return noData();
 		}
 		return success(result);
@@ -121,8 +121,11 @@ public class ResourceInfoController extends BaseController {
 		UserInfo userInfo = UserUtil.getUser(request);
 		PageInfo<ResourceInfo> resourceList = serviceFacade.getResourceService().getResourceList(pageNum, pageSize,
 				resName, resType);
-		if (resourceList == null) {
+		if (resourceList == null || userInfo == null) {
 			return noData();
+		}
+		if (pageNum == null || pageSize == null || resName == null || resType == null) {
+			return validationError();
 		}
 		return success(resourceList);
 	}
@@ -167,62 +170,36 @@ public class ResourceInfoController extends BaseController {
 		if (resId == null) {
 			return validationError();
 		}
+		if (userInfo == null) {
+			return noData();
+		}
 		return success(result);
 	}
 
 	@RequestMapping(value = "/download")
 	public ResponseEntity<Object> downloadFile(@RequestParam(value = "resName") String resName,
-												@RequestParam(value = "path") String path) throws FileNotFoundException, UnsupportedEncodingException {
-		
-		String resFileName = resName + path.substring(path.lastIndexOf("."));	//截取path的后缀名再用resName和它拼接上成为resName.xxx格式
+			@RequestParam(value = "path") String path) throws FileNotFoundException, UnsupportedEncodingException {
+		String resFileName = resName + path.substring(path.lastIndexOf(".")); // 截取path的后缀名再用resName和它拼接上成为resName.xxx格式
 		System.err.println(resName);
 		System.err.println(resFileName);
 		System.err.println(path);
 		String filePath = "F:/study/files/";
-		String fileName = filePath + path;	//用固定路径 + 文件名 = 文件地址
-		File file = new File(fileName);	//创建file对象
+		String fileName = filePath + path; // 用固定路径 + 文件名 = 文件地址
+		File file = new File(fileName); // 创建file对象
 		InputStreamResource resource = new InputStreamResource(new FileInputStream((file)));
 
 		HttpHeaders headers = new HttpHeaders();
 //	    headers.add("Content-Disposition",String.format("attachment;filename=\"%s\"",file.getName()));
 		System.err.println(file.getName());
-		headers.add("Content-Disposition",String.format("attachment;filename="+ new String(resFileName.getBytes("gb2312"), "ISO8859-1" ), file.getName()));
-		headers.add("Cache-Control","no-cache,no-store,must-revalidate");
-		headers.add("Pragma","no-cache");
-		headers.add("Expires","0");
+		headers.add("Content-Disposition", String.format(
+				"attachment;filename=" + new String(resFileName.getBytes("gb2312"), "ISO8859-1"), file.getName()));
+		headers.add("Cache-Control", "no-cache,no-store,must-revalidate");
+		headers.add("Pragma", "no-cache");
+		headers.add("Expires", "0");
 
-	    ResponseEntity<Object> responseEntity = ResponseEntity.ok()
-	                                            .headers(headers)
-	                                            .contentLength(file.length())
-	                                            .contentType(MediaType.parseMediaType("application/text"))
-	                                            .body(resource);
-	    	return responseEntity;
-	    }
-	
-//	public ResultDTO download(HttpServletResponse response, String fileName) {
-//		response.setHeader("content-type", "application/octet-stream");
-//		response.setContentType("application/octet-stream");
-//		response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-//		byte[] buff = new byte[1024];
-//		BufferedInputStream bufferedInputStream = null;
-//		OutputStream outputStream = null;
-//		try {
-//			outputStream = response.getOutputStream();
-//			
-//			bufferedInputStream = new BufferedInputStream(new ByteArrayInputStream(fileBytes), fileBytes.length);
-//			int num = bufferedInputStream.read(buff);
-//	        while (num != -1) {
-//	            outputStream.write(buff, 0, num);
-//	            outputStream.flush();
-//	            num = bufferedInputStream.read(buff);
-//	        }
-//			
-//		} catch (IOException e) {
-//			throw new RuntimeException(e.getMessage());
-//		} finally {
-//			if (bufferedInputStream != null) {
-//	            bufferedInputStream.close();
-//	        }
-//		}	
-//	}
+		ResponseEntity<Object> responseEntity = ResponseEntity.ok().headers(headers).contentLength(file.length())
+				.contentType(MediaType.parseMediaType("application/text")).body(resource);
+		return responseEntity;
+	}
+
 }

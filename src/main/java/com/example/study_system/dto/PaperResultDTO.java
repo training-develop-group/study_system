@@ -19,14 +19,6 @@ public class PaperResultDTO {
 	private Integer Many;
 	private List<QuestionResultDTO> questionList;
 	
-	public List<QuestionResultDTO> getQuestionList() {
-		return questionList;
-	}
-
-	public void setQuestionList(List<QuestionResultDTO> questionList) {
-		this.questionList = questionList;
-	}
-
 	public PaperResultDTO() {
 
 	}
@@ -76,6 +68,14 @@ public class PaperResultDTO {
 		this.mUser = mUser;
 		this.questionList = questionList;
 		this.userScore = userScore;
+	}
+	
+	public List<QuestionResultDTO> getQuestionList() {
+		return questionList;
+	}
+
+	public void setQuestionList(List<QuestionResultDTO> questionList) {
+		this.questionList = questionList;
 	}
 	
 	public Float getUserScore() {

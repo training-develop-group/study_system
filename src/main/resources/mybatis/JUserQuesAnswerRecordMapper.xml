@@ -32,7 +32,7 @@
   
   <select id="selectJUserQuesAnswerRecord" resultType="Float" parameterType="String" >
    SELECT ROUND(T1.wc/T2.z*100,1) FROM
-   (SELECT count(*) as wc FROM manage_system.j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right != 1) T1,
+   (SELECT count(*) as wc FROM manage_system.j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right = 1) T1,
    (SELECT count(*) as z FROM manage_system.j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR}) T2;
    </select>
    

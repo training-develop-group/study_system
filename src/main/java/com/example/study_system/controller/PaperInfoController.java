@@ -16,6 +16,7 @@ import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
 import com.example.study_system.dto.PaperQuestionResultDTO;
 import com.example.study_system.dto.PaperResultDTO;
+import com.example.study_system.emun.ResultEmun;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
 import com.example.study_system.model.JUserTaskQuestionsInfoMapper;
@@ -36,7 +37,7 @@ public class PaperInfoController extends BaseController {
 	@RequestMapping(value = "/paper", method = RequestMethod.POST)
 	public ResultDTO add(HttpServletRequest request , @RequestParam(value = "paperName")String paperName) {
 		if (paperName == null) {
-			return noData();
+			return validationError();
 		}
 		
 		
@@ -54,7 +55,7 @@ public class PaperInfoController extends BaseController {
 	@RequestMapping(value = "/paper-name", method = RequestMethod.POST)
 	public ResultDTO modifyTestPaperName(@RequestBody PaperInfo paperInfo) {
 		if (paperInfo == null) {
-			return noData();
+			return validationError();
 		}
 		int updatePaperName = serviceFacade.getPaperInfoService().modifyTestPaperName(paperInfo);
 		return success(updatePaperName);
@@ -69,7 +70,7 @@ public class PaperInfoController extends BaseController {
 	@RequestMapping(value = "/{paperId}", method = RequestMethod.DELETE)
 	public ResultDTO deleteTestPaper(@PathVariable("paperId") Long paperId) {
 		if (paperId == null) {
-			return noData();
+			return validationError();
 		}
 		int deletePaperById = serviceFacade.getPaperInfoService().deleteTestPaper(paperId);
 		return success(deletePaperById);
@@ -84,10 +85,13 @@ public class PaperInfoController extends BaseController {
 	@RequestMapping(value = "/{paperId}", method = RequestMethod.GET)
 	public ResultDTO detailsOfExaminationPapers(@PathVariable("paperId") Long paperId) {
 		if (paperId == null) {
+			return new ResultDTO<>(ResultEmun.VALIDATION_ERROR);
+		}
+		PaperResultDTO paperInfo = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
+		if (paperInfo == null) {
 			return noData();
 		}
-		PaperResultDTO PaperParticulars = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
-		return success(PaperParticulars);
+		return success(paperInfo);
 	}
 
 	/**
@@ -99,7 +103,13 @@ public class PaperInfoController extends BaseController {
 	public ResultDTO<PageInfo<PaperResultDTO>> selectPaperInfos(@RequestParam(value = "pageNum")Integer pageNum , 
 			@RequestParam(value = "pageSize")Integer pageSize , 
 			@RequestParam(value = "paperName" , required = false)String paperName) {
+		if (pageNum == null || pageSize == null || paperName == null) {
+			return validationError();
+		}
 		PageInfo<PaperResultDTO> paperList = serviceFacade.getPaperInfoService().selectPaperInfos(pageNum, pageSize , paperName);
+		if (paperList == null) {
+			return noData();
+		}
 		return success(paperList);
 	}
 
@@ -137,6 +147,15 @@ public class PaperInfoController extends BaseController {
 			jUserPaperInfo.setPaperId(paperId);
 			jUserPaperInfo.setTaskId(taskId);
 			PaperResultDTO result = serviceFacade.getPaperInfoService().answer(userInfo.getUserId(),paperId,taskId, jUserQuesAnswerRecordInfo);
+			if (userInfo == null) {
+	            return noData();
+	        }
+			if (result == null) {
+				return noData();
+			}
+			if (paperId == null || taskId == null || jUserQuesAnswerRecord == null) {
+				return validationError();
+			}
 			return success(result);
 //		}
 	}
@@ -176,6 +195,9 @@ public class PaperInfoController extends BaseController {
 										@RequestParam("questionId") Long questionId) {
 		System.out.println(paperId);
 		int deletePaperQuestion = serviceFacade.getPaperInfoService().deletePQRelationship(paperId , questionId);
+		if (paperId == null || questionId == null) {
+			return validationError();
+		}
 		return success(deletePaperQuestion);
 	}
 	
@@ -187,6 +209,12 @@ public class PaperInfoController extends BaseController {
 	@RequestMapping(value = "/score", method = RequestMethod.GET)
 	public ResultDTO selectPaperScore(@RequestParam("paperId") Long paperId) {
 		Long paperScore = serviceFacade.getPaperInfoService().selectPaperScore(paperId);
+		if (paperScore == null) {
+			return noData();
+		}
+		if (paperId == null) {
+			return validationError();
+		}
 		return success(paperScore);
 	}
 	
@@ -208,6 +236,9 @@ public class PaperInfoController extends BaseController {
 		List<PaperQuestionResultDTO> questionScoreList = JSON.parseArray(questionScore, PaperQuestionResultDTO.class);
 		List<JPaperQuestion> sortIng = JSON.parseArray(sorting, JPaperQuestion.class);
 		int updatePaper = serviceFacade.getPaperInfoService().addOrRemoveRelationships(jPaperQuestionList , paperQuestionPesultList , questionScoreList , sortIng);
+		if (JPaperQuestion == null || PaperQuestionPesult == null || questionScore == null || sorting == null) {
+			return validationError();
+		}
 		return success(updatePaper);
 	}
 }

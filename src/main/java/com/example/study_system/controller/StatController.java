@@ -20,6 +20,9 @@ public class StatController extends BaseController{
 		@RequestMapping(value = "/task-type",method = RequestMethod.GET)
 		public ResultDTO selectTaskTypePercentage() {
 			TaskInfo res = serviceFacade.getStatService().selectStat();
+			if (res == null) {
+				return noData();
+			}
 			return success(res);
 		}
 		
@@ -27,6 +30,9 @@ public class StatController extends BaseController{
 		@RequestMapping(value = "/task",method = RequestMethod.GET)
 		public ResultDTO select() {
 			JUserTask res = serviceFacade.getStatService().selectJUsePaperPercentage();
+			if (res == null) {
+				return noData();
+			}
 			System.out.println(res);
 			return success(res);
 		}
@@ -35,6 +41,9 @@ public class StatController extends BaseController{
 		@RequestMapping(value = "/answer",method = RequestMethod.GET)
 		public ResultDTO selectJUserQuesAnswerRecord() {
 			JUserQuesAnswerRecord res = serviceFacade.getStatService().choiceJUserQuesAnswerRecord();
+			if (res == null) {
+				return noData();
+			}
 			return success(res);
 		}
 		
@@ -43,8 +52,14 @@ public class StatController extends BaseController{
 		public ResultDTO selectTaskInfo(@RequestParam(value = "userName") String userName , 
 										@RequestParam(value = "pageNum") Integer pageNum , 
 										@RequestParam(value = "pageSize") Integer pageSize) {
+			if (userName == null || pageNum == null || pageSize == null) {
+				return validationError();
+			}
 			System.out.println(userName);
 			PageInfo<UserTaskDTO> res = serviceFacade.getStatService().statisticalList(userName , pageNum , pageSize);
+			if (res == null) {
+				return noData();
+			}
 			return success(res);
 		}
 }

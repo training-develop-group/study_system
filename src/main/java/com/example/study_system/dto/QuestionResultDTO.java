@@ -13,37 +13,6 @@ public class QuestionResultDTO extends QuestionInfoWithBLOBs{
 	private List<QuestionInfoWithBLOBs> questionList;
 	private Integer orderIndex;
 	
-	public Integer getOrderIndex() {
-		return orderIndex;
-	}
-
-	public void setOrderIndex(Integer orderIndex) {
-		this.orderIndex = orderIndex;
-	}
-
-	public List<QuestionInfoWithBLOBs> getQuestionList() {
-		return questionList;
-	}
-
-	public void setQuestionList(List<QuestionInfoWithBLOBs> questionList) {
-		this.questionList = questionList;
-	}
-
-	public String getUserAnswer() {
-		return userAnswer;
-	}
-	
-	public void setUserAnswer(String userAnswer) {
-		this.userAnswer = userAnswer;
-	}
-	public List<JQuestionOption> getOptionInfo() {
-		return optionInfo;
-	}
-
-	public void setOptionInfo(List<JQuestionOption> optionInfo) {
-		this.optionInfo = optionInfo;
-	}
-
 	public QuestionResultDTO() {
 
 	}
@@ -93,5 +62,36 @@ public class QuestionResultDTO extends QuestionInfoWithBLOBs{
 		super.setOptionType(question.getOptionType());
 		this.optionInfo = optionInfo;
 		this.userAnswer = userAnswer;
+	}
+	
+	public Integer getOrderIndex() {
+		return orderIndex;
+	}
+
+	public void setOrderIndex(Integer orderIndex) {
+		this.orderIndex = orderIndex;
+	}
+
+	public List<QuestionInfoWithBLOBs> getQuestionList() {
+		return questionList;
+	}
+
+	public void setQuestionList(List<QuestionInfoWithBLOBs> questionList) {
+		this.questionList = questionList;
+	}
+
+	public String getUserAnswer() {
+		return userAnswer;
+	}
+	
+	public void setUserAnswer(String userAnswer) {
+		this.userAnswer = userAnswer;
+	}
+	public List<JQuestionOption> getOptionInfo() {
+		return optionInfo;
+	}
+
+	public void setOptionInfo(List<JQuestionOption> optionInfo) {
+		this.optionInfo = optionInfo;
 	}
 }
