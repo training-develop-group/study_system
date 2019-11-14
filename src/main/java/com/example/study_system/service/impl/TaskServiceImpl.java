@@ -70,6 +70,7 @@ public class TaskServiceImpl extends BaseService implements ITaskService {
 //				JUserPaper userPaper = jUserPaperMapper.selectByUserIdAndTaskId(TaskUser.getUserId(),TaskUser.getTaskId());
 				JUserPaper userPaper = jUserPaperMapper.selectByUserIdAndTaskId("1",(long)3);
 				if(userPaper==null) {
+					userPaper = new JUserPaper();
 					userPaper.setScore((float) 0.0);
 				}
 				TaskUser.setScore(userPaper.getScore());

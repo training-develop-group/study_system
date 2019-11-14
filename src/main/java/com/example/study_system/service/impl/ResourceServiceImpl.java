@@ -60,8 +60,7 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 					|| extName.equals(".wmv") || extName.equals(".rmvb") || fileType.equals("video/ogg")) {
 				fileType = "1";
 				resType = Integer.valueOf(fileType);
-			} else if (extName.equals(".ogv") || extName.equals(".mp3") || extName.equals(".wav")
-					|| fileType.equals("audio/ogg")) {
+			} else if (extName.equals(".ogv") || extName.equals(".mp3") || extName.equals(".wav")) {
 				fileType = "2";
 				resType = Integer.valueOf(fileType);
 			} else if (extName.equals(".txt") || extName.equals(".doc") || extName.equals(".docx")
@@ -103,6 +102,7 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 				resourceInfo.setmTime(date); // 添加当前系统时间
 				resourceInfo.setcUser(resourceInfo.getcUser()); // 添加创建用户
 				resourceInfo.setmUser(resourceInfo.getcUser()); // 添加修改用户
+
 				System.out.println("文件类型" + "resType:" + resType);
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
@@ -267,10 +267,9 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 		System.err.println(filePath);
 		if (file.exists() && file.isFile()) {
 			file.delete();
-			return resourceInfoMapper.deleteByPrimaryKey(resId);
 			
 		}
-		return 0;
+		return resourceInfoMapper.deleteByPrimaryKey(resId);
 	}
 
 	/**

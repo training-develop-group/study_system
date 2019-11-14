@@ -40,13 +40,13 @@
 
    <select id="selectUserTask" parameterType="String" resultMap="BaseResultMap">
  	select 
-   a.status,a.task_type,a.task_id,a.res_id,a.paper_id,a.start_time,a.end_time,b.user_id,a.task_name
+   T.status,T.task_type,T.task_id,T.res_id,T.paper_id,T.start_time,T.end_time,JUT.user_id,T.task_name
     from
-    manage_system.j_user_task b,
-    manage_system.task_info a 
-    where a.task_id = b.task_id and 
-    b.STATUS = ${stutas} and 
-    b.user_id = '${userId}' ORDER BY a.c_time desc , a.task_id desc
+    manage_system.j_user_task JUT,
+    manage_system.task_info T 
+    where T.task_id = JUT.task_id and 
+    JUT.STATUS = ${stutas} and 
+    JUT.user_id = '${userId}' ORDER BY T.c_time desc , T.task_id desc
     
   </select>
    
@@ -56,11 +56,11 @@
    <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from task_info a
+    from task_info
     where 
     1=1 
     <if test="taskName!=''||taskName!=null">
-    and a.task_name like '%${taskName}%'
+    and task_name like '%${taskName}%'
     </if>
     ORDER BY c_time desc , task_id desc
   </select>

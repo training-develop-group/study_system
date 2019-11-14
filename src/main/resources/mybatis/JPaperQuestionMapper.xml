@@ -21,11 +21,9 @@
   </select>
   <select id="selectQuestionByPaperId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-	question_id,
-	score
+	<include refid="Base_Column_List" />
     from j_paper_question
     where paper_id = #{paperId,jdbcType=BIGINT}
-    ORDER BY order_index ASC;
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from j_paper_question

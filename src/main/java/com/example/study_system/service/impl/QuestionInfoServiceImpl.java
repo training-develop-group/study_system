@@ -108,10 +108,7 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		questionList.forEach(questionItem -> {
 			List<JQuestionOption> optionList = jQuestionOptionMapper
 					.selectQuestionByQuestionId(questionItem.getQuestionId());
-			questionResultDTO.add(new QuestionResultDTO(questionItem.getQuestionId(), questionItem.getQuestionType(),
-					questionItem.getScore(), questionItem.getDifficulty(), questionItem.getContent(),
-					questionItem.getAnalysis(), questionItem.getStatus(), questionItem.getcTime(),
-					questionItem.getmTime(), questionItem.getcUser(), questionItem.getmUser(), optionList));
+			questionResultDTO.add(new QuestionResultDTO(questionItem, optionList));
 		});
 		PageInfo<QuestionResultDTO> result = new PageInfo<QuestionResultDTO>(questionResultDTO);
 		result.setTotal(questionInfoMapper.selectQuestionCountNum(content , questionType));
@@ -128,10 +125,7 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(questionId);
 		List<JQuestionOption> questionOptionList = jQuestionOptionMapper.selectQuestionByQuestionId(questionId);
 		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
-		questionResultDTO.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
-				question.getScore(), question.getDifficulty(), question.getContent(), question.getAnalysis(),
-				question.getStatus(), question.getcTime(), question.getmTime(), question.getcUser(),
-				question.getmUser(), questionOptionList));
+		questionResultDTO.add(new QuestionResultDTO(question, questionOptionList));
 		questionResultDTO.forEach(a -> {
 		});
 		return questionResultDTO;

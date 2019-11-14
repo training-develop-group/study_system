@@ -54,8 +54,9 @@
 		<include refid="Blob_Column_List" />
 		from j_question_option
 		where question_id in
-		<foreach collection="list" item="question" index="index" open="(" separator="," close=")">
-			#{question.questionId}
+		
+		<foreach collection="ids" item="questionId" index="index" open="(" close=")" separator=",">
+	  		#{questionId}
 		</foreach>
 		ORDER BY question_id ASC
 	</select>

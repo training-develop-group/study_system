@@ -1,16 +1,19 @@
 package com.example.study_system.service.impl;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import com.example.study_system.dto.PaperQuestionPesultDTO;
+import com.example.study_system.dto.PaperQuestionResultDTO;
 import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JPaperQuestion;
@@ -53,34 +56,72 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 	@Override
 	@Transactional
 	public PaperResultDTO detailsOfExaminationPapers(Long paperId) {
+		// 结果集
+		PaperResultDTO result;
 		// 取该试卷所有信息
 		PaperInfo paper = paperInfoMapper.selectByPrimaryKey(paperId);
-		List<QuestionResultDTO> questionInfo = new ArrayList<QuestionResultDTO>();
-		List<PaperQuestionPesultDTO> questionIdList = new ArrayList<PaperQuestionPesultDTO>();
-		List<PaperQuestionPesultDTO> scoreList = new ArrayList<PaperQuestionPesultDTO>();
-		// 通过试卷ID取所有ID
-		jPaperQuestionMapper.selectQuestionByPaperId(paperId).forEach(item -> {
-			questionIdList.add(new PaperQuestionPesultDTO(item.getQuestionId()));
-			scoreList.add(new PaperQuestionPesultDTO(item.getScore()));
-			// 取试题ID
-//			QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(item.getQuestionId());
-//			questionInfo.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
-//					question.getScore(), question.getDifficulty(), question.getContent(), question.getAnalysis(),
-//					question.getStatus(), question.getcTime(), question.getmTime(), question.getcUser(),
-//					question.getmUser(), jQuestionOptionMapper.selectQuestionByQuestionId(item.getQuestionId()),
-//					item.getScore()));
-		});
-		if (questionIdList.isEmpty()) {
+		if (paper == null) {
 			return null;
+		} else {
+			result = new PaperResultDTO(paper);
 		}
-		List<JQuestionOption> QuestionOption = jQuestionOptionMapper.selectQuestionByQuestionIdList(questionIdList);
-		List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectByPrimaryKeyPaperInfo(questionIdList);
-		questionInfo.add(new QuestionResultDTO(QuestionOption , questionList , scoreList));
-		PaperResultDTO paperResultDTO = new PaperResultDTO(paperId, paper.getPaperName(), paper.getScore(),
-				paper.getStatus(), paper.getcTime(), paper.getmTime(), paper.getcUser(), paper.getmUser(),
-				questionInfo);
+		// 通过试卷ID取所有试题关系
+		List<JPaperQuestion> jPaperQuestionList = jPaperQuestionMapper.selectQuestionByPaperId(paperId);
+		// 获取试题id集合
+		List<Long> questionIdList = new ArrayList<Long>();
+		//获取分值map<questionId,JPaperQuestion>
+		Map<Long, JPaperQuestion> jPaperQuestionMap = new HashMap<>();
+		jPaperQuestionList.forEach(jPaperQuestion -> {
+			questionIdList.add(jPaperQuestion.getQuestionId());
+			jPaperQuestionMap.put(jPaperQuestion.getQuestionId(), jPaperQuestion);
+		});
 
-		return paperResultDTO;
+		if (CollectionUtils.isEmpty(questionIdList)) {
+			//空处理
+			result.setQuestionList(new ArrayList<>());
+			return result;
+		}
+		// 根据questionIds取选项List
+		List<JQuestionOption> questionOptionList = jQuestionOptionMapper.selectQuestionByQuestionIdList(questionIdList);
+		// 根据questionIds取试题List
+		List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectByQuestionIds(questionIdList);
+		// 试题加选项的集合
+		List<QuestionResultDTO> questionInfoList = new ArrayList<QuestionResultDTO>();
+		// 设置选项map<questionId,List<JQuestionOption>>
+		Map<Long, List<JQuestionOption>> optionMap = new HashMap<>();
+		questionOptionList.forEach(option -> {
+			if (optionMap.containsKey(option.getQuestionId())) {
+				optionMap.get(option.getQuestionId()).add(option);
+			} else {
+				List<JQuestionOption> temp = new ArrayList<>();
+				temp.add(option);
+				optionMap.put(option.getQuestionId(), temp);
+			}
+		});
+		
+		// 处理试题集合
+		for (QuestionInfoWithBLOBs question : questionList) {
+			//question信息处理
+			QuestionResultDTO questionInfo = new QuestionResultDTO(question);
+			//处理分数，排序
+			if (jPaperQuestionMap.containsKey(question.getQuestionId())) {
+				questionInfo.setScore(jPaperQuestionMap.get(question.getQuestionId()).getScore());
+				questionInfo.setOrderIndex(jPaperQuestionMap.get(question.getQuestionId()).getOrderIndex());
+			} else {
+				questionInfo.setScore(0f);
+			}
+			//处理选项
+			if (optionMap.containsKey(question.getQuestionId())) {
+				questionInfo.setOptionInfo(optionMap.get(question.getQuestionId()));
+			} else {
+				questionInfo.setOptionInfo(new ArrayList<JQuestionOption>());
+			}
+			questionInfoList.add(questionInfo);
+		}
+		//排序
+		questionInfoList.stream().sorted(Comparator.comparing(QuestionResultDTO::getOrderIndex)).collect(Collectors.toList());
+		result.setQuestionList(questionInfoList);
+		return result;
 	}
 
 //	获取试卷列表
@@ -135,8 +176,9 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		//查找试卷所有信息(根据id查)
 		PaperResultDTO paperResultDTO = detailsOfExaminationPapers(paperId);
 		//用来存正确答案
+		System.out.println(paperResultDTO);
 		Map<Long, JUserTaskQuestionsInfoMapper> isRight = new HashMap<Long, JUserTaskQuestionsInfoMapper>();
-		paperResultDTO.getQuestions().forEach(item -> {
+		paperResultDTO.getQuestionList().forEach(item -> {
 			//正确答案字符串
 			String isRighta = "";
 			//拼接正确答案
@@ -148,7 +190,7 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 			//添加到Map
 			JUserTaskQuestionsInfoMapper jUserTask = new JUserTaskQuestionsInfoMapper();
 			jUserTask.setAnswer(isRighta);
-			jUserTask.setScore((item).getNewScore());
+			jUserTask.setScore((item).getScore());
 			isRight.put(item.getQuestionId(), jUserTask);
 		});
 		//下面是用拼接的字符串来比较
@@ -164,7 +206,7 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 				//获取当前题目的分数
 				jUserTask.setScore(isRight.get(jUserTask.getQuestionId()).getScore());
 			};
-			for (QuestionResultDTO QuestionResult : paperResultDTO.getQuestions()) {
+			for (QuestionResultDTO QuestionResult : paperResultDTO.getQuestionList()) {
 				if (jUserTask.getQuestionId() == QuestionResult.getQuestionId()) {
 					//添加用户选择答案到paperResultDTO里面
 					QuestionResult.setUserAnswer(jUserTask.getAnswer());
@@ -197,7 +239,9 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		}
 		//修改他已经完成
 		jUserTaskMapper.updateStatus(userId, taskId);
+		System.out.println(score);
 		paperResultDTO.setUserScore(score);
+		System.out.println(paperResultDTO.getUserScore());
 		//返回处理完的DTO
 		return paperResultDTO;
 	}
@@ -233,8 +277,8 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		@Override
 		@Transactional
 		public int addOrRemoveRelationships(List<JPaperQuestion> JPaperQuestionList,
-				List<PaperQuestionPesultDTO> PaperQuestionPesultList,
-				List<PaperQuestionPesultDTO> questionScoreList,
+				List<PaperQuestionResultDTO> PaperQuestionPesultList,
+				List<PaperQuestionResultDTO> questionScoreList,
 				List<JPaperQuestion> sortIng) {
 //			删除试卷试题关系
 			if (PaperQuestionPesultList.size() != 0) {
@@ -246,6 +290,8 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 			if (JPaperQuestionList.size() != 0) {
 				JPaperQuestionList.forEach(item -> {
 					result = jPaperQuestionMapper.insertSelective(item);
+//					修改试题状态
+					result = questionInfoMapper.updateQuestionStatus(item.getQuestionId());
 				});
 			}
 //			排序
@@ -256,6 +302,8 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 					result = jPaperQuestionMapper.delete(item.getPaperId(), item.getQuestionId());
 //					在添加
 					result = jPaperQuestionMapper.insertSelective(item);
+//					修改试题状态
+					result = questionInfoMapper.updateQuestionStatus(item.getQuestionId());
 				});
 			}
 //			设置试卷里试题的分值

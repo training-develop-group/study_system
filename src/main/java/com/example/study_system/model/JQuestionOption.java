@@ -2,6 +2,8 @@ package com.example.study_system.model;
 
 import java.util.Date;
 
+import com.example.study_system.dto.QuestionResultDTO;
+
 public class JQuestionOption {
 	private Long ref;
 
@@ -21,6 +23,7 @@ public class JQuestionOption {
 
 	private String content;
 	
+	private QuestionResultDTO questionResultDTO;
 
 	public JQuestionOption() {
 
@@ -33,6 +36,14 @@ public class JQuestionOption {
 		this.optionType = optionType;
 	}
 
+	public QuestionResultDTO getQuestionResultDTO() {
+		return questionResultDTO;
+	}
+
+	public void setQuestionResultDTO(QuestionResultDTO questionResultDTO) {
+		this.questionResultDTO = questionResultDTO;
+	}
+	
 	public Long getRef() {
 		return ref;
 	}

@@ -26,7 +26,7 @@ public final class UserUtil {
         UserInfo userInfo;
         if(StringUtils.isEmpty(user)) {
         	userInfo = new UserInfo();
-        	userInfo.setUserId("76b9e812-0496-11ea-a3a7-00ffa210afd0");
+        	userInfo.setUserId("80577c73-0621-11ea-93b1-00ffa210afd0");
         	userInfo.setUserName("张三");
         	userInfo.setStRoleId(StRoleEmun.MANAGER.getStRoleId());
         } else {

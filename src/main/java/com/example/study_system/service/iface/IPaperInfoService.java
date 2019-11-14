@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.example.study_system.dto.PaperQuestionPesultDTO;
+import com.example.study_system.dto.PaperQuestionResultDTO;
 import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
@@ -42,7 +42,7 @@ public interface IPaperInfoService {
 	
 	Long selectPaperScore(Long paperId);
 
-	int addOrRemoveRelationships(List<JPaperQuestion> JPaperQuestionList, List<PaperQuestionPesultDTO> PaperQuestionPesultList, List<PaperQuestionPesultDTO> questionScore , List<JPaperQuestion> sorting);
+	int addOrRemoveRelationships(List<JPaperQuestion> JPaperQuestionList, List<PaperQuestionResultDTO> PaperQuestionPesultList, List<PaperQuestionResultDTO> questionScore , List<JPaperQuestion> sorting);
 //	设置试题分数
 	int updateScore(Long paperId , Long questionId , Float score);
 

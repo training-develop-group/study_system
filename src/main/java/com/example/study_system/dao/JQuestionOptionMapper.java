@@ -3,8 +3,8 @@ package com.example.study_system.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-import com.example.study_system.dto.PaperQuestionPesultDTO;
 import com.example.study_system.model.JQuestionOption;
 
 @Mapper
@@ -23,7 +23,7 @@ public interface JQuestionOptionMapper {
 
 	int updateByPrimaryKey(JQuestionOption record);
 //	试卷详情(用)
-	List<JQuestionOption> selectQuestionByQuestionIdList(List<PaperQuestionPesultDTO> questionIdList);
+	List<JQuestionOption> selectQuestionByQuestionIdList(@Param("ids") List<Long> questionIdList);
 	
 	List<JQuestionOption> selectQuestionByQuestionId(Long questionId);
 

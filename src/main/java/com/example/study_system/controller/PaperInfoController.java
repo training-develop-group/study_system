@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
-import com.example.study_system.dto.PaperQuestionPesultDTO;
+import com.example.study_system.dto.PaperQuestionResultDTO;
 import com.example.study_system.dto.PaperResultDTO;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserPaper;
@@ -204,8 +204,8 @@ public class PaperInfoController extends BaseController {
 									@RequestParam("sorting") String sorting) {
 		
 		List<JPaperQuestion> jPaperQuestionList = JSON.parseArray(JPaperQuestion, JPaperQuestion.class);
-		List<PaperQuestionPesultDTO> paperQuestionPesultList = JSON.parseArray(PaperQuestionPesult, PaperQuestionPesultDTO.class);
-		List<PaperQuestionPesultDTO> questionScoreList = JSON.parseArray(questionScore, PaperQuestionPesultDTO.class);
+		List<PaperQuestionResultDTO> paperQuestionPesultList = JSON.parseArray(PaperQuestionPesult, PaperQuestionResultDTO.class);
+		List<PaperQuestionResultDTO> questionScoreList = JSON.parseArray(questionScore, PaperQuestionResultDTO.class);
 		List<JPaperQuestion> sortIng = JSON.parseArray(sorting, JPaperQuestion.class);
 		int updatePaper = serviceFacade.getPaperInfoService().addOrRemoveRelationships(jPaperQuestionList , paperQuestionPesultList , questionScoreList , sortIng);
 		return success(updatePaper);

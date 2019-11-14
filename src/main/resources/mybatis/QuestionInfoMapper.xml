@@ -92,15 +92,15 @@
 		</if>
 		ORDER BY question_id ASC
 	</select>
-	<select id="selectByPrimaryKeyPaperInfo" resultMap="ResultMapWithBLOBs">
+	<select id="selectByQuestionIds" resultMap="ResultMapWithBLOBs">
 		select
 		<include refid="Base_Column_List" />
 		,
 		<include refid="Blob_Column_List" />
 		from question_info
 		where question_id in
-		<foreach collection="list" item="question" index="index" open="(" separator="," close=")">
-			#{question.questionId}
+		<foreach collection="ids" item="questionId" index="index" open="(" close=")" separator=",">
+	  		#{questionId}
 		</foreach>
 		ORDER BY question_id ASC
 	</select>
@@ -282,6 +282,13 @@
 		parameterType="com.example.study_system.model.QuestionInfo">
 		update question_info
 		set score =#{score,jdbcType=REAL}
+		where
+		question_id = #{questionId,jdbcType=BIGINT}
+	</update>
+	<update id="updateQuestionStatus"
+		parameterType="com.example.study_system.model.QuestionInfo">
+		update question_info
+		set score = 1
 		where
 		question_id = #{questionId,jdbcType=BIGINT}
 	</update>

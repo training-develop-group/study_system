@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.example.study_system.dto.PaperQuestionPesultDTO;
+import com.example.study_system.dto.PaperQuestionResultDTO;
 import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
 
@@ -23,7 +23,7 @@ public interface QuestionInfoMapper {
 
 	int updateByPrimaryKeyWithBLOBs(QuestionInfoWithBLOBs record);
 //	试卷详情(用)
-	List<QuestionInfoWithBLOBs> selectByPrimaryKeyPaperInfo(List<PaperQuestionPesultDTO> questionIdList);
+	List<QuestionInfoWithBLOBs> selectByQuestionIds(@Param("ids")List<Long> questionIdList);
 	
 	int updateByPrimaryKey(QuestionInfo record);
 
@@ -37,4 +37,6 @@ public interface QuestionInfoMapper {
 	List<QuestionInfoWithBLOBs> selectAnalysisById(@Param("questionId") Long questionId);
 
 	int updateQuestionScore(@Param("score") Float score, @Param("questionId") Long questionId);
+	
+	int updateQuestionStatus(@Param("questionId") Long questionId);
 }
