@@ -13,7 +13,7 @@ public interface JUserVideoLogMapper {
 
     int insertSelective(JUserVideoLog record);
 
-    JUserVideoLog selectByPrimaryKey(Long ref);
+    Long selectByPrimaryKey(Long ref);
 
     int updateByPrimaryKeySelective(JUserVideoLog record);
 
@@ -21,5 +21,5 @@ public interface JUserVideoLogMapper {
 
     long insertVideoPlaybackTime(Long resId, Long seconds);
 
-    List<JUserVideoLog> selectByResId(Long resId);
+    Long selectByResId(Long resId);
 }

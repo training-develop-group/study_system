@@ -1,208 +1,263 @@
 package com.example.study_system.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.alibaba.fastjson.JSON;
 import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
 import com.example.study_system.dto.PaperQuestionResultDTO;
 import com.example.study_system.dto.PaperResultDTO;
-import com.example.study_system.model.*;
+import com.example.study_system.dto.QuestionResultDTO;
+import com.example.study_system.model.JPaperQuestion;
+import com.example.study_system.model.JUserPaper;
+import com.example.study_system.model.JUserTaskQuestionsInfoMapper;
+import com.example.study_system.model.PaperInfo;
+import com.example.study_system.model.UserInfo;
 import com.example.study_system.util.UserUtil;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping("/paper")
 public class PaperInfoController extends BaseController {
-    /**
-     * 新建试卷
-     *
-     * @param paperInfo
-     * @return
-     */
-    @RequestMapping(value = "/paper", method = RequestMethod.POST)
-    public ResultDTO add(HttpServletRequest request, @RequestParam(value = "paperName") String paperName) {
-        if (paperName == null) {
-            return noData();
-        }
-        int insertPaper = serviceFacade.getPaperInfoService().insert(request, paperName);
-        return success(insertPaper);
-    }
+	/**
+	 * 新建试卷
+	 *
+	 * @param paperInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/paper", method = RequestMethod.POST)
+	public ResultDTO add(HttpServletRequest request, @RequestParam(value = "paperName") String paperName) {
+		if (StringUtils.isEmpty(paperName)) {
+			return noData();
+		}
+		int insertPaper = serviceFacade.getPaperInfoService().insert(request, paperName);
+		return success(insertPaper);
+	}
 
-    /**
-     * 修改试卷名
-     *
-     * @param paperInfo
-     * @return
-     */
-    @RequestMapping(value = "/paper-name", method = RequestMethod.POST)
-    public ResultDTO modifyTestPaperName(@RequestBody PaperInfo paperInfo) {
-        if (paperInfo == null) {
-            return noData();
-        }
-        int updatePaperName = serviceFacade.getPaperInfoService().modifyTestPaperName(paperInfo);
-        return success(updatePaperName);
-    }
+	/**
+	 * 修改试卷名
+	 *
+	 * @param paperInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/paper-name", method = RequestMethod.POST)
+	public ResultDTO modifyTestPaperName(@RequestBody PaperInfo paperInfo) {
+		if (paperInfo == null) {
+			return noData();
+		}
+		int updatePaperName = serviceFacade.getPaperInfoService().modifyTestPaperName(paperInfo);
+		return success(updatePaperName);
+	}
+
 	/**
 	 * 获取试卷列表
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/papers", method = RequestMethod.GET)
-	public ResultDTO<PageInfo<PaperResultDTO>> selectPaperInfos(@RequestParam(value = "pageNum")Integer pageNum , 
-			@RequestParam(value = "pageSize")Integer pageSize , 
-			@RequestParam(value = "paperName" , required = false)String paperName) {
-		if (pageNum == null || pageSize == null || paperName == null) {
+	public ResultDTO<PageInfo<PaperResultDTO>> selectPaperInfos(@RequestParam(value = "pageNum") Integer pageNum,
+			@RequestParam(value = "pageSize") Integer pageSize,
+			@RequestParam(value = "paperName", required = false) String paperName) {
+		if (pageNum == null || pageSize == null) {
 			return validationError();
 		}
-		PageInfo<PaperResultDTO> paperList = serviceFacade.getPaperInfoService().selectPaperInfos(pageNum, pageSize , paperName);
+		PageInfo<PaperResultDTO> paperList = serviceFacade.getPaperInfoService().selectPaperInfos(pageNum, pageSize,
+				paperName);
 		if (paperList == null) {
 			return noData();
 		}
 		return success(paperList);
 	}
-    /**
-     * 删除试卷
-     *
-     * @param paperId
-     * @return
-     */
-    @RequestMapping(value = "/{paperId}", method = RequestMethod.DELETE)
-    public ResultDTO deleteTestPaper(@PathVariable("paperId") Long paperId) {
-        if (paperId == null) {
-            return noData();
-        }
-        int deletePaperById = serviceFacade.getPaperInfoService().deleteTestPaper(paperId);
-        return success(deletePaperById);
-    }
 
-    /**
-     * 获取试卷详情
-     *
-     * @param paperId
-     * @return
-     */
-    @RequestMapping(value = "/{paperId}", method = RequestMethod.GET)
-    public ResultDTO detailsOfExaminationPapers(@PathVariable("paperId") Long paperId) {
-        if (paperId == null) {
-            return noData();
-        }
-        PaperResultDTO PaperParticulars = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
-        return success(PaperParticulars);
-    }
+	/**
+	 * 删除试卷
+	 *
+	 * @param paperId
+	 * @return
+	 */
+	@RequestMapping(value = "/{paperId}", method = RequestMethod.DELETE)
+	public ResultDTO deleteTestPaper(@PathVariable("paperId") Long paperId) {
+		if (paperId == null) {
+			return validationError();
+		}
+		int deletePaperById = serviceFacade.getPaperInfoService().deleteTestPaper(paperId);
+		return success(deletePaperById);
+	}
 
+	/**
+	 * 获取试卷详情
+	 *
+	 * @param paperId
+	 * @return
+	 */
+	@RequestMapping(value = "/{paperId}", method = RequestMethod.GET)
+	public ResultDTO detailsOfExaminationPapers(@PathVariable("paperId") Long paperId) {
+		if (paperId == null) {
+			return validationError();
+		}
+		PaperResultDTO PaperParticulars = serviceFacade.getPaperInfoService().detailsOfExaminationPapers(paperId);
+		if (PaperParticulars == null) {
+			return validationError();
+		}
+		return success(PaperParticulars);
+	}
 
-    /**
-     * 添加试题到试卷
-     *
-     * @param JPaperQuestion
-     * @return
-     */
-    @RequestMapping(value = "/question", method = RequestMethod.POST)
-    public ResultDTO insertJPQ(@RequestBody JPaperQuestion JPaperQuestion) {
-        if (JPaperQuestion == null) {
-            return noData();
-        }
-        int insertQuestionArrivePaper = serviceFacade.getPaperInfoService().insertJPQ(JPaperQuestion);
-        return success(insertQuestionArrivePaper);
-    }
+	/**
+	 * 添加试题到试卷
+	 *
+	 * @param JPaperQuestion
+	 * @return
+	 */
+	@RequestMapping(value = "/question", method = RequestMethod.POST)
+	public ResultDTO insertJPQ(@RequestBody JPaperQuestion JPaperQuestion) {
+		if (JPaperQuestion == null) {
+			return validationError();
+		}
+		int insertQuestionArrivePaper = serviceFacade.getPaperInfoService().insertJPQ(JPaperQuestion);
+		return success(insertQuestionArrivePaper);
+	}
 
-    /**
-     * 提交试卷答案
-     *
-     * @param jUserPaper
-     * @param jUserQuesAnswerRecord
-     * @return
-     */
-    @RequestMapping(value = "/answers", method = RequestMethod.POST)
-    public ResultDTO answer(HttpServletRequest request,
-                            @RequestParam("paperId") Long paperId,
-                            @RequestParam("taskId") Long taskId,
-                            @RequestParam("jUserQuesAnswerRecord") String jUserQuesAnswerRecord) {
-        UserInfo userInfo = UserUtil.getUser(request);
-        List<JUserTaskQuestionsInfoMapper> jUserQuesAnswerRecordInfo = JSON.parseArray(jUserQuesAnswerRecord,
-                JUserTaskQuestionsInfoMapper.class);
-        JUserPaper jUserPaperInfo = new JUserPaper();
-        jUserPaperInfo.setUserId(userInfo.getUserId());
-        jUserPaperInfo.setPaperId(paperId);
-        jUserPaperInfo.setTaskId(taskId);
-        PaperResultDTO result = serviceFacade.getPaperInfoService().answer(userInfo.getUserId(), paperId, taskId, jUserQuesAnswerRecordInfo);
-        return success(result);
-    }
+	/**
+	 * 提交试卷答案
+	 *
+	 * @param jUserPaper
+	 * @param jUserQuesAnswerRecord
+	 * @return
+	 */
+	@RequestMapping(value = "/answers", method = RequestMethod.POST)
+	public ResultDTO answer(HttpServletRequest request, @RequestParam("paperId") Long paperId,
+			@RequestParam("taskId") Long taskId, @RequestParam("jUserQuesAnswerRecord") String jUserQuesAnswerRecord) {
+		if (paperId == null || taskId == null || StringUtils.isEmpty(jUserQuesAnswerRecord)) {
+			return validationError();
+		}
+		UserInfo userInfo = UserUtil.getUser(request);
+		if (userInfo == null) {
+			return noData();
+		}
+		List<JUserTaskQuestionsInfoMapper> jUserQuesAnswerRecordInfo = JSON.parseArray(jUserQuesAnswerRecord,
+				JUserTaskQuestionsInfoMapper.class);
+		JUserPaper jUserPaperInfo = new JUserPaper();
+		jUserPaperInfo.setUserId(userInfo.getUserId());
+		jUserPaperInfo.setPaperId(paperId);
+		jUserPaperInfo.setTaskId(taskId);
+		PaperResultDTO result = serviceFacade.getPaperInfoService().answer(userInfo.getUserId(), paperId, taskId,
+				jUserQuesAnswerRecordInfo);
+		if (result == null) {
+			return noData();
+		}
+		return success(result);
+	}
 
-    /**
-     * 获取试卷总数
-     *
-     * @return
-     */
-    @RequestMapping(value = "/count", method = RequestMethod.GET)
-    public ResultDTO count() {
-        return success(serviceFacade.getPaperInfoService().selectPaperCount());
-    }
+	/**
+	 * 获取试卷总数
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "/count", method = RequestMethod.GET)
+	public ResultDTO count() {
+		return success(serviceFacade.getPaperInfoService().selectPaperCount());
+	}
 
-    /**
-     * 设定试题分值
-     *
-     * @param score
-     * @param questionId
-     * @return
-     */
-    @RequestMapping(value = "/question/score", method = RequestMethod.POST)
-    public ResultDTO score(@RequestParam("paperId") Long paperId, @RequestParam("questionId") Long questionId, @RequestParam("score") Float score) {
-        if (paperId == null || score == null || questionId == null) {
-            return validationError();
-        }
-        int setGoals = serviceFacade.getPaperInfoService().updateScore(paperId, questionId, score);
-        return success(setGoals);
-    }
+	/**
+	 * 设定试题分值
+	 *
+	 * @param score
+	 * @param questionId
+	 * @return
+	 */
+	@RequestMapping(value = "/question/score", method = RequestMethod.POST)
+	public ResultDTO score(@RequestParam("paperId") Long paperId, @RequestParam("questionId") Long questionId,
+			@RequestParam("score") Float score) {
+		if (paperId == null || score == null || questionId == null) {
+			return validationError();
+		}
+		int setGoals = serviceFacade.getPaperInfoService().updateScore(paperId, questionId, score);
+		return success(setGoals);
+	}
 
-    /**
-     * 删除试卷试题
-     *
-     * @param paperId
-     * @param questionId
-     * @return
-     */
-    @RequestMapping(value = "/question", method = RequestMethod.DELETE)
-    public ResultDTO deletePQRelationship(@RequestParam("paperId") Long paperId,
-                                          @RequestParam("questionId") Long questionId) {
-        int deletePaperQuestion = serviceFacade.getPaperInfoService().deletePQRelationship(paperId, questionId);
-        return success(deletePaperQuestion);
-    }
+	/**
+	 * 删除试卷试题
+	 *
+	 * @param paperId
+	 * @param questionId
+	 * @return
+	 */
+	@RequestMapping(value = "/question", method = RequestMethod.DELETE)
+	public ResultDTO deletePQRelationship(@RequestParam("paperId") Long paperId,
+			@RequestParam("questionId") Long questionId) {
+		if (paperId == null || questionId == null) {
+			return validationError();
+		}
+		int deletePaperQuestion = serviceFacade.getPaperInfoService().deletePQRelationship(paperId, questionId);
+		return success(deletePaperQuestion);
+	}
 
-    /**
-     * 获取试卷成绩
-     *
-     * @param paperId
-     * @return
-     */
-    @RequestMapping(value = "/score", method = RequestMethod.GET)
-    public ResultDTO selectPaperScore(@RequestParam("paperId") Long paperId) {
-        Long paperScore = serviceFacade.getPaperInfoService().selectPaperScore(paperId);
-        return success(paperScore);
-    }
+	/**
+	 * 获取试卷成绩
+	 *
+	 * @param paperId
+	 * @return
+	 */
+	@RequestMapping(value = "/score", method = RequestMethod.GET)
+	public ResultDTO selectPaperScore(@RequestParam("paperId") Long paperId) {
+		if (paperId == null) {
+			return validationError();
+		}
+		Long paperScore = serviceFacade.getPaperInfoService().selectPaperScore(paperId);
+		if (paperScore == null) {
+			return noData();
+		}
+		return success(paperScore);
+	}
 
-    /**
-     * 修改试卷
-     *
-     * @param JPaperQuestion
-     * @param PaperQuestionPesult
-     * @param questionScore
-     * @return
-     */
-    @RequestMapping(value = "/paper/paper", method = RequestMethod.POST)
-    public ResultDTO modelPaperInfo(@RequestParam("JPaperQuestion") String JPaperQuestion,
-                                    @RequestParam("PaperQuestionPesult") String PaperQuestionPesult,
-                                    @RequestParam("questionScore") String questionScore,
-                                    @RequestParam("sorting") String sorting) {
-
-        List<JPaperQuestion> jPaperQuestionList = JSON.parseArray(JPaperQuestion, JPaperQuestion.class);
-        List<PaperQuestionResultDTO> paperQuestionPesultList = JSON.parseArray(PaperQuestionPesult, PaperQuestionResultDTO.class);
-        List<PaperQuestionResultDTO> questionScoreList = JSON.parseArray(questionScore, PaperQuestionResultDTO.class);
-        List<JPaperQuestion> sortIng = JSON.parseArray(sorting, JPaperQuestion.class);
-        int updatePaper = serviceFacade.getPaperInfoService().addOrRemoveRelationships(jPaperQuestionList, paperQuestionPesultList, questionScoreList, sortIng);
-        return success(updatePaper);
-    }
+	/**
+	 * 修改试卷
+	 *
+	 * @param JPaperQuestion
+	 * @param PaperQuestionPesult
+	 * @param questionScore
+	 * @return
+	 */
+	@RequestMapping(value = "/paper/paper", method = RequestMethod.POST)
+	public ResultDTO modelPaperInfo(@RequestParam("JPaperQuestion") String JPaperQuestion,
+			@RequestParam("PaperQuestionPesult") String PaperQuestionPesult,
+			@RequestParam("questionScore") String questionScore, @RequestParam("sorting") String sorting) {
+		if (JPaperQuestion == null || PaperQuestionPesult == null || questionScore == null || StringUtils.isEmpty(sorting)) {
+			
+		}
+		List<JPaperQuestion> jPaperQuestionList = JSON.parseArray(JPaperQuestion, JPaperQuestion.class);
+		List<PaperQuestionResultDTO> paperQuestionPesultList = JSON.parseArray(PaperQuestionPesult,
+				PaperQuestionResultDTO.class);
+		List<PaperQuestionResultDTO> questionScoreList = JSON.parseArray(questionScore, PaperQuestionResultDTO.class);
+		List<JPaperQuestion> sortIng = JSON.parseArray(sorting, JPaperQuestion.class);
+		int updatePaper = serviceFacade.getPaperInfoService().addOrRemoveRelationships(jPaperQuestionList,
+				paperQuestionPesultList, questionScoreList, sortIng);
+		return success(updatePaper);
+	}
+	
+	/**
+	 * 查询部分试题
+	 * @param questionIdList
+	 * @return
+	 */
+	@RequestMapping(value = "/questionIdList", method = RequestMethod.GET)
+	public ResultDTO someQuestions(@RequestParam("questionIdList") String questionIdList) {
+		if (questionIdList == null) {
+			return validationError();
+		} else {			
+			List<Long> questionIdsList = JSON.parseArray(questionIdList, Long.class);
+			List<QuestionResultDTO> result = serviceFacade.getPaperInfoService().someQuestions(questionIdsList);
+			return success(result);
+		}
+	}
 }

@@ -117,10 +117,10 @@ public class TaskServiceImpl extends BaseService implements ITaskService {
             taskInfo.getPaperId();
         }
         if (taskInfo.getPaperId() != null) {
-            paperInfoMapper.updateStatus(taskInfo.getPaperId());
+            paperInfoMapper.updateStatus(taskInfo.getPaperId(),1);
         }
         if (taskInfo.getResId() != null) {
-            resourceInfoMapper.updateStatus(taskInfo.getResId());
+            resourceInfoMapper.updateStatus(taskInfo.getResId(),1);
         }
         return 1;
     }
@@ -133,6 +133,9 @@ public class TaskServiceImpl extends BaseService implements ITaskService {
      */
     @Override
     public int deleteTaskById(long taskId) {
+    	 TaskInfo taskInfo = taskInfoMapper.selectByPrimaryKey(taskId);
+    	  resourceInfoMapper.updateStatus(taskInfo.getResId(),0);
+    	paperInfoMapper.updateStatus(taskInfo.getPaperId(),0);
         return taskInfoMapper.deleteByPrimaryKey(taskId);
     }
 

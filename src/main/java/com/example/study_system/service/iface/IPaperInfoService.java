@@ -1,14 +1,16 @@
 package com.example.study_system.service.iface;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.example.study_system.dto.PaperQuestionResultDTO;
 import com.example.study_system.dto.PaperResultDTO;
+import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JPaperQuestion;
 import com.example.study_system.model.JUserTaskQuestionsInfoMapper;
 import com.example.study_system.model.PaperInfo;
 import com.github.pagehelper.PageInfo;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public interface IPaperInfoService {
     //	新建试卷
@@ -43,4 +45,7 @@ public interface IPaperInfoService {
 
     //	设置试题分数
     int updateScore(Long paperId, Long questionId, Float score);
+    
+    //	查询部分试题
+	List<QuestionResultDTO> someQuestions (List<Long> questionIdList);
 }

@@ -18,10 +18,11 @@
     from j_user_video_log
     where ref = #{ref,jdbcType=BIGINT}
   </select>
-    <select id="selectByResId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select seconds
-    from j_user_video_log
-    where res_id = #{resId,jdbcType=BIGINT}
+    <select id="selectByResId" parameterType="java.lang.Long" resultType="Long">
+   SELECT MAX(seconds) 
+    AS seconds 
+    FROM manage_system.j_user_video_log JUV  
+    where res_id = #{resId,jdbcType=BIGINT} GROUP BY JUV.res_id
   </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from j_user_video_log

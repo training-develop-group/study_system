@@ -42,7 +42,6 @@
         <include refid="Blob_Column_List"/>
         from question_info
         where question_id = #{questionId,jdbcType=BIGINT}
-        ORDER BY question_id ASC
     </select>
     <select id="selectQuestionCountNum" resultType="java.lang.Integer"
             parameterType="java.lang.String">
@@ -74,7 +73,7 @@
 		where
 		qOption.is_right = 1 and question.question_id = #{questionId,jdbcType=BIGINT}
 		ORDER
-		BY question.question_id ASC;
+		BY question.c_time desc;
 	</select>
     <select id="selectAllQuestion" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.String">
@@ -90,7 +89,7 @@
                 and question_type = #{questionType,jdbcType=INTEGER}
             </if>
         </if>
-        ORDER BY question_id ASC
+        ORDER BY c_time desc
     </select>
     <select id="selectByQuestionIds" resultMap="ResultMapWithBLOBs">
         select
@@ -102,7 +101,7 @@
         <foreach collection="ids" item="questionId" index="index" open="(" close=")" separator=",">
             #{questionId}
         </foreach>
-        ORDER BY question_id ASC
+        ORDER BY c_time desc
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from

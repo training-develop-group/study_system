@@ -190,7 +190,7 @@
     <update id="updateStatus" parameterType="long">
 		update resource_info
 		set 
-		STATUS = 1
+		STATUS = ${status}
 		where res_id  = #{resId,jdbcType=BIGINT}
 	</update>
 </mapper>

@@ -40,5 +40,5 @@ public interface PaperInfoMapper {
     Long selectPaperScore(Long paperId);
 
     //	修改发布
-    int updateStatus(Long paperId);
+    int updateStatus(Long paperId,@Param("status")int status);
 }

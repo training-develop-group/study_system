@@ -7,6 +7,8 @@ import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.github.pagehelper.PageInfo;
+
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class QuestionInfoController extends BaseController {
     @RequestMapping(value = "/question", method = RequestMethod.POST)
     public ResultDTO addQuestion(@RequestParam("question") String question,
                                  @RequestParam("questionOption") String questionOptions) {
-        if (question == null || questionOptions == null) {
+        if (StringUtils.isEmpty(question) || StringUtils.isEmpty(questionOptions)) {
             return validationError();
         } else {
             List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
@@ -57,7 +59,7 @@ public class QuestionInfoController extends BaseController {
     @RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
     public ResultDTO updateQuestionInfo(@PathVariable("questionId") Long questionId,
                                         @RequestParam("question") String question, @RequestParam("questionOption") String questionOptions) {
-        if (questionId == null || question == null || questionOptions == null) {
+        if (questionId == null || StringUtils.isEmpty(question) || StringUtils.isEmpty(questionOptions)) {
             return validationError();
         } else {
             List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
@@ -79,11 +81,14 @@ public class QuestionInfoController extends BaseController {
                                     @RequestParam(value = "pageSize") Integer pageSize,
                                     @RequestParam(value = "content", required = false) String content,
                                     @RequestParam(value = "questionType", required = false) Integer questionType) {
-        if (pageSize == null || content == null || pageNum == null) {
+        if (pageSize == null || pageNum == null) {
             return validationError();
         } else {
             PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum,
                     pageSize, content, questionType);
+            if (result == null) {
+            	return noData();
+            }
             return success(result);
         }
     }
@@ -99,6 +104,9 @@ public class QuestionInfoController extends BaseController {
         if (questionId == null) {
             return validationError();
         } else {
+        	if (serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId) == null) {
+        		return noData();
+        	}
             return success(serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId));
         }
     }
@@ -129,6 +137,9 @@ public class QuestionInfoController extends BaseController {
         if (questionId == null) {
             return validationError();
         } else {
+        	if (serviceFacade.getQuestionInfoService().selectAnalysis(questionId) == null) {
+        		return noData();
+        	}
             return success(serviceFacade.getQuestionInfoService().selectAnalysis(questionId));
         }
     }

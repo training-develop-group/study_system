@@ -2,6 +2,7 @@ package com.example.study_system.controller;
 
 import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
+import com.example.study_system.model.JUserVideoLog;
 import com.example.study_system.model.ResourceInfo;
 import com.example.study_system.model.UserInfo;
 import com.example.study_system.util.UserUtil;
@@ -10,11 +11,13 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/resource")
@@ -33,13 +36,16 @@ public class ResourceInfoController extends BaseController {
     @RequestMapping(value = "/resource", method = RequestMethod.POST)
     public ResultDTO uploadResourceInfo(HttpServletRequest request, ResourceInfo resourceInfo, MultipartFile file, String ffmpeg_path)
             throws IllegalStateException, IOException {
+    	if (resourceInfo == null || file == null) {
+    		return validationError();
+    	}
         UserInfo userInfo = UserUtil.getUser(request);
+        if (userInfo == null) {
+        	return noData();
+        }
         resourceInfo.setcUser(userInfo.getUserName());
         int res = serviceFacade.getResourceService().uploadResourceInfo(resourceInfo, file,
                 "C:\\Users\\Admin\\Desktop\\ffmpeg-4.2.1-win64-static\\bin\\ffmpeg.exe");
-        if (resourceInfo == null) {
-            return noData();
-        }
         return success(resourceInfo);
     }
 
@@ -51,10 +57,10 @@ public class ResourceInfoController extends BaseController {
      */
     @RequestMapping(value = "/{resId}", method = RequestMethod.DELETE)
     public ResultDTO deleteResourceInfoByResId(@PathVariable("resId") Long resId) {
-        int result = serviceFacade.getResourceService().deleteResourceInfoByResId(resId);
-        if (resId == null) {
-            return validationError();
+    	if (resId == null) {
+             return validationError();
         }
+        int result = serviceFacade.getResourceService().deleteResourceInfoByResId(resId);
         return success(result);
     }
 
@@ -69,7 +75,7 @@ public class ResourceInfoController extends BaseController {
     public ResultDTO<Integer> modifyResourceNameByResId(@RequestParam("resId") Long resId,
                                                         @RequestParam("resName") String resName) {
         int resource = serviceFacade.getResourceService().modifyResourceNameByResId(resId, resName);
-        if (resId == null || resName.equals("")) {
+        if (resId == null || StringUtils.isEmpty(resName)) {
             return validationError();
         }
         return success(resource);
@@ -83,12 +89,12 @@ public class ResourceInfoController extends BaseController {
      */
     @RequestMapping(value = "/{resId}", method = RequestMethod.GET)
     public ResultDTO getResourceDetailByResId(@PathVariable("resId") Long resId, HttpServletRequest request) {
+    	 if (resId == null) {
+             return validationError();
+         }
         UserInfo userInfo = UserUtil.getUser(request);
         System.err.println(userInfo);
         ResourceInfo result = serviceFacade.getResourceService().getResourceDetailByResId(resId);
-        if (resId == null) {
-            return validationError();
-        }
         if (result == null) {
             return noData();
         }
@@ -107,7 +113,6 @@ public class ResourceInfoController extends BaseController {
                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                      @RequestParam(value = "resName", required = false) String resName,
                                      @RequestParam(value = "resType", required = false) Integer resType, HttpServletRequest request) {
-        System.out.println(resType);
         UserInfo userInfo = UserUtil.getUser(request);
         PageInfo<ResourceInfo> resourceList = serviceFacade.getResourceService().getResourceList(pageNum, pageSize,
                 resName, resType);
@@ -152,18 +157,22 @@ public class ResourceInfoController extends BaseController {
      */
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     public ResultDTO getVideoPlaybackTime(@RequestParam("resId") Long resId, HttpServletRequest request) {
-        UserInfo userInfo = UserUtil.getUser(request);
-        long result = serviceFacade.getJUserVideoLogService().getVideoPlaybackTime(resId);
-        if (resId == null) {
-            return validationError();
+    	if (resId == null) {
+    		return validationError();
         }
+        UserInfo userInfo = UserUtil.getUser(request);
+        if (userInfo == null) {
+        	return noData();
+        }
+        long result = serviceFacade.getJUserVideoLogService().getVideoPlaybackTime(resId);
+       
         return success(result);
     }
 
     @RequestMapping(value = "/download")
     public ResponseEntity<Object> downloadFile(@RequestParam(value = "resName") String resName,
                                                @RequestParam(value = "path") String path) throws FileNotFoundException, UnsupportedEncodingException {
-
+    	
         String resFileName = resName + path.substring(path.lastIndexOf("."));    //截取path的后缀名再用resName和它拼接上成为resName.xxx格式
         System.err.println(resName);
         System.err.println(resFileName);

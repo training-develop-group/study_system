@@ -7,6 +7,8 @@ import com.example.study_system.model.JUserQuesAnswerRecord;
 import com.example.study_system.model.JUserTask;
 import com.example.study_system.model.TaskInfo;
 import com.github.pagehelper.PageInfo;
+
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,9 @@ public class StatController extends BaseController {
     @RequestMapping(value = "/task-type", method = RequestMethod.GET)
     public ResultDTO selectTaskTypePercentage() {
         TaskInfo res = serviceFacade.getStatService().selectStat();
+        if (res == null) {
+        	return noData();
+        }
         return success(res);
     }
 
@@ -26,7 +31,9 @@ public class StatController extends BaseController {
     @RequestMapping(value = "/task", method = RequestMethod.GET)
     public ResultDTO select() {
         JUserTask res = serviceFacade.getStatService().selectJUsePaperPercentage();
-        System.out.println(res);
+        if (res == null) {
+        	return noData();
+        }
         return success(res);
     }
 
@@ -34,6 +41,9 @@ public class StatController extends BaseController {
     @RequestMapping(value = "/answer", method = RequestMethod.GET)
     public ResultDTO selectJUserQuesAnswerRecord() {
         JUserQuesAnswerRecord res = serviceFacade.getStatService().choiceJUserQuesAnswerRecord();
+        if (res == null) {
+        	return noData();
+        }
         return success(res);
     }
 
@@ -42,7 +52,6 @@ public class StatController extends BaseController {
     public ResultDTO selectTaskInfo(@RequestParam(value = "userName") String userName,
                                     @RequestParam(value = "pageNum") Integer pageNum,
                                     @RequestParam(value = "pageSize") Integer pageSize) {
-        System.out.println(userName);
         PageInfo<UserTaskDTO> res = serviceFacade.getStatService().statisticalList(userName, pageNum, pageSize);
         return success(res);
     }

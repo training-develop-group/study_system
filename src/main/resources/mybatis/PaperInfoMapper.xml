@@ -208,7 +208,7 @@
     <update id="updateStatus" parameterType="long">
 		update paper_info
 		set 
-		STATUS = 1
+		STATUS = ${status}
 		where paper_id = #{paperId,jdbcType=BIGINT}
 	</update>
 </mapper>

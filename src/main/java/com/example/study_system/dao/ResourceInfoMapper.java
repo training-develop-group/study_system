@@ -21,6 +21,6 @@ public interface ResourceInfoMapper {
 
     int selectListCount();
 
-    int updateStatus(Long resId);
+    int updateStatus(Long resId,@Param("status")int status);
 
 }

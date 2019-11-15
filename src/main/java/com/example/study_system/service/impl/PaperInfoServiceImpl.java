@@ -300,4 +300,48 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
         }
         return result;
     }
+    
+//  查询部分试题
+    @Override
+    @Transactional
+	public List<QuestionResultDTO> someQuestions(List<Long> questionIdList){
+		List<QuestionResultDTO> result = new ArrayList<QuestionResultDTO>();
+		if (CollectionUtils.isEmpty(questionIdList)) {
+			//空处理
+			result = new ArrayList<>();
+			return result;
+		}
+			// 根据questionIds取选项List
+			List<JQuestionOption> questionOptionList = jQuestionOptionMapper.selectQuestionByQuestionIdList(questionIdList);
+			// 根据questionIds取试题List
+			List<QuestionInfoWithBLOBs> questionList = questionInfoMapper.selectByQuestionIds(questionIdList);
+			// 试题加选项的集合
+			List<QuestionResultDTO> questionInfoList = new ArrayList<QuestionResultDTO>();
+			// 设置选项map<questionId,List<JQuestionOption>>
+			Map<Long, List<JQuestionOption>> optionMap = new HashMap<>();
+			questionOptionList.forEach(option -> {
+				if (optionMap.containsKey(option.getQuestionId())) {
+					optionMap.get(option.getQuestionId()).add(option);
+				} else {
+					List<JQuestionOption> temp = new ArrayList<>();
+					temp.add(option);
+					optionMap.put(option.getQuestionId(), temp);
+				}
+			});
+				
+			// 处理试题集合
+			for (QuestionInfoWithBLOBs question : questionList) {
+				//question信息处理
+				QuestionResultDTO questionInfo = new QuestionResultDTO(question);
+				//处理选项
+				if (optionMap.containsKey(question.getQuestionId())) {
+					questionInfo.setOptionInfo(optionMap.get(question.getQuestionId()));
+				} else {
+					questionInfo.setOptionInfo(new ArrayList<JQuestionOption>());
+				}
+				questionInfoList.add(questionInfo);
+				result.add(questionInfo);
+			}
+		return result;
+	}
 }
