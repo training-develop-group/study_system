@@ -196,7 +196,7 @@ public class TaskController extends BaseController {
         if (record.getTaskId() == null || record.getCommentUserId() == null) {
             return validationError();
         } else {
-            return success(serviceFacade.getCommentInfoService().insertSelective(record));
+            return success(serviceFacade.getCommentInfoService().insertSelective(request,record));
         }
     }
 

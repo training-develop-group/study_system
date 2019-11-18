@@ -277,14 +277,21 @@
     <update id="updateQuestionScore"
             parameterType="com.example.study_system.model.QuestionInfo">
 		update question_info
-		set score =#{score,jdbcType=REAL}
+		set score = #{score,jdbcType=REAL}
 		where
 		question_id = #{questionId,jdbcType=BIGINT}
 	</update>
     <update id="updateQuestionStatus"
             parameterType="com.example.study_system.model.QuestionInfo">
 		update question_info
-		set score = 1
+		set STATUS = 1
+		where
+		question_id = #{questionId,jdbcType=BIGINT}
+	</update>
+	<update id="updateQuestionStatusNew"
+            parameterType="com.example.study_system.model.QuestionInfo">
+		update question_info
+		set STATUS = 0
 		where
 		question_id = #{questionId,jdbcType=BIGINT}
 	</update>

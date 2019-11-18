@@ -24,4 +24,8 @@ public interface JPaperQuestionMapper {
     List<JPaperQuestion> selectQuestionByPaperId(Long paperId);
 
     int updateScore(Long paperId, Long questionId, Float score);
+    
+    int selectQuestionId(Long questionId);
+//	删除跟试卷有关系的
+    int deleteByPaperId(Long paperId);
 }

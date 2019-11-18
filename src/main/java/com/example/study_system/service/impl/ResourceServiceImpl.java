@@ -18,6 +18,7 @@ import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.converter.StreamOpenOfficeDocumentConverter;
+import com.example.study_system.emun.ResultEmun;
 import com.example.study_system.model.ResourceInfo;
 import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IResourceService;
@@ -48,6 +49,9 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 		}
 
 		if (file != null) {
+			if (file.getSize() == 0) {
+				return ResultEmun.UPLOAD_FILE_ISEMPTY.getCode();
+			}
 			oriName = file.getOriginalFilename(); // 获取原文件名
 			long resSize = Math.round(file.getSize()); // 获取文件大小
 			String fileType = file.getContentType(); // 获取文件类型
@@ -62,9 +66,8 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 				fileType = "1";
 				resType = Integer.valueOf(fileType);
 			} else if (extName.equals(".ogv") || extName.equals(".mp3") || extName.equals(".wav")
-					|| extName.equals(".rmvb") || extName.equals(".wma") || extName.equals(".cd")
-					|| extName.equals(".wav") || extName.equals(".aiff") || extName.equals(".aac")
-					|| extName.equals(".midi")) {
+					|| extName.equals(".wma") || extName.equals(".cd") || extName.equals(".wav")
+					|| extName.equals(".aiff") || extName.equals(".aac") || extName.equals(".midi")) {
 				fileType = "2";
 				resType = Integer.valueOf(fileType);
 			} else if (extName.equals(".txt") || extName.equals(".doc") || extName.equals(".docx")
@@ -72,6 +75,8 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 					|| extName.equals(".pptx") || extName.equals(".pdf")) {
 				fileType = "3";
 				resType = Integer.valueOf(fileType);
+			} else {
+				return ResultEmun.THIS_FILE_FORMAT_IS_NOT_SUPPORTED.getCode();
 			}
 
 			uuid = UUID.randomUUID().toString().replaceAll("-", ""); // 生成UUID

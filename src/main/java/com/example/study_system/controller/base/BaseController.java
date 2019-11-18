@@ -29,4 +29,12 @@ public class BaseController {
     protected <T> ResultDTO<T> validationError() {
         return new ResultDTO<>(ResultEmun.VALIDATION_ERROR);
     }
+    
+    protected <T> ResultDTO<T> uploadFileIsEmpty() {
+        return new ResultDTO<>(ResultEmun.UPLOAD_FILE_ISEMPTY);
+    }
+    
+    protected <T> ResultDTO<T> thisFileFormatIsNotSupported() {
+        return new ResultDTO<>(ResultEmun.THIS_FILE_FORMAT_IS_NOT_SUPPORTED);
+    }
 }

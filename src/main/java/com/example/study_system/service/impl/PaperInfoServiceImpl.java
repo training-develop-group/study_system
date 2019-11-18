@@ -9,6 +9,8 @@ import com.example.study_system.service.iface.IPaperInfoService;
 import com.example.study_system.util.UserUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -33,13 +35,16 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
         return paperInfoMapper.updateByPrimaryKeySelective(record);
     }
 
-    //	删除试卷
+    // 删除试卷
     @Override
     public int deleteTestPaper(Long paperId) {
+    	// 删除试卷关系
+    	jPaperQuestionMapper.deleteByPaperId(paperId);
+    	// 删除试卷
         return paperInfoMapper.deleteByPrimaryKey(paperId);
     }
 
-    //	获取试卷详情
+    // 获取试卷详情
     @Override
     @Transactional
     public PaperResultDTO detailsOfExaminationPapers(Long paperId) {
@@ -271,6 +276,10 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
         if (PaperQuestionPesultList.size() != 0) {
             PaperQuestionPesultList.forEach(item -> {
                 result = jPaperQuestionMapper.delete(item.getPaperId(), item.getQuestionId());
+                int questionIdNum = jPaperQuestionMapper.selectQuestionId(item.getQuestionId());
+                if (questionIdNum == 0) {
+                	questionInfoMapper.updateQuestionStatusNew(item.getQuestionId());
+                }
             });
         }
         //添加试题到试卷

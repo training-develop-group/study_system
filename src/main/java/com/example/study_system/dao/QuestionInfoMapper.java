@@ -38,4 +38,6 @@ public interface QuestionInfoMapper {
     int updateQuestionScore(@Param("score") Float score, @Param("questionId") Long questionId);
 
     int updateQuestionStatus(@Param("questionId") Long questionId);
+    
+    int updateQuestionStatusNew(@Param("questionId") Long questionId);
 }

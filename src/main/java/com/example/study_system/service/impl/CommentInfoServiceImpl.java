@@ -3,6 +3,8 @@ package com.example.study_system.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 
 import com.example.study_system.dao.JUserPaperMapper;
@@ -10,8 +12,10 @@ import com.example.study_system.model.CommentInfo;
 import com.example.study_system.model.JUserPaper;
 import com.example.study_system.model.JUserTask;
 import com.example.study_system.model.TaskInfo;
+import com.example.study_system.model.UserInfo;
 import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.ICommentInfoService;
+import com.example.study_system.util.UserUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -32,13 +36,13 @@ public class CommentInfoServiceImpl extends BaseService implements ICommentInfoS
      * 添加评论
      */
     @Override
-    public int insertSelective(CommentInfo record) {
+    public int insertSelective(HttpServletRequest request,CommentInfo record) {
         record.setcTime(new Date());
-
+        UserInfo userInfo = UserUtil.getUser(request);
         int flag = commentInfoMapper.insertSelective(record);
         JUserTask jUserPaper = jUserTaskMapper.selectByTaskIdAndUserId(record.getCommentUserId(), record.getTaskId());
         if (flag == 1) {
-            if (jUserPaper != null && jUserPaper.getStatus() != 1) {
+            if (jUserPaper != null && jUserPaper.getStatus() != 1 && userInfo.getStRoleId()==2) {
                 commentInfoMapper.updateJUserTaskStatus(record.getCommentUserId(), record.getTaskId());
             }
         }

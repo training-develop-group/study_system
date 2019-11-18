@@ -25,6 +25,12 @@
         from j_paper_question
         where paper_id = #{paperId,jdbcType=BIGINT}
     </select>
+    <select id="selectQuestionId" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select
+        count(*)
+        from j_paper_question
+        where question_id = #{questionId,jdbcType=BIGINT}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from j_paper_question
     where ref = #{ref,jdbcType=BIGINT}
@@ -34,6 +40,10 @@
     where 
     paper_id = #{paperId,jdbcType=BIGINT} and
     question_id = #{questionId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByPaperId" parameterType="java.lang.Long" >
+    delete from j_paper_question
+    where paper_id = #{paperId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" parameterType="com.example.study_system.model.JPaperQuestion">
     insert into j_paper_question (ref, paper_id, question_id, 

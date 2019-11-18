@@ -250,7 +250,7 @@ public class PaperInfoController extends BaseController {
 	 * @param questionIdList
 	 * @return
 	 */
-	@RequestMapping(value = "/questionIdList", method = RequestMethod.GET)
+	@RequestMapping(value = "/questions", method = RequestMethod.GET)
 	public ResultDTO someQuestions(@RequestParam("questionIdList") String questionIdList) {
 		if (questionIdList == null) {
 			return validationError();
