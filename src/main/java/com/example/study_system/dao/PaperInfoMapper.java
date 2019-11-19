@@ -31,14 +31,13 @@ public interface PaperInfoMapper {
 
     List<PaperInfo> select();
 
-    int selectAllQuestionInfoSingle(Long paperId);
-
-    int selectAllQuestionInfoMany(Long paperId);
-
     int selectPaperCount();
 
     Long selectPaperScore(Long paperId);
 
     //	修改发布
     int updateStatus(Long paperId,@Param("status")int status);
+    
+	// 查询单选题和多选题数
+	PaperInfo selectQuestionInfoSingleAndMany(Long paperId);
 }

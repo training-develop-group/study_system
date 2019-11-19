@@ -101,8 +101,6 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 			questionResultDTO.add(new QuestionResultDTO(questionItem, optionList));
 		});
 		PageInfo<QuestionResultDTO> result = new PageInfo<QuestionResultDTO>(questionResultDTO);
-		result.setTotal(questionInfoMapper.selectQuestionCountNum(content , questionType));
-//		result.setTotal(questionInfoMapper.selectQuestionCount(questionType));
 		return result;
 	}
 
@@ -116,8 +114,6 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		List<JQuestionOption> questionOptionList = jQuestionOptionMapper.selectQuestionByQuestionId(questionId);
 		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
 		questionResultDTO.add(new QuestionResultDTO(question, questionOptionList));
-		questionResultDTO.forEach(a -> {
-		});
 		return questionResultDTO;
 	}
 

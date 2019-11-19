@@ -5,27 +5,10 @@ import java.util.Date;
 public class PaperInfo {
     private Long paperId;
 
-    
     private Long questionId;
 
-    public Long getQuestionId() {
-		return questionId;
-	}
-
-	public void setQuestionId(Long questionId) {
-		this.questionId = questionId;
-	}
-	
 	private Integer questionType;
 	
-	public Integer getQuestionType() {
-		return questionType;
-	}
-
-	public void setQuestionType(Integer questionType) {
-		this.questionType = questionType;
-	}
-
 	private String paperName;
 
     private Float score;
@@ -39,6 +22,26 @@ public class PaperInfo {
     private String cUser;
 
     private String mUser;
+    
+    private Integer single;
+    
+	private Integer many;
+    
+	public Integer getSingle() {
+		return single;
+	}
+
+	public void setSingle(Integer single) {
+		this.single = single;
+	}
+
+	public Integer getMany() {
+		return many;
+	}
+
+	public void setMany(Integer many) {
+		this.many = many;
+	}
 
     public Long getPaperId() {
         return paperId;
@@ -47,7 +50,23 @@ public class PaperInfo {
     public void setPaperId(Long paperId) {
         this.paperId = paperId;
     }
+    
+    public Long getQuestionId() {
+		return questionId;
+	}
 
+	public void setQuestionId(Long questionId) {
+		this.questionId = questionId;
+	}
+	
+	public Integer getQuestionType() {
+		return questionType;
+	}
+
+	public void setQuestionType(Integer questionType) {
+		this.questionType = questionType;
+	}
+	
     public String getPaperName() {
         return paperName;
     }

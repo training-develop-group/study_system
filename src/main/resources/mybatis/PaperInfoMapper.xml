@@ -16,6 +16,8 @@
                 jdbcType="BIGINT"/>
         <result column="question_type" property="questionType"
                 jdbcType="INTEGER"/>
+        <result column="single" property="single" jdbcType="INTEGER"/>
+        <result column="many" property="many" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
 		paper_id, paper_name, score, STATUS, c_time, m_time, c_user, m_user
@@ -49,32 +51,14 @@
             parameterType="java.lang.Integer">
 		select count(paper_id) from paper_info;
 	</select>
-    <select id="selectAllQuestionInfoSingle" resultType="Integer">
-		select
-		count(0)
-		from
-		paper_info a ,
-		j_paper_question b,
-		question_info c
-		where
-		a.paper_id = b.paper_id
-		and b.question_id = c.question_id
-		and c.question_type = 1
-		and a.paper_id = #{paperId,jdbcType=BIGINT}
-	</select>
-    <select id="selectAllQuestionInfoMany" resultType="Integer">
-		select
-		count(0)
-		from
-		paper_info a ,
-		j_paper_question b,
-		question_info c
-		where
-		a.paper_id = b.paper_id
-		and b.question_id = c.question_id
-		and c.question_type = 2
-		and a.paper_id = #{paperId,jdbcType=BIGINT}
-
+    <select id="selectQuestionInfoSingleAndMany" resultMap="BaseResultMap">
+		SELECT T1.single , T2.many FROM 
+		
+		(SELECT count(*) as single FROM paper_info a , j_paper_question b , question_info c where 
+		a.paper_id = b.paper_id and b.question_id = c.question_id and c.question_type = 1 and a.paper_id = #{paperId,jdbcType=BIGINT}) T1, 
+		
+		(SELECT count(*) as many FROM paper_info a , j_paper_question b , question_info c where 
+		a.paper_id = b.paper_id and b.question_id = c.question_id and c.question_type = 2 and a.paper_id = #{paperId,jdbcType=BIGINT})T2;
 	</select>
     <select id="selectPaperInfo" resultMap="BaseResultMap" parameterType="String">
         select

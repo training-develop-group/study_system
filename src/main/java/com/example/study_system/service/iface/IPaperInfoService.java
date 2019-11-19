@@ -27,10 +27,6 @@ public interface IPaperInfoService {
 
     PageInfo<PaperResultDTO> selectPaperInfos(Integer pageNum, Integer pageSize, String paperName);
 
-    int selectQuestionInfoSingles(Long paperId);
-
-    int selectQuestionInfoManys(Long paperId);
-
     int insertJPQ(JPaperQuestion record);
 
     PaperResultDTO answer(String userId, Long paperId, Long taskId, List<JUserTaskQuestionsInfoMapper> jUserQuesAnswerRecordInfo);
@@ -48,4 +44,7 @@ public interface IPaperInfoService {
     
     //	查询部分试题
 	List<QuestionResultDTO> someQuestions (List<Long> questionIdList);
+	
+	// 查询单选和多选题数
+	PaperInfo selectQuestionInfoSingleAndMany(Long paperId);
 }

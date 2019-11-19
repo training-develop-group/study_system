@@ -53,6 +53,9 @@ public class StatController extends BaseController {
                                     @RequestParam(value = "pageNum") Integer pageNum,
                                     @RequestParam(value = "pageSize") Integer pageSize) {
         PageInfo<UserTaskDTO> res = serviceFacade.getStatService().statisticalList(userName, pageNum, pageSize);
+        if (res == null) {
+        	return noData();
+        }
         return success(res);
     }
 }

@@ -48,6 +48,9 @@ public class StatServiceImpl extends BaseService implements IStatService {
         PageHelper.startPage(pageNum, pageSize);
         List<UserTaskDTO> statisticalList = new ArrayList<UserTaskDTO>();
         List<UserInfo> allUserInfo = userInfoMapper.selectUserByName(userName);
+        if (allUserInfo == null) {
+        	 return null;
+        }
         allUserInfo.forEach(item -> {
             TaskInfo task = taskInfoMapper.selectTaskInfo(item.getUserName());
 

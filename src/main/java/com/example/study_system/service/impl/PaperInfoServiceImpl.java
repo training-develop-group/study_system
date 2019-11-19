@@ -38,7 +38,17 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
     // 删除试卷
     @Override
     public int deleteTestPaper(Long paperId) {
-    	// 删除试卷关系
+    	// 查询试题关系
+		List<JPaperQuestion> jPaperQuestionList = jPaperQuestionMapper.selectQuestionByPaperId(paperId);
+		jPaperQuestionList.forEach(item -> {
+			// 查询这个试题在全部试卷中的绑定的数量
+			int questionIdNum = jPaperQuestionMapper.selectQuestionId(item.getQuestionId());
+			if (questionIdNum == 1) {
+				// 修改状态
+				questionInfoMapper.updateQuestionStatusNew(item.getQuestionId());
+			}
+		});
+		// 删除试卷关系
     	jPaperQuestionMapper.deleteByPaperId(paperId);
     	// 删除试卷
         return paperInfoMapper.deleteByPrimaryKey(paperId);
@@ -123,10 +133,9 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
         List<PaperResultDTO> list = new ArrayList<PaperResultDTO>();
         List<PaperInfo> paperInfo = paperInfoMapper.selectPaperInfo(paperName);
         paperInfo.forEach(paper -> {
-            Integer Single = paperInfoMapper.selectAllQuestionInfoSingle(paper.getPaperId());
-            Integer Many = paperInfoMapper.selectAllQuestionInfoMany(paper.getPaperId());
+        	PaperInfo singleAndMany = paperInfoMapper.selectQuestionInfoSingleAndMany(paper.getPaperId());
             PaperResultDTO papers = new PaperResultDTO(paper.getPaperId(), paper.getPaperName(), paper.getStatus(),
-                    Many, Single);
+            		singleAndMany.getMany(), singleAndMany.getSingle());
             list.add(papers);
         });
         PageInfo<PaperResultDTO> result = new PageInfo<>(list);
@@ -135,17 +144,11 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
         result.setPageNum(pageNum);
         return result;
     }
-
-    //	单选题
+    
+    // 查询单选和多选题数
     @Override
-    public int selectQuestionInfoSingles(Long paperId) {
-        return paperInfoMapper.selectAllQuestionInfoSingle(paperId);
-    }
-
-    //	多选题
-    @Override
-    public int selectQuestionInfoManys(Long paperId) {
-        return paperInfoMapper.selectAllQuestionInfoMany(paperId);
+    public PaperInfo selectQuestionInfoSingleAndMany(Long paperId) {
+        return paperInfoMapper.selectQuestionInfoSingleAndMany(paperId);
     }
 
     //	添加试题到试卷

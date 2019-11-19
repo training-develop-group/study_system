@@ -1,18 +1,47 @@
 package com.example.study_system.service.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
+import org.apache.poi.hssf.usermodel.HSSFPictureData;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hwpf.converter.PicturesManager;
+import org.apache.poi.hwpf.usermodel.Picture;
+import org.apache.poi.hwpf.usermodel.PictureType;
+import org.apache.poi.xwpf.converter.core.BasicURIResolver;
+import org.apache.poi.xwpf.converter.core.FileImageExtractor;
+import org.apache.poi.xwpf.converter.xhtml.XHTMLConverter;
+import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.bytedeco.javacv.FrameGrabber.Exception;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Document;
 
 import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
@@ -24,6 +53,18 @@ import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IResourceService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import java.awt.Dimension;   
+ 
+ 
+import java.awt.Color;   
+import java.awt.Graphics2D;   
+import java.awt.geom.Rectangle2D;   
+import java.awt.image.BufferedImage;   
+ 
+import org.apache.poi.hslf.record.Slide;
+import org.apache.poi.hslf.model.TextRun;   
+import org.apache.poi.hslf.usermodel.RichTextRun;   
+import org.apache.poi.hslf.usermodel.SlideShow;
 
 @Service
 public class ResourceServiceImpl extends BaseService implements IResourceService {
@@ -127,6 +168,28 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 				String desPath = ORI_FILE_PATH + uuid + ".pdf";
 				officeOpenPDF(desFilePath, desPath);
 				logger.info("成功进入方法");
+				try {
+					excel();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParserConfigurationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (TransformerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+//				testExcel();
+//				try {
+//					docxToHtml();
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 		}
 		return resourceInfoMapper.insert(resourceInfo);
@@ -211,6 +274,217 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 		}
 
 	}
+
+	public String docxToHtml() throws Exception, IOException {
+		File path = new File(ResourceUtils.getURL("classpath:").getPath());
+		String imagePath = path.getAbsolutePath() + "\\image";
+		String sourceFileName = "F:\\01.xls";
+		String targetFileName = path.getAbsolutePath() + "\\每日笔记.html";
+//	    System.err.println("path:"+path);
+//	    System.err.println("imagePath:"+imagePath);
+//	    System.err.println("targetFileName:"+targetFileName);
+
+		OutputStreamWriter outputStreamWriter = null;
+		try {
+			XWPFDocument document = new XWPFDocument(new FileInputStream(sourceFileName));
+			XHTMLOptions options = XHTMLOptions.create();
+			// 存放图片的文件夹
+			options.setExtractor(new FileImageExtractor(new File(imagePath)));
+			// html中图片的路径
+			options.URIResolver(new BasicURIResolver("image"));
+			outputStreamWriter = new OutputStreamWriter(new FileOutputStream(targetFileName), "utf-8");
+			XHTMLConverter xhtmlConverter = (XHTMLConverter) XHTMLConverter.getInstance();
+			xhtmlConverter.convert(document, outputStreamWriter, options);
+		} finally {
+			if (outputStreamWriter != null) {
+				outputStreamWriter.close();
+			}
+		}
+		return targetFileName;
+	}
+
+//	public void testExcel() throws FileNotFoundException {
+//		File path = new File(ResourceUtils.getURL("classpath:").getPath());
+//		String imagePath = path.getAbsolutePath() + "\\image";
+//		String sourceFileName = "F:\\01.xls";
+//		String targetFileName = path.getAbsolutePath() + "\\01.html";
+////		String path = "F:\\11.18";
+////		String imagePath = "F:\\11.18\\image";
+//		String file = "\\02.xlsx";
+//		HSSFWorkbook excelBook = null;
+//		ExcelToHtmlConverter excelToHtmlConverter = null;
+//		try {
+//			InputStream input = new FileInputStream(sourceFileName);
+//			excelBook = new HSSFWorkbook(input);
+//			excelToHtmlConverter = new ExcelToHtmlConverter(
+//					DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (ParserConfigurationException e) {
+//			e.printStackTrace();
+//		}
+//
+//		// 加载html页面时图片路径
+//		XHTMLOptions options = XHTMLOptions.create();
+//		// 图片保存文件夹路径
+//		options.setExtractor(new FileImageExtractor(new File(imagePath)));
+//		options.URIResolver(new BasicURIResolver("image"));
+//		excelToHtmlConverter.setOutputRowNumbers(false);
+//		excelToHtmlConverter.setOutputHiddenRows(false);
+//		excelToHtmlConverter.setOutputColumnHeaders(false);
+//		excelToHtmlConverter.setOutputHiddenColumns(true);
+//		excelToHtmlConverter.processWorkbook(excelBook);
+//		List pics = excelBook.getAllPictures();
+//		if (pics != null) {
+//			for (int i = 0; i < pics.size(); i++) {
+//				HSSFPictureData pic = (HSSFPictureData) pics.get(i);
+//				try {
+////                        pic.writeImageContent (new FileOutputStream (path + pic.suggestFullFileName() ) );
+//					new FileOutputStream(imagePath + "11").write(pic.getData());
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//			}
+//		}
+//		Document htmlDocument = excelToHtmlConverter.getDocument();
+//		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+//		DOMSource domSource = new DOMSource(htmlDocument);
+//		StreamResult streamResult = new StreamResult(outStream);
+//		TransformerFactory tf = TransformerFactory.newInstance();
+//		try {
+//			Transformer serializer = tf.newTransformer();
+//			serializer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+//			serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+//			serializer.setOutputProperty(OutputKeys.METHOD, "html");
+//			serializer.transform(domSource, streamResult);
+//		} catch (TransformerException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				outStream.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		String content = new String(outStream.toByteArray());
+//
+//		try {
+//			FileUtils.writeStringToFile(new File(path, "exportExcel.html"), content, "utf-8");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+	public void excel() throws IOException, ParserConfigurationException, TransformerException {
+		String path = "F:\\";
+		String file = "02.xls";
+		String path2 = "F:/123/123.jpg";
+
+		InputStream input = new FileInputStream(path + file);
+		HSSFWorkbook excelBook = new HSSFWorkbook(input);
+		ExcelToHtmlConverter excelToHtmlConverter = new ExcelToHtmlConverter(
+				DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument());
+		excelToHtmlConverter.processWorkbook(excelBook);
+		List pics = excelBook.getAllPictures();
+		if (pics != null) {
+			for (int i = 0; i < pics.size(); i++) {
+				HSSFPictureData pic = (HSSFPictureData) pics.get(i);
+				try {
+//					pic.writeImageContent(new FileOutputStream(path + pic.suggestFullFileName()));
+					new FileOutputStream("F:/123/" + i + ".jpg").write(pic.getData());
+					logger.error("1");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		Document htmlDocument = excelToHtmlConverter.getDocument();
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		DOMSource domSource = new DOMSource(htmlDocument);
+		StreamResult streamResult = new StreamResult(outStream);
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer serializer = tf.newTransformer();
+		serializer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+		serializer.setOutputProperty(OutputKeys.INDENT, "yes");
+		serializer.setOutputProperty(OutputKeys.METHOD, "html");
+		serializer.transform(domSource, streamResult);
+		outStream.close();
+
+		String content = new String(outStream.toByteArray());
+
+		FileUtils.writeStringToFile(new File(path, "exportExcel.html"), content, "utf-8");
+	}
+	
+	
+	 public static boolean doPPTtoImage(File file) {   
+	        boolean isppt = checkFile(file);   
+	        if (!isppt) {   
+	            System.out.println("The image you specify don't exit!");   
+	            return false;   
+	        }   
+	        try {   
+	 
+	            FileInputStream is = new FileInputStream(file);   
+	            SlideShow ppt = new SlideShow(is);   
+	            is.close();   
+	            Dimension pgsize = ppt.getPageSize();   
+	            org.apache.poi.hslf.model.Slide[] slide = ppt.getSlides();   
+	            for (int i = 0; i < slide.length; i++) {   
+	                System.out.print("第" + i + "页。");   
+	 
+	                TextRun[] truns = slide[i].getTextRuns();      
+	                for ( int k=0;k<truns.length;k++){      
+	                   RichTextRun[] rtruns = truns[k].getRichTextRuns();      
+	                  for(int l=0;l<rtruns.length;l++){      
+	                       int index = rtruns[l].getFontIndex();      
+	                        String name = rtruns[l].getFontName();                
+	                        rtruns[l].setFontIndex(1);      
+	                        rtruns[l].setFontName("宋体");  
+//	                        System.out.println(rtruns[l].getText());
+	                   }      
+	                }      
+	                BufferedImage img = new BufferedImage(pgsize.width,pgsize.height, BufferedImage.TYPE_INT_RGB);   
+	 
+	                Graphics2D graphics = img.createGraphics();   
+	                graphics.setPaint(Color.BLUE);   
+	                graphics.fill(new Rectangle2D.Float(0, 0, pgsize.width, pgsize.height));   
+	                slide[i].draw(graphics);   
+	 
+	                // 这里设置图片的存放路径和图片的格式(jpeg,png,bmp等等),注意生成文件路径   
+	                FileOutputStream out = new FileOutputStream("D:/poi-test/pptToImg/pict_"+ (i + 1) + ".jpeg");   
+	                javax.imageio.ImageIO.write(img, "jpeg", out);   
+	                out.close();   
+	 
+	            }   
+	            System.out.println("success!!");   
+	            return true;   
+	        } catch (FileNotFoundException e) {   
+	            System.out.println(e);   
+	            // System.out.println("Can't find the image!");   
+	        } catch (IOException e) {   
+	        }   
+	        return false;   
+	    }   
+	 
+	    // function 检查文件是否为PPT   
+	    public static boolean checkFile(File file) {   
+	 
+	        boolean isppt = false;   
+	        String filename = file.getName();   
+	        String suffixname = null;   
+	        if (filename != null && filename.indexOf(".") != -1) {   
+	            suffixname = filename.substring(filename.indexOf("."));   
+	            if (suffixname.equals(".ppt")) {   
+	                isppt = true;   
+	            }   
+	            return isppt;   
+	        } else {   
+	            return isppt;   
+	        }   
+	    }   
+
+	
 
 	/**
 	 * 删除资源
