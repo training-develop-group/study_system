@@ -32,5 +32,5 @@ public interface JUserTaskMapper {
 
     JUserTask selectJUsePaperPercentage();
 
-    float selectJUsePaper(String userId);
+    Float selectJUsePaper(String userId);
 }

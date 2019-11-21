@@ -36,5 +36,5 @@ public interface TaskInfoMapper {
     TaskInfo typeTaskInfo();
 
     //获取统计列表
-    TaskInfo selectTaskInfo(String cUser);
+    TaskInfo selectTaskInfo(String userId);
 }

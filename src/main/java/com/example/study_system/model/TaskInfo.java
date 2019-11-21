@@ -16,8 +16,18 @@ public class TaskInfo {
     private Integer taskType;
 
     private String taskName;
+    
+    private String userId;
 
-    private Integer status;
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	private Integer status;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;

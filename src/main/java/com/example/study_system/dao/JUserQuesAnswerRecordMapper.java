@@ -1,7 +1,11 @@
 package com.example.study_system.dao;
 
 import com.example.study_system.model.JUserQuesAnswerRecord;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface JUserQuesAnswerRecordMapper {
@@ -20,6 +24,8 @@ public interface JUserQuesAnswerRecordMapper {
     int updateByPrimaryKey(JUserQuesAnswerRecord record);
 
     Float selectJUserQuesAnswerRecord(String userId);
-
+    
+    List<JUserQuesAnswerRecord> selectUserQuestionAnswer(@Param("taskId")Long taskId,@Param("paperId")Long paperId,@Param("userId")String usetId,@Param("questionId")Long questionId);
+    
     JUserQuesAnswerRecord choiceJUserQuesAnswerRecord();
 }

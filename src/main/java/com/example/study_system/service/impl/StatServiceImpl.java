@@ -52,14 +52,16 @@ public class StatServiceImpl extends BaseService implements IStatService {
         	 return null;
         }
         allUserInfo.forEach(item -> {
-            TaskInfo task = taskInfoMapper.selectTaskInfo(item.getUserName());
+            TaskInfo task = taskInfoMapper.selectTaskInfo(item.getUserId());
 
             Float answerRecord = jUserQuesAnswerRecordMapper.selectJUserQuesAnswerRecord(item.getUserId());
-            System.out.println(answerRecord);
             if (answerRecord == null) {
                 answerRecord = 0.0f;
             }
             Float percentage = jUserTaskMapper.selectJUsePaper(item.getUserId());
+            if (percentage == null) {
+            	percentage = 0.0f;
+            }
             statisticalList.add(new UserTaskDTO(task.getXx(), task.getCs(), task.getZh(), answerRecord, percentage, item.getUserName()));
         });
         PageInfo<UserTaskDTO> result = new PageInfo<>(statisticalList);

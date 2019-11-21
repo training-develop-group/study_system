@@ -29,8 +29,6 @@ public interface PaperInfoMapper {
     //	查询总条数
     int selectAllPaperInfo(@Param("paperName") String paperName);
 
-    List<PaperInfo> select();
-
     int selectPaperCount();
 
     Long selectPaperScore(Long paperId);

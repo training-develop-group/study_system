@@ -20,6 +20,7 @@
         <result column="comprehensive" property="comprehensive" jdbcType="REAL"/>
         <result column="test" property="test" jdbcType="REAL"/>
         <result column="learning" property="learning" jdbcType="REAL"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.example.study_system.model.TaskInfo" extends="BaseResultMap">
         <result column="task_remark" property="taskRemark" jdbcType="LONGVARCHAR"/>
@@ -86,11 +87,11 @@
   </select>
 
     <select id="selectTaskInfo" resultMap="ResultMapWithBLOBs" parameterType="String">
-	SELECT T1.xx , T2.cs , T3.zh
-	FROM (SELECT count(*) as xx FROM manage_system.task_info where c_user = #{cUser,jdbcType=VARCHAR} and task_type = 1) T1,
-	(SELECT count(*) as cs FROM manage_system.task_info where c_user = #{cUser,jdbcType=VARCHAR} and task_type = 2)T2,
-	(SELECT count(*) as zh FROM manage_system.task_info where c_user = #{cUser,jdbcType=VARCHAR} and task_type = 3)T3;
-  </select>
+	SELECT jUserTask.zh , jUserPaper.cs , jUserQuesAnswerRecord.xx from 
+	(SELECT count(*) as zh FROM j_user_task where user_id = #{userId,jdbcType=VARCHAR} and STATUS = 1) jUserTask,
+	(SELECT count(*) as cs FROM j_user_paper where user_id = #{userId,jdbcType=VARCHAR}) jUserPaper,
+	(SELECT count(*) as xx FROM j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right = 1) jUserQuesAnswerRecord;
+	</select>
 
     <select id="typeTaskInfo" resultMap="BaseResultMap">
 	SELECT ROUND(T1.xx/T4.qb*100,1) comprehensive , ROUND(T2.cs/T4.qb*100,1) learning , ROUND(T3.zh/T4.qb*100,1) test 

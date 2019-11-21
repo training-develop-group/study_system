@@ -1,5 +1,13 @@
 package com.example.study_system.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.HtmlUtils;
+
 import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
@@ -7,12 +15,6 @@ import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IQuestionInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class QuestionInfoServiceImpl extends BaseService implements IQuestionInfoService {
@@ -101,6 +103,7 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 			questionResultDTO.add(new QuestionResultDTO(questionItem, optionList));
 		});
 		PageInfo<QuestionResultDTO> result = new PageInfo<QuestionResultDTO>(questionResultDTO);
+		result.setTotal(questionInfoMapper.selectQuestionCountNum(content, questionType));
 		return result;
 	}
 

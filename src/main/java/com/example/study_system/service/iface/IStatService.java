@@ -12,7 +12,7 @@ public interface IStatService {
 
     JUserTask selectJUsePaperPercentage();
 
-    TaskInfo selectTaskInfo(String cUser);
+    TaskInfo selectTaskInfo(String userId);
 
     PageInfo<UserTaskDTO> statisticalList(String userName, Integer pageNum, Integer pageSize);
 

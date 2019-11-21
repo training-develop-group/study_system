@@ -22,6 +22,17 @@
     <sql id="Blob_Column_List">
     answer
   </sql>
+    <select id="selectUserQuestionAnswer" resultMap="ResultMapWithBLOBs" parameterType="String">
+  select  JUQAR.* from 
+manage_system.j_user_ques_answer_record JUQAR,
+manage_system.j_user_paper JUP
+ where JUP.ref =  JUQAR.answer_value 
+ and JUP.task_id = ${taskId} 
+ and JUP.paper_id = ${paperId} 
+ and JUP.user_id = '${userId}'
+ and JUQAR.question_id = ${questionId};
+  
+  </select>
     <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>

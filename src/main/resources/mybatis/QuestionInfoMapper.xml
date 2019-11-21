@@ -65,15 +65,16 @@
     </select>
     <select id="selectAnalysisById" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.Long">
-		select question.analysis,qOption.ref,qOption.option_type from
+		select question.analysis,questionOption.ref,questionOption.option_type from
 		question_info
-		question left
-		join
-		j_question_option qOption on question.question_id = qOption.question_id
+		question 
+		left join
+		j_question_option questionOption 
+		on question.question_id = questionOption.question_id
 		where
-		qOption.is_right = 1 and question.question_id = #{questionId,jdbcType=BIGINT}
-		ORDER
-		BY question.c_time desc;
+		questionOption.is_right = 1 and question.question_id = #{questionId,jdbcType=BIGINT}
+		ORDER BY 
+		question.c_time desc;
 	</select>
     <select id="selectAllQuestion" resultMap="ResultMapWithBLOBs"
             parameterType="java.lang.String">

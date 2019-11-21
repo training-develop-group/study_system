@@ -70,10 +70,10 @@
 	(SELECT count(*) as z FROM manage_system.j_user_task)T2;
     </select>
 
-    <select id="selectJUsePaper" resultType="float" parameterType="String">
+    <select id="selectJUsePaper" resultType="Float" parameterType="String">
 	SELECT ROUND(T1.wc/T2.z*100,1) completed FROM
 	(SELECT count(*) as wc FROM manage_system.j_user_task where user_id = #{userId,jdbcType=VARCHAR} and status = 1)T1, 
-	(SELECT count(*) as z FROM manage_system.j_user_task)T2;
+	(SELECT count(*) as z FROM manage_system.j_user_task where user_id = #{userId,jdbcType=VARCHAR})T2;
     </select>
 
     <insert id="insert"

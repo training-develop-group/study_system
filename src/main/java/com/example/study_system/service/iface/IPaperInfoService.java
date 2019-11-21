@@ -38,7 +38,9 @@ public interface IPaperInfoService {
     Long selectPaperScore(Long paperId);
 
     int addOrRemoveRelationships(List<JPaperQuestion> JPaperQuestionList, List<PaperQuestionResultDTO> PaperQuestionPesultList, List<PaperQuestionResultDTO> questionScore, List<JPaperQuestion> sorting);
-
+    
+    PaperResultDTO UserQuestionAnswer(Long taskId, Long paperId, String userId);
+    
     //	设置试题分数
     int updateScore(Long paperId, Long questionId, Float score);
     

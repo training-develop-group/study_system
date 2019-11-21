@@ -43,7 +43,19 @@ public class PaperInfoController extends BaseController {
 		int insertPaper = serviceFacade.getPaperInfoService().insert(request, paperName);
 		return success(insertPaper);
 	}
-
+	 /**
+     * 
+     * @param request
+     * @param taskId
+     * @param paperId
+     * @return
+     */
+    @RequestMapping(value = "/question-answer", method = RequestMethod.GET)
+    public ResultDTO UserQuestionAnswer(HttpServletRequest request,@RequestParam("taskId")Long taskId,@RequestParam("paperId")Long paperId) {
+        UserInfo userInfo = UserUtil.getUser(request);
+        PaperResultDTO paper = serviceFacade.getPaperInfoService().UserQuestionAnswer(taskId,paperId,userInfo.getUserId());
+        return success(paper);
+    }
 	/**
 	 * 修改试卷名
 	 *
