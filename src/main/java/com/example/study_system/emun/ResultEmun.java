@@ -14,8 +14,9 @@ public enum ResultEmun {
     UNAUTHORIZED_ERROR(-3, "获取用户失败，请重试或重新登录"),
     FORBIDDEN_ERROR(-4, "没有权限"),
     VALIDATION_FORAMT_ERROR(-5, "数据格式错误"),//参数错误，拒绝访问
-    METHOD_NOT_ALLOWED(-6, "Method not allowed");//参数异常
-
+    METHOD_NOT_ALLOWED(-6, "Method not allowed"),//参数异常
+	UPLOAD_FILE_ISEMPTY(-7, "上传文件数据为空"),
+	THIS_FILE_FORMAT_IS_NOT_SUPPORTED(-8, "不支持此文件格式");
     private Integer code;
     private String message;
 

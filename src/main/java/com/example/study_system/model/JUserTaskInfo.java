@@ -1,0 +1,165 @@
+package com.example.study_system.model;
+
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+public class JUserTaskInfo extends TaskInfo{
+		String userName ;
+		Integer score ;
+	    private Long taskId;
+	    private Long resId;
+	    private Long paperId;
+	    private Integer taskType;
+	    private String taskName;
+	    private Integer status;
+	    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	    private Date startTime;
+	    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	    private Date endTime;
+	    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	    private Date cTime;
+	    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	    private Date mTime;
+	    private String mUser;
+	    private String taskRemark;
+	    private String userId;
+	    private String cUser;
+	    public String getUserId() {
+	        return userId;
+	    }
+
+	    public void setUserId(String userId) {
+	        this.userId = userId == null ? null : userId.trim();
+	    }
+
+	   
+
+	  
+	    public Long getTaskId() {
+	        return taskId;
+	    }
+
+	    public void setTaskId(Long taskId) {
+	        this.taskId = taskId;
+	    }
+
+	    public Long getResId() {
+	        return resId;
+	    }
+
+	    public void setResId(Long resId) {
+	        this.resId = resId;
+	    }
+
+	    public Long getPaperId() {
+	        return paperId;
+	    }
+
+	    public void setPaperId(Long paperId) {
+	        this.paperId = paperId;
+	    }
+
+	    public Integer getTaskType() {
+	        return taskType;
+	    }
+
+	    public void setTaskType(Integer taskType) {
+	        this.taskType = taskType;
+	    }
+
+	    public String getTaskName() {
+	        return taskName;
+	    }
+
+	    public void setTaskName(String taskName) {
+	        this.taskName = taskName == null ? null : taskName.trim();
+	    }
+
+	 
+
+	    public Date getStartTime() {
+	        return startTime;
+	    }
+
+	    public void setStartTime(Date startTime) {
+	        this.startTime = startTime;
+	    }
+
+	    public Date getEndTime() {
+	        return endTime;
+	    }
+
+	    public void setEndTime(Date endTime) {
+	        this.endTime = endTime;
+	    }
+
+	    public Date getcTime() {
+	        return cTime;
+	    }
+
+	    public void setcTime(Date cTime) {
+	        this.cTime = cTime;
+	    }
+
+	    public Date getmTime() {
+	        return mTime;
+	    }
+
+	    public void setmTime(Date mTime) {
+	        this.mTime = mTime;
+	    }
+
+	    public String getcUser() {
+	        return cUser;
+	    }
+
+	    public void setcUser(String cUser) {
+	        this.cUser = cUser == null ? null : cUser.trim();
+	    }
+
+	    public String getmUser() {
+	        return mUser;
+	    }
+
+	    public void setmUser(String mUser) {
+	        this.mUser = mUser == null ? null : mUser.trim();
+	    }
+
+	    public String getTaskRemark() {
+	        return taskRemark;
+	    }
+
+	    public void setTaskRemark(String taskRemark) {
+	        this.taskRemark = taskRemark == null ? null : taskRemark.trim();
+	    }
+	
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+    
+}

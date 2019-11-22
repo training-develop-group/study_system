@@ -1,4 +1,4 @@
-﻿package com.example.study_system.controller;
+package com.example.study_system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.study_system.common.ResultDTO;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,25 +23,27 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/login")
 public class LoginController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
-    public ResultDTO login(HttpSession session,
+    public ResultDTO login(HttpServletRequest request,
                            @RequestParam("userName") String userName,
                            @RequestParam("password") String password) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             return new ResultDTO(ResultEmun.VALIDATION_ERROR);
         }
         logger.info("用户名："+userName+ ",密码: " +password);
-        UserInfo userInfo = serviceFacade.getUserService().selectUser(userName,password);
+        UserInfo userInfo = serviceFacade.getLoginService().selectUser(userName,password);
         if (userInfo == null) {
             return noData();
         }
         userInfo.setPassword("");
         String sessionUser = JSONObject.toJSONString(userInfo);
+        HttpSession session = request.getSession();
         session.setAttribute("user",sessionUser);
         return success(userInfo);
     }
     @RequestMapping(value = "/user",method = RequestMethod.GET)
     public ResultDTO getUser(HttpServletRequest request) {
         UserInfo userInfo = UserUtil.getUser(request);
+        System.err.println(userInfo);
         if (userInfo == null) {
             return noData();
         }
