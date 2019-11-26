@@ -9,8 +9,7 @@ import com.example.study_system.model.UserInfo;
  * date 2019/6/4.
  */
 public interface ILoginService {
-
     UserInfo selectUser(String userName, String password);
-    
-    List<UserInfo> selectUserAll();
+
+	List<UserInfo> selectUserByName(String userName);
 }

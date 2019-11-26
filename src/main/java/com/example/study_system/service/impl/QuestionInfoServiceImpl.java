@@ -1,28 +1,20 @@
 package com.example.study_system.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.HtmlUtils;
 
-import com.example.study_system.dao.JQuestionOptionMapper;
-import com.example.study_system.dao.QuestionInfoMapper;
 import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
-import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
 import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IQuestionInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.zaxxer.hikari.util.SuspendResumeLock;
 
 @Service
 public class QuestionInfoServiceImpl extends BaseService implements IQuestionInfoService {
@@ -108,13 +100,10 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		questionList.forEach(questionItem -> {
 			List<JQuestionOption> optionList = jQuestionOptionMapper
 					.selectQuestionByQuestionId(questionItem.getQuestionId());
-			questionResultDTO.add(new QuestionResultDTO(questionItem.getQuestionId(), questionItem.getQuestionType(),
-					questionItem.getScore(), questionItem.getDifficulty(), questionItem.getContent(),
-					questionItem.getAnalysis(), questionItem.getStatus(), questionItem.getcTime(),
-					questionItem.getmTime(), questionItem.getcUser(), questionItem.getmUser(), optionList));
+			questionResultDTO.add(new QuestionResultDTO(questionItem, optionList));
 		});
 		PageInfo<QuestionResultDTO> result = new PageInfo<QuestionResultDTO>(questionResultDTO);
-		result.setTotal(questionInfoMapper.selectQuestionCount(questionType));
+		result.setTotal(questionInfoMapper.selectQuestionCountNum(content, questionType));
 		return result;
 	}
 
@@ -127,12 +116,7 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		QuestionInfoWithBLOBs question = questionInfoMapper.selectByPrimaryKey(questionId);
 		List<JQuestionOption> questionOptionList = jQuestionOptionMapper.selectQuestionByQuestionId(questionId);
 		List<QuestionResultDTO> questionResultDTO = new ArrayList<QuestionResultDTO>();
-		questionResultDTO.add(new QuestionResultDTO(question.getQuestionId(), question.getQuestionType(),
-				question.getScore(), question.getDifficulty(), question.getContent(), question.getAnalysis(),
-				question.getStatus(), question.getcTime(), question.getmTime(), question.getcUser(),
-				question.getmUser(), questionOptionList));
-		questionResultDTO.forEach(a -> {
-		});
+		questionResultDTO.add(new QuestionResultDTO(question, questionOptionList));
 		return questionResultDTO;
 	}
 

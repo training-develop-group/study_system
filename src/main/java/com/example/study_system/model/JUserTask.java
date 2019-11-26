@@ -2,6 +2,10 @@ package com.example.study_system.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class JUserTask {
     private Long ref;
 
@@ -10,11 +14,51 @@ public class JUserTask {
     private Long taskId;
 
     private Integer status;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cTime;
 
     private String cUser;
+    
+    private String userName;
+    
+    private Float score;
+    
+    private Float completed;
+    
+    private Float notCompleted;
+    
+    public Float getCompleted() {
+		return completed;
+	}
 
+	public void setCompleted(Float completed) {
+		this.completed = completed;
+	}
+
+	public Float getNotCompleted() {
+		return notCompleted;
+	}
+
+	public void setNotCompleted(Float notCompleted) {
+		this.notCompleted = notCompleted;
+	}
+
+	public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
     public Long getRef() {
         return ref;
     }

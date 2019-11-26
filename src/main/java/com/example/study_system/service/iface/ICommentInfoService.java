@@ -1,13 +1,14 @@
 package com.example.study_system.service.iface;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import com.example.study_system.model.CommentInfo;
+import com.github.pagehelper.PageInfo;
 
 public interface ICommentInfoService {
-	List<CommentInfo> selectCommentByTaskId(Long taskId);
+    PageInfo<CommentInfo> selectCommentByTaskId(Long taskId, int pageNum, int pageSize);
 
-	int insertSelective(CommentInfo record);
+    int insertSelective(HttpServletRequest request,CommentInfo record);
 
-	int updateByPrimaryKeySelective(CommentInfo record);
+    int updateByPrimaryKeySelective(CommentInfo record);
 }

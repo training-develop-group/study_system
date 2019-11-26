@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.example.study_system.dao.UserInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.example.study_system.model.UserInfo" >
-    <id column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="CHAR" />
-    <result column="emp_id" property="empId" jdbcType="VARCHAR" />
-    <result column="st_role_id" property="stRoleId" jdbcType="INTEGER" />
-    <result column="c_user" property="cUser" jdbcType="VARCHAR" />
-    <result column="m_user" property="mUser" jdbcType="VARCHAR" />
-    <result column="c_time" property="cTime" jdbcType="TIMESTAMP" />
-    <result column="m_time" property="mTime" jdbcType="TIMESTAMP" />
-    <result column="is_del" property="isDel" jdbcType="CHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.example.study_system.model.UserInfoWithBLOBs" extends="BaseResultMap" >
-    <result column="role_id" property="roleId" jdbcType="LONGVARCHAR" />
-    <result column="group_id" property="groupId" jdbcType="LONGVARCHAR" />
-    <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.example.study_system.dao.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.example.study_system.model.UserInfo">
+        <id column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="emp_id" property="empId" jdbcType="VARCHAR"/>
+        <result column="st_role_id" property="stRoleId" jdbcType="INTEGER"/>
+        <result column="c_user" property="cUser" jdbcType="VARCHAR"/>
+        <result column="m_user" property="mUser" jdbcType="VARCHAR"/>
+        <result column="c_time" property="cTime" jdbcType="TIMESTAMP"/>
+        <result column="m_time" property="mTime" jdbcType="TIMESTAMP"/>
+        <result column="is_del" property="isDel" jdbcType="CHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.example.study_system.model.UserInfoWithBLOBs" extends="BaseResultMap">
+        <result column="role_id" property="roleId" jdbcType="LONGVARCHAR"/>
+        <result column="group_id" property="groupId" jdbcType="LONGVARCHAR"/>
+        <result column="remark" property="remark" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     user_id, user_name, password, status, emp_id, st_role_id, c_user, m_user, c_time, 
     m_time, is_del
   </sql>
-  <sql id="Blob_Column_List" >
+    <sql id="Blob_Column_List">
     role_id, group_id, remark
   </sql>
-    <select id="selectUserAll" resultMap="BaseResultMap">
-  	select   user_id, user_name, password,status
-  	from user_info
+
+    <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select   user_id, user_name, password, status
+  	from user_info 
+  	where 1=1
+    and user_name like '%${userName}%'
+    and st_role_id = 2
   </select>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from user_info
-    where user_id = #{userId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from user_info
+        where 1=1
+        and user_name like '%${userName}%'
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from user_info
     where user_id = #{userId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.example.study_system.model.UserInfoWithBLOBs" >
+    <insert id="insert" parameterType="com.example.study_system.model.UserInfoWithBLOBs">
     insert into user_info (user_id, user_name, password, 
       status, emp_id, st_role_id, 
       c_user, m_user, c_time, 
@@ -54,143 +60,143 @@
       #{mTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=CHAR}, #{roleId,jdbcType=LONGVARCHAR}, 
       #{groupId,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.example.study_system.model.UserInfoWithBLOBs" >
-    insert into user_info
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="userName != null" >
-        user_name,
-      </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="empId != null" >
-        emp_id,
-      </if>
-      <if test="stRoleId != null" >
-        st_role_id,
-      </if>
-      <if test="cUser != null" >
-        c_user,
-      </if>
-      <if test="mUser != null" >
-        m_user,
-      </if>
-      <if test="cTime != null" >
-        c_time,
-      </if>
-      <if test="mTime != null" >
-        m_time,
-      </if>
-      <if test="isDel != null" >
-        is_del,
-      </if>
-      <if test="roleId != null" >
-        role_id,
-      </if>
-      <if test="groupId != null" >
-        group_id,
-      </if>
-      <if test="remark != null" >
-        remark,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=CHAR},
-      </if>
-      <if test="empId != null" >
-        #{empId,jdbcType=VARCHAR},
-      </if>
-      <if test="stRoleId != null" >
-        #{stRoleId,jdbcType=INTEGER},
-      </if>
-      <if test="cUser != null" >
-        #{cUser,jdbcType=VARCHAR},
-      </if>
-      <if test="mUser != null" >
-        #{mUser,jdbcType=VARCHAR},
-      </if>
-      <if test="cTime != null" >
-        #{cTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="mTime != null" >
-        #{mTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isDel != null" >
-        #{isDel,jdbcType=CHAR},
-      </if>
-      <if test="roleId != null" >
-        #{roleId,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="groupId != null" >
-        #{groupId,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="remark != null" >
-        #{remark,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.study_system.model.UserInfoWithBLOBs" >
-    update user_info
-    <set >
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=CHAR},
-      </if>
-      <if test="empId != null" >
-        emp_id = #{empId,jdbcType=VARCHAR},
-      </if>
-      <if test="stRoleId != null" >
-        st_role_id = #{stRoleId,jdbcType=INTEGER},
-      </if>
-      <if test="cUser != null" >
-        c_user = #{cUser,jdbcType=VARCHAR},
-      </if>
-      <if test="mUser != null" >
-        m_user = #{mUser,jdbcType=VARCHAR},
-      </if>
-      <if test="cTime != null" >
-        c_time = #{cTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="mTime != null" >
-        m_time = #{mTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="isDel != null" >
-        is_del = #{isDel,jdbcType=CHAR},
-      </if>
-      <if test="roleId != null" >
-        role_id = #{roleId,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="groupId != null" >
-        group_id = #{groupId,jdbcType=LONGVARCHAR},
-      </if>
-      <if test="remark != null" >
-        remark = #{remark,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where user_id = #{userId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.study_system.model.UserInfoWithBLOBs" >
+    <insert id="insertSelective" parameterType="com.example.study_system.model.UserInfoWithBLOBs">
+        insert into user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="empId != null">
+                emp_id,
+            </if>
+            <if test="stRoleId != null">
+                st_role_id,
+            </if>
+            <if test="cUser != null">
+                c_user,
+            </if>
+            <if test="mUser != null">
+                m_user,
+            </if>
+            <if test="cTime != null">
+                c_time,
+            </if>
+            <if test="mTime != null">
+                m_time,
+            </if>
+            <if test="isDel != null">
+                is_del,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="empId != null">
+                #{empId,jdbcType=VARCHAR},
+            </if>
+            <if test="stRoleId != null">
+                #{stRoleId,jdbcType=INTEGER},
+            </if>
+            <if test="cUser != null">
+                #{cUser,jdbcType=VARCHAR},
+            </if>
+            <if test="mUser != null">
+                #{mUser,jdbcType=VARCHAR},
+            </if>
+            <if test="cTime != null">
+                #{cTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mTime != null">
+                #{mTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDel != null">
+                #{isDel,jdbcType=CHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.study_system.model.UserInfoWithBLOBs">
+        update user_info
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="empId != null">
+                emp_id = #{empId,jdbcType=VARCHAR},
+            </if>
+            <if test="stRoleId != null">
+                st_role_id = #{stRoleId,jdbcType=INTEGER},
+            </if>
+            <if test="cUser != null">
+                c_user = #{cUser,jdbcType=VARCHAR},
+            </if>
+            <if test="mUser != null">
+                m_user = #{mUser,jdbcType=VARCHAR},
+            </if>
+            <if test="cTime != null">
+                c_time = #{cTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mTime != null">
+                m_time = #{mTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDel != null">
+                is_del = #{isDel,jdbcType=CHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.study_system.model.UserInfoWithBLOBs">
     update user_info
     set user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
@@ -207,7 +213,7 @@
       remark = #{remark,jdbcType=LONGVARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.study_system.model.UserInfo" >
+    <update id="updateByPrimaryKey" parameterType="com.example.study_system.model.UserInfo">
     update user_info
     set user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
@@ -222,13 +228,13 @@
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
 
-  <select id="selectByUserNameAndPassword" resultMap="ResultMapWithBLOBs" >
-    select
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from user_info
-    where user_name = #{userName}
-    and password = #{password}
-  </select>
+    <select id="selectByUserNameAndPassword" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from user_info
+        where user_name = #{userName}
+        and password = #{password}
+    </select>
 </mapper>

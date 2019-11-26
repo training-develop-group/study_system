@@ -1,5 +1,6 @@
 package com.example.study_system.model;
 
+
 import java.util.Date;
 
 public class JUserVideoLog {

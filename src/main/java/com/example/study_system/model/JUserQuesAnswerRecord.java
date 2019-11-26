@@ -19,7 +19,27 @@ public class JUserQuesAnswerRecord {
 
     private String answer;
 
-    public Long getRef() {
+    private float singleElection;
+    
+   	private float multipleSelection;
+    
+    public float getSingleElection() {
+		return singleElection;
+	}
+
+	public void setSingleElection(float singleElection) {
+		this.singleElection = singleElection;
+	}
+
+	public float getMultipleSelection() {
+		return multipleSelection;
+	}
+
+	public void setMultipleSelection(float multipleSelection) {
+		this.multipleSelection = multipleSelection;
+	}
+
+	public Long getRef() {
         return ref;
     }
 

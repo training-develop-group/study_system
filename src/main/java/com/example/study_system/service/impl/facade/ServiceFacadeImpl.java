@@ -1,11 +1,6 @@
 package com.example.study_system.service.impl.facade;
 
-import com.example.study_system.service.iface.ICommentInfoService;
-import com.example.study_system.service.iface.ILoginService;
-import com.example.study_system.service.iface.IPaperInfoService;
-import com.example.study_system.service.iface.IQuestionInfoService;
-import com.example.study_system.service.iface.ITaskService;
-import com.example.study_system.service.iface.IUserService;
+import com.example.study_system.service.iface.*;
 import com.example.study_system.service.iface.facade.IServiceFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,40 +10,67 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ServiceFacadeImpl implements IServiceFacade {
+    @Autowired
+    ILoginService loginService;
+    @Autowired
+    IQuestionInfoService questionInfoService;
+    @Autowired
+    ITaskService taskService;
+    @Autowired
+    IPaperInfoService paperInfoService;
+    @Autowired
+    ICommentInfoService commentInfoService;
+    @Autowired
+    IStatService statService;
+    @Autowired
+    IJUserVideoLogService userVideoLogService;
+    @Autowired
+    IUserActionLogService userActionLogService;
+    @Autowired
+    IResourceService resourceService;
 
-	@Autowired
-	IQuestionInfoService questionInfoService;
-	@Autowired
-	ILoginService userService;
-	@Autowired
-	ITaskService taskService;
-	@Autowired
-	IPaperInfoService paperInfoService;
-	@Autowired
-	ICommentInfoService commentInfoService;
+    @Override
+    public ICommentInfoService getCommentInfoService() {
+        return commentInfoService;
+    }
 
-	@Override
-	public ICommentInfoService getCommentInfoService() {
-		return commentInfoService;
-	}
+    @Override
+    public IPaperInfoService getPaperInfoService() {
+        return paperInfoService;
+    }
 
-	@Override
-	public IPaperInfoService getPaperInfoService() {
-		return paperInfoService;
-	}
+    @Override
+    public ITaskService getTaskService() {
+        return taskService;
+    }
 
-	@Override
-	public ITaskService getTaskService() {
-		return taskService;
-	}
+    @Override
+    public IQuestionInfoService getQuestionInfoService() {
+        return questionInfoService;
+    }
 
-	@Override
-	public ILoginService getUserService() {
-		return userService;
-	}
+    @Override
+    public ILoginService getLoginService() {
+        return loginService;
+    }
 
-	@Override
-	public IQuestionInfoService getQuestionInfoService() {
-		return questionInfoService;
-	}
+    @Override
+    public IResourceService getResourceService() {
+        return resourceService;
+    }
+
+    @Override
+    public IJUserVideoLogService getJUserVideoLogService() {
+        return userVideoLogService;
+    }
+
+    @Override
+    public IUserActionLogService getIUserActionLogServive() {
+        return userActionLogService;
+    }
+    
+    @Override
+    public IStatService getStatService() {
+        return statService;
+    }
 }

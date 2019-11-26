@@ -1,127 +1,155 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.example.study_system.dao.JUserQuesAnswerRecordMapper" >
-  <resultMap id="BaseResultMap" type="com.example.study_system.model.JUserQuesAnswerRecord" >
-    <id column="ref" property="ref" jdbcType="BIGINT" />
-    <result column="user_id" property="userId" jdbcType="VARCHAR" />
-    <result column="answer_value" property="answerValue" jdbcType="BIGINT" />
-    <result column="question_id" property="questionId" jdbcType="BIGINT" />
-    <result column="is_right" property="isRight" jdbcType="INTEGER" />
-    <result column="scord" property="scord" jdbcType="REAL" />
-    <result column="c_time" property="cTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.example.study_system.model.JUserQuesAnswerRecord" extends="BaseResultMap" >
-    <result column="answer" property="answer" jdbcType="LONGVARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.example.study_system.dao.JUserQuesAnswerRecordMapper">
+    <resultMap id="BaseResultMap" type="com.example.study_system.model.JUserQuesAnswerRecord">
+        <id column="ref" property="ref" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="answer_value" property="answerValue" jdbcType="BIGINT"/>
+        <result column="question_id" property="questionId" jdbcType="BIGINT"/>
+        <result column="is_right" property="isRight" jdbcType="INTEGER"/>
+        <result column="scord" property="scord" jdbcType="REAL"/>
+        <result column="c_time" property="cTime" jdbcType="TIMESTAMP"/>
+        <result column="singleElection" property="singleElection" jdbcType="REAL"/>
+        <result column="multipleSelection" property="multipleSelection" jdbcType="REAL"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.example.study_system.model.JUserQuesAnswerRecord"
+               extends="BaseResultMap">
+        <result column="answer" property="answer" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     ref, user_id, answer_value, question_id, is_right, scord, c_time
   </sql>
-  <sql id="Blob_Column_List" >
+    <sql id="Blob_Column_List">
     answer
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from j_user_ques_answer_record
-    where ref = #{ref,jdbcType=BIGINT}
+    <select id="selectUserQuestionAnswer" resultMap="ResultMapWithBLOBs" parameterType="String">
+	select  JUQAR.* from 
+	j_user_ques_answer_record JUQAR,
+	j_user_paper jUserPaper
+	where jUserPaper.ref =  JUQAR.answer_value 
+	and jUserPaper.task_id = ${taskId} 
+	and jUserPaper.paper_id = ${paperId} 
+	and jUserPaper.user_id = '${userId}'
+	and JUQAR.question_id = ${questionId};
+  
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from j_user_ques_answer_record
+        where ref = #{ref,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectJUserQuesAnswerRecord" resultType="Float" parameterType="String">
+   SELECT ROUND(JUQARC.correct/JUQAR.totalNumber*100,1) FROM
+   (SELECT count(*) as correct FROM j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right = 1) JUQARC,
+   (SELECT count(*) as totalNumber FROM j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR}) JUQAR;
+   </select>
+
+    <select id="choiceJUserQuesAnswerRecord" resultMap="BaseResultMap">
+	select ROUND(JUQARS.typeS/JUQAR.totalNumber*100,1) singleElection , ROUND(JUQARM.typeM/JUQAR.totalNumber*100,1) multipleSelection from
+	(select count(*) typeS from question_info a, j_user_ques_answer_record b where question_type = 1 and a.question_id=b.question_id and is_right=1) JUQARS,
+	(select count(*) typeM from question_info a, j_user_ques_answer_record b where question_type = 2 and a.question_id=b.question_id and is_right=1) JUQARM,
+	(select count(*) totalNumber from question_info a,  j_user_ques_answer_record b where a.question_id=b.question_id and is_right=1) JUQAR;
+   </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from j_user_ques_answer_record
     where ref = #{ref,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.example.study_system.model.JUserQuesAnswerRecord" >
+    <insert id="insert" parameterType="com.example.study_system.model.JUserQuesAnswerRecord">
     insert into j_user_ques_answer_record (ref, user_id, answer_value, 
       question_id, is_right, scord, 
       c_time, answer)
-    values (#{ref,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{answerValue,jdbcType=BIGINT}, 
+    values (null, #{userId,jdbcType=VARCHAR}, #{answerValue,jdbcType=BIGINT}, 
       #{questionId,jdbcType=BIGINT}, #{isRight,jdbcType=INTEGER}, #{scord,jdbcType=REAL}, 
-      #{cTime,jdbcType=TIMESTAMP}, #{answer,jdbcType=LONGVARCHAR})
+      now(), #{answer,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.example.study_system.model.JUserQuesAnswerRecord" >
-    insert into j_user_ques_answer_record
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="ref != null" >
-        ref,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="answerValue != null" >
-        answer_value,
-      </if>
-      <if test="questionId != null" >
-        question_id,
-      </if>
-      <if test="isRight != null" >
-        is_right,
-      </if>
-      <if test="scord != null" >
-        scord,
-      </if>
-      <if test="cTime != null" >
-        c_time,
-      </if>
-      <if test="answer != null" >
-        answer,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="ref != null" >
-        #{ref,jdbcType=BIGINT},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="answerValue != null" >
-        #{answerValue,jdbcType=BIGINT},
-      </if>
-      <if test="questionId != null" >
-        #{questionId,jdbcType=BIGINT},
-      </if>
-      <if test="isRight != null" >
-        #{isRight,jdbcType=INTEGER},
-      </if>
-      <if test="scord != null" >
-        #{scord,jdbcType=REAL},
-      </if>
-      <if test="cTime != null" >
-        #{cTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="answer != null" >
-        #{answer,jdbcType=LONGVARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.study_system.model.JUserQuesAnswerRecord" >
-    update j_user_ques_answer_record
-    <set >
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="answerValue != null" >
-        answer_value = #{answerValue,jdbcType=BIGINT},
-      </if>
-      <if test="questionId != null" >
-        question_id = #{questionId,jdbcType=BIGINT},
-      </if>
-      <if test="isRight != null" >
-        is_right = #{isRight,jdbcType=INTEGER},
-      </if>
-      <if test="scord != null" >
-        scord = #{scord,jdbcType=REAL},
-      </if>
-      <if test="cTime != null" >
-        c_time = #{cTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="answer != null" >
-        answer = #{answer,jdbcType=LONGVARCHAR},
-      </if>
-    </set>
-    where ref = #{ref,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.study_system.model.JUserQuesAnswerRecord" >
+    <insert id="insertSelective" parameterType="com.example.study_system.model.JUserQuesAnswerRecord">
+        insert into j_user_ques_answer_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ref != null">
+                ref,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="answerValue != null">
+                answer_value,
+            </if>
+            <if test="questionId != null">
+                question_id,
+            </if>
+            <if test="isRight != null">
+                is_right,
+            </if>
+            <if test="scord != null">
+                scord,
+            </if>
+            <if test="cTime != null">
+                c_time,
+            </if>
+            <if test="answer != null">
+                answer,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ref != null">
+                #{ref,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="answerValue != null">
+                #{answerValue,jdbcType=BIGINT},
+            </if>
+            <if test="questionId != null">
+                #{questionId,jdbcType=BIGINT},
+            </if>
+            <if test="isRight != null">
+                #{isRight,jdbcType=INTEGER},
+            </if>
+            <if test="scord != null">
+                #{scord,jdbcType=REAL},
+            </if>
+            <if test="cTime != null">
+                #{cTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="answer != null">
+                #{answer,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.study_system.model.JUserQuesAnswerRecord">
+        update j_user_ques_answer_record
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="answerValue != null">
+                answer_value = #{answerValue,jdbcType=BIGINT},
+            </if>
+            <if test="questionId != null">
+                question_id = #{questionId,jdbcType=BIGINT},
+            </if>
+            <if test="isRight != null">
+                is_right = #{isRight,jdbcType=INTEGER},
+            </if>
+            <if test="scord != null">
+                scord = #{scord,jdbcType=REAL},
+            </if>
+            <if test="cTime != null">
+                c_time = #{cTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="answer != null">
+                answer = #{answer,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where ref = #{ref,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.study_system.model.JUserQuesAnswerRecord">
     update j_user_ques_answer_record
     set user_id = #{userId,jdbcType=VARCHAR},
       answer_value = #{answerValue,jdbcType=BIGINT},
@@ -132,7 +160,7 @@
       answer = #{answer,jdbcType=LONGVARCHAR}
     where ref = #{ref,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.study_system.model.JUserQuesAnswerRecord" >
+    <update id="updateByPrimaryKey" parameterType="com.example.study_system.model.JUserQuesAnswerRecord">
     update j_user_ques_answer_record
     set user_id = #{userId,jdbcType=VARCHAR},
       answer_value = #{answerValue,jdbcType=BIGINT},

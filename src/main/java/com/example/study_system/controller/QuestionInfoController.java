@@ -1,149 +1,258 @@
 package com.example.study_system.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.alibaba.fastjson.JSON;
 import com.example.study_system.common.ResultDTO;
 import com.example.study_system.controller.base.BaseController;
 import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
-import com.example.study_system.model.QuestionInfo;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
+import com.example.study_system.util.UserUtil;
 import com.github.pagehelper.PageInfo;
-import com.alibaba.fastjson.*;
+
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/question")
 public class QuestionInfoController extends BaseController {
-	/**
-	 * 添加问题
-	 * 
-	 * @param record
-	 * @return
-	 */
-	@RequestMapping(value = "/question", method = RequestMethod.POST)
-	public ResultDTO addQuestion(@RequestParam("question") String question,
-			@RequestParam("questionOption") String questionOptions) {
-		if (question == null || questionOptions == null) {
-			return validationError();
-		} else {
-			List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
-			QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
-			int result = serviceFacade.getQuestionInfoService().addQuestion(questionInfo, options);
-			return success(result);
-		}
-	}
+	String userId = "";
+	String userName = "";
+    /**
+	 * 	添加试题
+     *
+     * @return
+     */
+    @RequestMapping(value = "/question", method = RequestMethod.POST)
+    public ResultDTO addQuestion(HttpServletRequest request,
+    								@RequestParam("question") String question,
+    								@RequestParam("questionOption") String questionOptions) {
+        if (StringUtils.isEmpty(question) || StringUtils.isEmpty(questionOptions)) {
+            return validationError();
+        } else {
+            List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
+            QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
+            String remark = userName + "添加试题";
+    		String url = serviceFacade.getPaperInfoService().getUrl() + request.getRequestURI();
+    		String params = "question:" + question + "questionOption:" + questionOptions;
+    		try {
+    			int result = serviceFacade.getQuestionInfoService().addQuestion(questionInfo, options);
+    			int status = 1;
+    			serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+    			return success(result);
+            } catch (Exception e){
+            	int status = 0;
+            	serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+            	int result = serviceFacade.getQuestionInfoService().addQuestion(questionInfo, options);
+    			return success(result);
+            }
+        }
+    }
 
-	/**
-	 * 删除问题
-	 * 
-	 * @param questionId
-	 * @return
-	 */
+    /**
+	 * 	删除试题
+     *
+     * @param questionId
+     * @return
+     */
 
-	@RequestMapping(value = "/{questionId}", method = RequestMethod.DELETE)
-	public ResultDTO deleteQuestion(@PathVariable("questionId") Long questionId) {
-		if (questionId == null) {
-			return validationError();
-		} else {
-			return success(serviceFacade.getQuestionInfoService().deleteQuestion(questionId));
-		}
-	}
+    @RequestMapping(value = "/{questionId}", method = RequestMethod.DELETE)
+    public ResultDTO deleteQuestion(HttpServletRequest request,
+    								@PathVariable("questionId") Long questionId) {
+        if (questionId == null) {
+            return validationError();
+        } else {
+        	String remark = userName + "删除试题";
+    		String url = serviceFacade.getPaperInfoService().getUrl() + request.getRequestURI();
+    		String params = "questionId:" + questionId;
+    		try {
+    			int result = serviceFacade.getQuestionInfoService().deleteQuestion(questionId);
+    			int status = 1;
+    			serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+    			return success(result);
+            } catch (Exception e){
+            	int status = 0;
+            	serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+            	int result = serviceFacade.getQuestionInfoService().deleteQuestion(questionId);
+    			return success(result);
+            }
+        }
+    }
 
-	/**
-	 * 修改问题
-	 * 
-	 * @param questionId
-	 * @param record
-	 * @return
-	 */
-	@RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
-	public ResultDTO updateQeustionInfo(@PathVariable("questionId") Long questionId,
-			@RequestParam("question") String question, @RequestParam("questionOption") String questionOptions) {
-		if (questionId == null || question == null || questionOptions == null) {
-			return validationError();
-		} else {
-			List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
-			QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
-			int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
-			return success(result);
-		}
-	}
+    /**
+     *	 修改试题
+     *
+     * @param questionId
+     * @return
+     */
+    @RequestMapping(value = "/{questionId}", method = RequestMethod.POST)
+    public ResultDTO updateQuestionInfo(HttpServletRequest request,
+    									@PathVariable("questionId") Long questionId,
+                                        @RequestParam("question") String question, 
+                                        @RequestParam("questionOption") String questionOptions) {
+        if (questionId == null || StringUtils.isEmpty(question) || StringUtils.isEmpty(questionOptions)) {
+            return validationError();
+        } else {
+            List<JQuestionOption> options = JSON.parseArray(questionOptions, JQuestionOption.class);
+            QuestionInfoWithBLOBs questionInfo = JSON.parseObject(question, QuestionInfoWithBLOBs.class);
+            String remark = userName + "修改试题";
+    		String url = serviceFacade.getPaperInfoService().getUrl() + request.getRequestURI();
+    		String params = "questionId:" + questionId + "question:" + question + "questionOption:" + questionOptions;
+    		try {
+    			int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
+    			int status = 1;
+    			serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+    			return success(result);
+            } catch (Exception e){
+            	int status = 0;
+            	serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+            	int result = serviceFacade.getQuestionInfoService().updateQuestion(questionInfo, options);
+    			return success(result);
+            }
+        }
+    }
 
-	/**
-	 * 查询问题列表
-	 * 
-	 * @param pageNum
-	 * @param pageSize
-	 * @return
-	 */
-	@RequestMapping(value = "/questions", method = RequestMethod.GET)
-	public ResultDTO selectQuestion(@RequestParam(value = "pageNum") Integer pageNum,
-			@RequestParam(value = "pageSize") Integer pageSize,
-			@RequestParam(value = "content", required = false) String content,
-			@RequestParam(value = "questionType", required = false) Integer questionType) {
-//			@RequestParam("questionType") Integer questionType) {
-//		if (pageSize == null || content == null || pageNum == null || questionType == null) {
-		if (pageSize == null || content == null || pageNum == null) {
-			return validationError();
-		} else {
-			PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum,
-					pageSize, content, questionType);
-			return success(result);
-		}
-	}
+    /**
+     *	查询试题列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/questions", method = RequestMethod.GET)
+    public ResultDTO selectQuestion(HttpServletRequest request,
+    								@RequestParam(value = "pageNum") Integer pageNum,
+                                    @RequestParam(value = "pageSize") Integer pageSize,
+                                    @RequestParam(value = "content", required = false) String content,
+                                    @RequestParam(value = "questionType", required = false) Integer questionType) {
+    	userId = UserUtil.getUser(request).getUserId();
+		userName = UserUtil.getUser(request).getUserName();
+        if (pageSize == null || pageNum == null) {
+            return validationError();
+        } else {
+        	String remark = userName + "查询试题列表";
+    		String url = serviceFacade.getPaperInfoService().getUrl() + request.getRequestURI();
+    		String params = "pageNum:" + pageNum + "pageSize:" + pageSize + "content:" + content + "questionType:" + questionType;
+    		try {
+    			PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum, pageSize, content, questionType);
+                if (result == null) {
+                	return noData();
+                }
+    			int status = 1;
+    			serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+    			return success(result);
+            } catch (Exception e){
+            	int status = 0;
+            	serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+            	PageInfo<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestion(pageNum, pageSize, content, questionType);
+                if (result == null) {
+                	return noData();
+                }
+    			return success(result);
+            }
+        }
+    }
 
-	/**
-	 * 查询问题详细信息
-	 * 
-	 * @param questionId
-	 * @return
-	 */
-	@RequestMapping(value = "/{questionId}", method = RequestMethod.GET)
-	public ResultDTO selectQuestionDetailed(@PathVariable("questionId") Long questionId) {
-		if (questionId == null) {
-			return validationError();
-		} else {
-			return success(serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId));
-		}
-	}
+    /**
+     *	查询试题详细信息
+     *
+     * @param questionId
+     * @return
+     */
+    @RequestMapping(value = "/{questionId}", method = RequestMethod.GET)
+    public ResultDTO selectQuestionDetailed(HttpServletRequest request,
+    										@PathVariable("questionId") Long questionId) {
+        if (questionId == null) {
+            return validationError();
+        } else {
+        	String remark = userName + "查询试题详细信息";
+    		String url = serviceFacade.getPaperInfoService().getUrl() + request.getRequestURI();
+    		String params = "questionId:" + questionId;
+    		try {
+    			List<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId);
+                if (result == null) {
+                	return noData();
+                }
+    			int status = 1;
+    			serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+    			return success(result);
+            } catch (Exception e){
+            	int status = 0;
+            	serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+            	List<QuestionResultDTO> result = serviceFacade.getQuestionInfoService().selectQuestionTitle(questionId);
+                if (result == null) {
+                	return noData();
+                }
+    			return success(result);
+            }
+        }
+    }
 
-	/**
-	 * 查询问题数量 1.单选 2.多选
-	 * 
-	 * @param questionType
-	 * @return
-	 */
-	@RequestMapping(value = "/count", method = RequestMethod.GET)
-	public ResultDTO selectQuestionCount(@RequestParam(value = "questionType", required = false) Integer questionType) {
-		if (questionType == null) {
-			return validationError();
-		} else {
-			return success(serviceFacade.getQuestionInfoService().selectQuestionCount(questionType));
-		}
-	}
+    /**
+     *	查询试题数量 1.单选 2.多选
+     *
+     * @param questionType
+     * @return
+     */
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public ResultDTO selectQuestionCount(HttpServletRequest request,
+    									@RequestParam(value = "questionType", required = false) Integer questionType) {
+        if (questionType == null) {
+            return validationError();
+        } else {
+        	String remark = userName + "查询试题数量";
+    		String url = serviceFacade.getPaperInfoService().getUrl() + request.getRequestURI();
+    		String params = "questionType:" + questionType;
+    		try {
+    			int result = serviceFacade.getQuestionInfoService().selectQuestionCount(questionType);
+    			int status = 1;
+    			serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+    			return success(result);
+            } catch (Exception e){
+            	int status = 0;
+            	serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+            	int result = serviceFacade.getQuestionInfoService().selectQuestionCount(questionType);
+    			return success(result);
+            }
+        }
+    }
 
-	/**
-	 * 查询解析、答案
-	 * 
-	 * @param questionId
-	 * @return
-	 */
-	@RequestMapping(value = "/answer", method = RequestMethod.GET)
-	public ResultDTO selectAnalysis(@RequestParam("questionId") Long questionId) {
-		if (questionId == null) {
-			return validationError();
-		} else {
-			return success(serviceFacade.getQuestionInfoService().selectAnalysis(questionId));
-		}
-	}
+    /**
+     *	查询解析、答案
+     *
+     * @param questionId
+     * @return
+     */
+    @RequestMapping(value = "/answer", method = RequestMethod.GET)
+    public ResultDTO selectAnalysis(HttpServletRequest request,
+    								@RequestParam("questionId") Long questionId) {
+        if (questionId == null) {
+            return validationError();
+        } else {
+        	String remark = userName + "查询解析、答案";
+    		String url = serviceFacade.getPaperInfoService().getUrl() + request.getRequestURI();
+    		String params = "questionId:" + questionId;
+    		try {
+    			List<QuestionInfoWithBLOBs> result = serviceFacade.getQuestionInfoService().selectAnalysis(questionId);
+    			if (result == null) {
+            		return noData();
+            	}
+    			int status = 1;
+    			serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+    			return success(result);
+            } catch (Exception e){
+            	int status = 0;
+            	serviceFacade.getIUserActionLogServive().insert(1, url, status, remark, userId, params);
+            	List<QuestionInfoWithBLOBs> result = serviceFacade.getQuestionInfoService().selectAnalysis(questionId);
+            	if (result == null) {
+            		return noData();
+            	}
+    			return success(result);
+            }
+        }
+    }
 
 }
