@@ -19,10 +19,7 @@
 		j_user_paper where
 		user_id = '${userId}'
 		and task_id = ${taskId}
-	
-	
 	</select>
-
     <select id="selectByPrimaryKey" resultMap="BaseResultMap"
             parameterType="java.lang.Long">
         select

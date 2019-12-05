@@ -26,16 +26,17 @@ public final class UserUtil {
         UserInfo userInfo;
         if(StringUtils.isEmpty(user)) {
         	userInfo = new UserInfo();
-        	userInfo.setUserId("80577c73-0621-11ea-93b1-00ffa210afd0");
+        	userInfo.setUserId("f77949f4-14c7-11ea-b1c4-0c9d9214e1ec");
         	userInfo.setUserName("张三");
-        	userInfo.setStRoleId(StRoleEmun.MANAGER.getStRoleId());
+        	userInfo.setPassword("123456");
+        	userInfo.setStRoleId(StRoleEmun.USER.getStRoleId());
         } else {
         	userInfo = JSON.parseObject(user,UserInfo.class);
         }
         return userInfo;
     }
     /**
-     * 利用MD5进行加密
+     * 	利用MD5进行加密
      * @param str
      */
     public static String EncoderByMd5(String str) {
@@ -59,17 +60,12 @@ public final class UserUtil {
 
     /**判断用户密码是否正确
      *newpasswd 用户输入的密码
-     *oldpasswd 正确密码*/
+     *oldpasswd 正确密码
+     */
     public static boolean checkpassword(String newpasswd,String oldpasswd){
         if(EncoderByMd5(newpasswd).equals(oldpasswd))
             return true;
         else
             return false;
-    }
-    public static void main(String args[]){
-        System.out.println("-----------main-----------");
-//        getUser();
-        System.out.println(EncoderByMd5("123456"));
-
     }
 }

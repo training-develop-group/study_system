@@ -28,7 +28,7 @@ public interface ITaskService {
     List<String> taskTypeEnum();
 
     //删除任务根据id
-    int deleteTaskById(long taskId);
+    int deleteTaskById(Long taskId,String userId);
 
     //修改任务名根据id
     int updateTaskById(long taskId, String taskName);
@@ -36,5 +36,5 @@ public interface ITaskService {
     //添加任务
     int insertTask(UserTaskRelationInfo taskInfo);
 
-    TaskInfo taskDetails(Long taskId);
+    TaskInfo taskDetails(Long taskId,String userId);
 }

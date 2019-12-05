@@ -227,7 +227,11 @@
       is_del = #{isDel,jdbcType=CHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
-
+	<update id="updateUserPassWord" parameterType="String">
+	update user_info
+    set password = '${passWord}'
+     where user_id ='${userId}'
+	</update>
     <select id="selectByUserNameAndPassword" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>

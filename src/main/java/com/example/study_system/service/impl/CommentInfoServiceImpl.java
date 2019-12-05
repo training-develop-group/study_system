@@ -22,7 +22,7 @@ import com.github.pagehelper.PageInfo;
 @Service
 public class CommentInfoServiceImpl extends BaseService implements ICommentInfoService {
     /**
-     * 获取评论列表
+     * 	获取评论列表
      */
     @Override
     public PageInfo<CommentInfo> selectCommentByTaskId(Long taskId, int pageNum, int pageSize) {
@@ -33,7 +33,7 @@ public class CommentInfoServiceImpl extends BaseService implements ICommentInfoS
     }
 
     /**
-     * 添加评论
+     * 	添加评论
      */
     @Override
     public int insertSelective(HttpServletRequest request,CommentInfo record) {
@@ -51,7 +51,7 @@ public class CommentInfoServiceImpl extends BaseService implements ICommentInfoS
     }
 
     /**
-     * 修改评论
+     * 	修改评论
      */
     @Override
     public int updateByPrimaryKeySelective(CommentInfo record) {

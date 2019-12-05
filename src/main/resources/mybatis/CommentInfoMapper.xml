@@ -37,17 +37,16 @@
 	 where 
 	 user_id='${userId}' 
 	 and task_id = ${taskId}
-	
-	
 	</update>
     <select id="selectCommentByTaskId"
             resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
 		select
-		a.ref,a.task_id,a.content,a.comment_type,a.comment_user_id,a.c_time,b.user_name
-		from comment_info a,user_info b
+		comment.ref,comment.task_id,comment.content,comment.comment_type,comment.comment_user_id,comment.c_time,user.user_name
+		from comment_info comment,user_info user
 		where 
-		b.user_id = a.comment_user_id
-		and a.task_id = #{taskId,jdbcType=BIGINT}
+		user.user_id = comment.comment_user_id
+		and comment.task_id = #{taskId,jdbcType=BIGINT}
+		ORDER BY comment.c_time desc
 	</select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from

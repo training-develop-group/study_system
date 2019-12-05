@@ -23,14 +23,14 @@
     answer
   </sql>
     <select id="selectUserQuestionAnswer" resultMap="ResultMapWithBLOBs" parameterType="String">
-  select  JUQAR.* from 
-manage_system.j_user_ques_answer_record JUQAR,
-manage_system.j_user_paper JUP
- where JUP.ref =  JUQAR.answer_value 
- and JUP.task_id = ${taskId} 
- and JUP.paper_id = ${paperId} 
- and JUP.user_id = '${userId}'
- and JUQAR.question_id = ${questionId};
+	select  JUQAR.* from 
+	j_user_ques_answer_record JUQAR,
+	j_user_paper jUserPaper
+	where jUserPaper.ref =  JUQAR.answer_value 
+	and jUserPaper.task_id = ${taskId} 
+	and jUserPaper.paper_id = ${paperId} 
+	and jUserPaper.user_id = '${userId}'
+	and JUQAR.question_id = ${questionId};
   
   </select>
     <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
@@ -43,16 +43,16 @@ manage_system.j_user_paper JUP
     </select>
 
     <select id="selectJUserQuesAnswerRecord" resultType="Float" parameterType="String">
-   SELECT ROUND(T1.wc/T2.z*100,1) FROM
-   (SELECT count(*) as wc FROM manage_system.j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right = 1) T1,
-   (SELECT count(*) as z FROM manage_system.j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR}) T2;
+   SELECT ROUND(JUQARC.correct/JUQAR.totalNumber*100,1) FROM
+   (SELECT count(*) as correct FROM j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right = 1) JUQARC,
+   (SELECT count(*) as totalNumber FROM j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR}) JUQAR;
    </select>
 
     <select id="choiceJUserQuesAnswerRecord" resultMap="BaseResultMap">
-	select ROUND(T1.dx/T3.zs*100,1) singleElection , ROUND(T2.dx/T3.zs*100,1) multipleSelection from
-	(select count(*) dx from manage_system.question_info a,  manage_system.j_user_ques_answer_record b where question_type = 1 and a.question_id=b.question_id and is_right=1)T1,
-	(select count(*) dx from manage_system.question_info a,  manage_system.j_user_ques_answer_record b where question_type = 2 and a.question_id=b.question_id and is_right=1)T2,
-	(select count(*) zs from manage_system.question_info a,  manage_system.j_user_ques_answer_record b where a.question_id=b.question_id and is_right=1) T3;
+	select ROUND(JUQARS.typeS/JUQAR.totalNumber*100,1) singleElection , ROUND(JUQARM.typeM/JUQAR.totalNumber*100,1) multipleSelection from
+	(select count(*) typeS from question_info a, j_user_ques_answer_record b where question_type = 1 and a.question_id=b.question_id and is_right=1) JUQARS,
+	(select count(*) typeM from question_info a, j_user_ques_answer_record b where question_type = 2 and a.question_id=b.question_id and is_right=1) JUQARM,
+	(select count(*) totalNumber from question_info a,  j_user_ques_answer_record b where a.question_id=b.question_id and is_right=1) JUQAR;
    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

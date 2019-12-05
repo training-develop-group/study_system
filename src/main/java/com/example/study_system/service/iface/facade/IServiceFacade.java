@@ -19,6 +19,10 @@ public interface IServiceFacade {
     IResourceService getResourceService();
 
     IJUserVideoLogService getJUserVideoLogService();
+    
+    IUserActionLogService getIUserActionLogServive();
 
     IStatService getStatService();
+    
+    IUserService getUserService();
 }

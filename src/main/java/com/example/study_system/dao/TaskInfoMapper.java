@@ -14,7 +14,7 @@ public interface TaskInfoMapper {
 
     int insertSelective(TaskInfo record);
 
-    TaskInfo selectByPrimaryKey(Long taskId);
+    TaskInfo selectByPrimaryKey(Long taskId,@Param("userId")String userId);
 
     int updateByPrimaryKeySelective(TaskInfo record);
 
@@ -31,6 +31,8 @@ public interface TaskInfoMapper {
     List<TaskInfo> selectUserTask(@Param("stutas") Integer stutas, @Param("userId") String userId);
 
     List<TaskInfo> selectAll();
+    
+    List<TaskInfo> selectPaperAndRes(@Param("paperId")Long paperId,@Param("resId")Long resId);
 
     //获取任务类型百分比
     TaskInfo typeTaskInfo();

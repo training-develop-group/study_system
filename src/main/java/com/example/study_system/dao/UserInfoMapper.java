@@ -22,6 +22,8 @@ public interface UserInfoMapper {
     int updateByPrimaryKeyWithBLOBs(UserInfoWithBLOBs record);
 
     int updateByPrimaryKey(UserInfo record);
+    
+    int updateUserPassWord(@Param("passWord")String passWord,@Param("userId")String userId);
 
     List<UserInfo> selectUserByName(@Param("userName") String userName);
 

@@ -25,10 +25,6 @@
         from resource_info
         where res_id = #{resId,jdbcType=BIGINT}
     </select>
-    <update id="updateResourceStatus" parameterType="java.lang.String">
-
-
-    </update>
     <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>

@@ -18,16 +18,16 @@
 	</sql>
     <select id="selectByTaskIdusers" resultMap="BaseResultMap"
             parameterType="java.lang.Long">
-        select u.user_name , ju.STATUS ,u.user_id,t.task_id
+        select user.user_name , jUserTask.STATUS ,user.user_id,task.task_id
         from
-        manage_system.task_info t
-        ,manage_system.user_info u
-        ,manage_system.j_user_task ju
+        task_info task
+        ,user_info user
+        ,j_user_task jUserTask
         where
-        t.task_id=ju.task_id
-        and ju.user_id=u.user_id
+        task.task_id=jUserTask.task_id
+        and jUserTask.user_id=user.user_id
         <if test="taskId!=null">
-            and t.task_id=${taskId}
+            and task.task_id=${taskId}
         </if>
 
     </select>
@@ -38,6 +38,13 @@
         from j_user_task
         where ref = #{ref,jdbcType=BIGINT}
     </select>
+    <select id="selectWantDeleteTaskUser" resultMap="BaseResultMap" parameterType="java.lang.Long">
+ 		select
+        <include refid="Base_Column_List"/>
+        from
+        manage_system.j_user_task
+        where  task_id = ${taskId}
+	</select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
 		delete from
 		j_user_task
@@ -48,7 +55,7 @@
         select
         <include refid="Base_Column_List"/>
         from
-        manage_system.j_user_task
+        j_user_task
         where
         user_id='${userId}'
         and
@@ -57,23 +64,23 @@
     </select>
 
     <select id="selectUserTaskProbability" resultMap="BaseResultMap">
-	SELECT ROUND(T1.wc/T2.z*100,1) completed , ROUND(T3.wwc/T2.z*100,1) notCompleted FROM 
-	(SELECT count(*) as wc FROM manage_system.j_user_task where status = 1) T1, 
-	(SELECT count(*) as wwc FROM manage_system.j_user_task where status != 1) T3, 
-	(SELECT count(*) as z FROM manage_system.j_user_task)T2;
+	SELECT ROUND(jUserTaskC.complete/jUserTaskT.totalNumber*100,1) completed , ROUND(jUserTaskI.incompleted/jUserTaskT.totalNumber*100,1) notCompleted FROM 
+	(SELECT count(*) as complete FROM j_user_task where status = 1) jUserTaskC, 
+	(SELECT count(*) as incompleted FROM j_user_task where status != 1) jUserTaskI, 
+	(SELECT count(*) as totalNumber FROM j_user_task) jUserTaskT;
 	</select>
 
     <select id="selectJUsePaperPercentage" resultMap="BaseResultMap" parameterType="Integer">
-	SELECT ROUND(T1.wc/T2.z*100,1) completed , ROUND(T3.wwc/T2.z*100,1) notCompleted FROM 
-	(SELECT count(*) as wc FROM manage_system.j_user_task where status = 1) T1, 
-	(SELECT count(*) as wwc FROM manage_system.j_user_task where status != 1) T3, 
-	(SELECT count(*) as z FROM manage_system.j_user_task)T2;
+	SELECT ROUND(jUserTaskC.complete/jUserTaskT.totalNumber*100,1) completed , ROUND(jUserTaskI.incompleted/jUserTaskT.totalNumber*100,1) notCompleted FROM 
+	(SELECT count(*) as complete FROM j_user_task where status = 1) jUserTaskC, 
+	(SELECT count(*) as incompleted FROM j_user_task where status != 1) jUserTaskI, 
+	(SELECT count(*) as totalNumber FROM j_user_task) jUserTaskT;
     </select>
 
     <select id="selectJUsePaper" resultType="Float" parameterType="String">
-	SELECT ROUND(T1.wc/T2.z*100,1) completed FROM
-	(SELECT count(*) as wc FROM manage_system.j_user_task where user_id = #{userId,jdbcType=VARCHAR} and status = 1)T1, 
-	(SELECT count(*) as z FROM manage_system.j_user_task where user_id = #{userId,jdbcType=VARCHAR})T2;
+	SELECT ROUND(jUserTaskC.complete/jUserTaskT.totalNumber*100,1) completed FROM
+	(SELECT count(*) as complete FROM j_user_task where user_id = #{userId,jdbcType=VARCHAR} and status = 1) jUserTaskC, 
+	(SELECT count(*) as totalNumber FROM j_user_task where user_id = #{userId,jdbcType=VARCHAR}) jUserTaskT;
     </select>
 
     <insert id="insert"

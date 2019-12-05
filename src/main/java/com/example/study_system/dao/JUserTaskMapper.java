@@ -33,4 +33,6 @@ public interface JUserTaskMapper {
     JUserTask selectJUsePaperPercentage();
 
     Float selectJUsePaper(String userId);
+
+	List<JUserTask> selectWantDeleteTaskUser(@Param("taskId")Long taskId);
 }

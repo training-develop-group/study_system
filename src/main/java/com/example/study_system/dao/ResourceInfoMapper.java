@@ -17,7 +17,8 @@ public interface ResourceInfoMapper {
 
     ResourceInfo selectByPrimaryKey(Long resId);
 
-    List<ResourceInfo> selectList(@Param("resName") String resName, @Param("resType") Integer resType);        //获取资源列表
+	// 获取资源列表
+    List<ResourceInfo> selectList(@Param("resName") String resName, @Param("resType") Integer resType);
 
     int selectListCount();
 

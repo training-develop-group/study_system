@@ -14,9 +14,9 @@
         <result column="m_time" property="mTime" jdbcType="TIMESTAMP"/>
         <result column="c_user" property="cUser" jdbcType="VARCHAR"/>
         <result column="m_user" property="mUser" jdbcType="VARCHAR"/>
-        <result column="xx" property="xx" jdbcType="INTEGER"/>
-        <result column="cs" property="cs" jdbcType="INTEGER"/>
-        <result column="zh" property="zh" jdbcType="INTEGER"/>
+        <result column="learning_num" property="learningNum" jdbcType="INTEGER"/>
+        <result column="test_num" property="testNum" jdbcType="INTEGER"/>
+        <result column="synthetical_num" property="syntheticalNum" jdbcType="INTEGER"/>
         <result column="comprehensive" property="comprehensive" jdbcType="REAL"/>
         <result column="test" property="test" jdbcType="REAL"/>
         <result column="learning" property="learning" jdbcType="REAL"/>
@@ -40,13 +40,14 @@
 
     <select id="selectUserTask" parameterType="String" resultMap="BaseResultMap">
  	select 
-    T.status,T.task_type,T.task_id,T.res_id,T.paper_id,T.start_time,T.end_time,JUT.user_id,T.task_name
+    task.status,task.task_type,task.task_id,task.res_id,task.paper_id,task.start_time,task.end_time,jUserTask.user_id,task.task_name
     from
-    manage_system.j_user_task JUT,
-    manage_system.task_info T 
-    where T.task_id = JUT.task_id and 
-    JUT.STATUS = ${stutas} and 
-    JUT.user_id = '${userId}' ORDER BY T.c_time desc , T.task_id desc
+    j_user_task jUserTask,
+    task_info task 
+    where task.task_id = jUserTask.task_id and 
+    jUserTask.STATUS = ${stutas} and 
+    jUserTask.user_id = '${userId}' 
+    ORDER BY task.c_time desc , task.task_id desc
   </select>
 
     <select id="selectTaskAll" resultMap="ResultMapWithBLOBs" parameterType="String">
@@ -63,14 +64,15 @@
         ORDER BY c_time desc , task_id desc
     </select>
 
-
     <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
         select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        from task_info
-        where task_id = #{taskId,jdbcType=BIGINT}
+    task.task_id, task.res_id, task.paper_id, task.task_type, task.task_name, jUserTask.STATUS, task.start_time, task.end_time, task.c_time, 
+    task.m_time, task.c_user, task.m_user, task.task_remark
+        from task_info task,
+        j_user_task jUserTask
+        where task.task_id = #{taskId,jdbcType=BIGINT} 
+        and task.task_id = jUserTask.task_id 
+        and jUserTask.user_id = '${userId}'
     </select>
 
     <select id="selectAll" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
@@ -80,25 +82,35 @@
         <include refid="Blob_Column_List"/>
         from task_info
     </select>
-
+    
+	<select id="selectPaperAndRes" parameterType="Long" resultMap="BaseResultMap">
+	select * from task_info where
+	1 = 1
+	<if test="paperId != null">
+	and paper_id = ${paperId}
+	</if>
+	<if test="resId != null">
+	and res_id = ${resId}
+	</if>
+	</select>
+	
     <select id="selectTaskCount" resultType="Integer">
    select  count(0) from task_info
-   
   </select>
 
     <select id="selectTaskInfo" resultMap="ResultMapWithBLOBs" parameterType="String">
-	SELECT jUserTask.zh , jUserPaper.cs , jUserQuesAnswerRecord.xx from 
-	(SELECT count(*) as zh FROM j_user_task where user_id = #{userId,jdbcType=VARCHAR} and STATUS = 1) jUserTask,
-	(SELECT count(*) as cs FROM j_user_paper where user_id = #{userId,jdbcType=VARCHAR}) jUserPaper,
-	(SELECT count(*) as xx FROM j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right = 1) jUserQuesAnswerRecord;
+	SELECT jUserTask.synthetical_num , jUserPaper.test_num , jUserQuesAnswerRecord.learning_num from 
+(SELECT count(*) as synthetical_num FROM j_user_task where user_id = #{userId,jdbcType=VARCHAR} and STATUS = 1) jUserTask,
+(SELECT count(*) as test_num FROM j_user_paper where user_id = #{userId,jdbcType=VARCHAR}) jUserPaper,
+(SELECT count(*) as learning_num FROM j_user_ques_answer_record where user_id = #{userId,jdbcType=VARCHAR} and is_right = 1) jUserQuesAnswerRecord;
 	</select>
 
     <select id="typeTaskInfo" resultMap="BaseResultMap">
-	SELECT ROUND(T1.xx/T4.qb*100,1) comprehensive , ROUND(T2.cs/T4.qb*100,1) learning , ROUND(T3.zh/T4.qb*100,1) test 
-	FROM (SELECT count(*) as xx FROM manage_system.task_info where task_type = 1) T1,
-	(SELECT count(*) as cs FROM manage_system.task_info where task_type = 2)T2,
-	(SELECT count(*) as zh FROM manage_system.task_info where task_type = 3)T3,
-	(SELECT count(*) as qb FROM manage_system.task_info)T4;
+	SELECT ROUND(taskS.studying/task.totalNumber*100,1) comprehensive , ROUND(taskT.testNum/task.totalNumber*100,1) learning , ROUND(taskC.compositeNum/task.totalNumber*100,1) test 
+	FROM (SELECT count(*) as studying FROM task_info where task_type = 1) taskS,
+	(SELECT count(*) as testNum FROM task_info where task_type = 2) taskT,
+	(SELECT count(*) as compositeNum FROM task_info where task_type = 3) taskC,
+	(SELECT count(*) as totalNumber FROM task_info) task;
   </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

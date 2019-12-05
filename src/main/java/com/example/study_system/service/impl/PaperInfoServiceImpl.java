@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class PaperInfoServiceImpl extends BaseService implements IPaperInfoService {
-
 	// 新建试卷
 	@Override
 	public int insert(HttpServletRequest request, String paperName) {
@@ -31,22 +30,23 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 
 	// 修改试卷名
 	@Override
-	public int modifyTestPaperName(PaperInfo record) {
-		return paperInfoMapper.updateByPrimaryKeySelective(record);
+	public int modifyTestPaperName(HttpServletRequest request, Long paperId , String paperName) {
+		UserInfo userInfo = UserUtil.getUser(request);
+		return paperInfoMapper.updateByPrimaryKey(paperId, paperName , userInfo.getUserName());
 	}
 
 	// 查找用户答案
 	@Override
 	public PaperResultDTO UserQuestionAnswer(Long taskId, Long paperId, String userId) {
 		PaperResultDTO paper = detailsOfExaminationPapers(paperId);
-		Float index = (float) 0;
-		Float question = (float)0;
+		Float totalPoints = 0f;
+		Float question = 0f;
 		if (paper != null) {
 			for (QuestionResultDTO item : paper.getQuestionList()) {
 				List<JUserQuesAnswerRecord> jUserQuesAnswerRecord = jUserQuesAnswerRecordMapper
 						.selectUserQuestionAnswer(taskId, paperId, userId, item.getQuestionId());
 				if (jUserQuesAnswerRecord != null) {
-						index += jUserQuesAnswerRecord.get(0).getScord();
+					totalPoints += jUserQuesAnswerRecord.get(0).getScord();
 						item.setUserAnswer(jUserQuesAnswerRecord.get(0).getAnswer());
 					
 				} else {
@@ -55,8 +55,10 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 				question += item.getScore();
 			}
 		}
-		paper.setUserScore(index);
-		paper.setScore(question);
+		if (paper != null) {
+			paper.setUserScore(totalPoints);
+			paper.setScore(question);
+		}
 		return paper;
 	}
 
@@ -117,6 +119,7 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		// 设置选项map<questionId,List<JQuestionOption>>
 		Map<Long, List<JQuestionOption>> optionMap = new HashMap<>();
 		questionOptionList.forEach(option -> {
+			// 比较key然后添加选项
 			if (optionMap.containsKey(option.getQuestionId())) {
 				optionMap.get(option.getQuestionId()).add(option);
 			} else {
@@ -183,8 +186,6 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		return jPaperQuestionMapper.insertSelective(record);
 	}
 
-	float score = 0;
-
 	/**
 	 * 提交答案
 	 */
@@ -226,16 +227,16 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 				jUserTask.setIsRight(1);
 				// 获取当前题目的分数
 				jUserTask.setScore(isRight.get(jUserTask.getQuestionId()).getScore());
-			}
-			;
+			};
+			
 			for (QuestionResultDTO QuestionResult : paperResultDTO.getQuestionList()) {
 				if (jUserTask.getQuestionId() == QuestionResult.getQuestionId()) {
 					// 添加用户选择答案到paperResultDTO里面
 					QuestionResult.setUserAnswer(jUserTask.getAnswer());
 				}
 			}
-		}
-		;
+		};
+		
 		// 下面是添加部分
 		JUserPaper jUserPaper = new JUserPaper();
 		jUserPaper.setUserId(userId);
@@ -260,9 +261,7 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		}
 		// 修改他已经完成
 		jUserTaskMapper.updateStatus(userId, taskId);
-		System.out.println(score);
 		paperResultDTO.setUserScore(score);
-		System.out.println(paperResultDTO.getUserScore());
 		// 返回处理完的DTO
 		return paperResultDTO;
 	}
@@ -331,8 +330,8 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 		}
 		// 设置试卷里试题的分值
 		if (questionScoreList.size() != 0) {
-			questionScoreList.forEach(item -> result = jPaperQuestionMapper.updateScore(item.getPaperId(),
-					item.getQuestionId(), item.getScore()));
+			questionScoreList.forEach(item -> 
+			result = jPaperQuestionMapper.updateScore(item.getPaperId(), item.getQuestionId(), item.getScore()));
 		}
 		return result;
 	}
@@ -379,5 +378,10 @@ public class PaperInfoServiceImpl extends BaseService implements IPaperInfoServi
 			result.add(questionInfo);
 		}
 		return result;
+	}
+	
+//	获取请求路径
+	public String getUrl() {
+		return serverConfig.getUrl();
 	}
 }

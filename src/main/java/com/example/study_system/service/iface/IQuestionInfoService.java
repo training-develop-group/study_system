@@ -7,12 +7,14 @@ import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface IQuestionInfoService {
-    int addQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions);
+    int addQuestion(HttpServletRequest request,QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions);
 
     int deleteQuestion(Long questionId);
 
-    int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions);
+    int updateQuestion(HttpServletRequest request,QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions);
 
     PageInfo<QuestionResultDTO> selectQuestion(Integer pageNum, Integer pageSize, String content, Integer questionType);
 

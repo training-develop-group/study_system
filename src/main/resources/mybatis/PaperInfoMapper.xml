@@ -41,11 +41,15 @@
     <select id="selectQuestionInfoSingleAndMany" resultMap="BaseResultMap">
 		SELECT Single.single , Many.many FROM 
 		
-		(SELECT count(*) as single FROM paper_info a , j_paper_question b , question_info c where 
-		a.paper_id = b.paper_id and b.question_id = c.question_id and c.question_type = 1 and a.paper_id = #{paperId,jdbcType=BIGINT}) Single, 
+		(SELECT count(*) as single FROM paper_info paper , j_paper_question jPaperQuestion , question_info question where 
+		paper.paper_id = jPaperQuestion.paper_id 
+		and jPaperQuestion.question_id = question.question_id 
+		and question.question_type = 1 and paper.paper_id = #{paperId,jdbcType=BIGINT}) Single, 
 		
-		(SELECT count(*) as many FROM paper_info a , j_paper_question b , question_info c where 
-		a.paper_id = b.paper_id and b.question_id = c.question_id and c.question_type = 2 and a.paper_id = #{paperId,jdbcType=BIGINT}) Many;
+		(SELECT count(*) as many FROM paper_info paper , j_paper_question jPaperQuestion , question_info question where 
+		paper.paper_id = jPaperQuestion.paper_id 
+		and jPaperQuestion.question_id = question.question_id 
+		and question.question_type = 2 and paper.paper_id = #{paperId,jdbcType=BIGINT}) Many;
 	</select>
     <select id="selectPaperInfo" resultMap="BaseResultMap" parameterType="String">
         select
@@ -168,11 +172,7 @@
             parameterType="com.example.study_system.model.PaperInfo">
 		update paper_info
 		set paper_name = #{paperName,jdbcType=VARCHAR},
-		score = #{score,jdbcType=REAL},
-		STATUS = #{status,jdbcType=INTEGER},
-		c_time = #{cTime,jdbcType=TIMESTAMP},
-		m_time = #{mTime,jdbcType=TIMESTAMP},
-		c_user = #{cUser,jdbcType=VARCHAR},
+		m_time = now(),
 		m_user = #{mUser,jdbcType=VARCHAR}
 		where paper_id = #{paperId,jdbcType=BIGINT}
 	</update>

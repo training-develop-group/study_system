@@ -10,19 +10,18 @@ import java.util.List;
 public interface PaperInfoMapper {
     //	删除试卷
     int deleteByPrimaryKey(Long paperId);
-
+    
+    //	新建试卷
     int insert(String paperName, String cUser);
 
-    //	新建试卷
     int insertSelective(PaperInfo record);
 
     //	获取试卷详情
     PaperInfo selectByPrimaryKey(Long paperId);
 
-    //	修改试卷名
     int updateByPrimaryKeySelective(PaperInfo record);
-
-    int updateByPrimaryKey(PaperInfo record);
+    //	修改试卷名
+    int updateByPrimaryKey(Long paperId , String paperName, String mUser);
 
     List<PaperInfo> selectPaperInfo(@Param("paperName") String paperName);
 

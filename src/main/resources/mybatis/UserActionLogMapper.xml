@@ -36,7 +36,7 @@
       STATUS, remark, c_time, 
       user_id, params)
     values (#{ref,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, now(), 
       #{userId,jdbcType=VARCHAR}, #{params,jdbcType=LONGVARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="com.example.study_system.model.UserActionLog">

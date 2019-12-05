@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.HtmlUtils;
@@ -11,8 +13,10 @@ import org.springframework.web.util.HtmlUtils;
 import com.example.study_system.dto.QuestionResultDTO;
 import com.example.study_system.model.JQuestionOption;
 import com.example.study_system.model.QuestionInfoWithBLOBs;
+import com.example.study_system.model.UserInfo;
 import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IQuestionInfoService;
+import com.example.study_system.util.UserUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -31,17 +35,18 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 	 */
 	@Override
 	@Transactional
-	public int addQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
+	public int addQuestion(HttpServletRequest request,QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
+		UserInfo userInfo = UserUtil.getUser(request);
 		Date date = new Date();
 		question.setcTime(date);
-		question.setcUser("未定义");
+		question.setcUser(userInfo.getUserName());
 		question.setmTime(date);
-		question.setmUser("未定义");
+		question.setmUser(userInfo.getUserName());
 		int result = questionInfoMapper.insertSelective(question);
 		questionOptions.forEach(item -> {
-			item.setcUser("未定义");
+			item.setcUser(userInfo.getUserName());
 			item.setcTime(date);
-			item.setmUser("未定义");
+			item.setmUser(userInfo.getUserName());
 			item.setmTime(date);
 			item.setQuestionId(question.getQuestionId());
 			jQuestionOptionMapper.insertSelective(item);
@@ -66,12 +71,13 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 	 */
 	@Override
 	@Transactional
-	public int updateQuestion(QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
+	public int updateQuestion(HttpServletRequest request,QuestionInfoWithBLOBs question, List<JQuestionOption> questionOptions) {
+		UserInfo userInfo = UserUtil.getUser(request);
 		Date date = new Date();
 		question.setcTime(date);
 		question.setmTime(date);
-		question.setcUser("未定义");
-		question.setmUser("未定义");
+		question.setcUser(userInfo.getUserName());
+		question.setmUser(userInfo.getUserName());
 		int result = questionInfoMapper.deleteByPrimaryKey(question.getQuestionId());
 		questionInfoMapper.insertSelective(question);
 		List<JQuestionOption> options = questionOptions;
@@ -79,8 +85,8 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		options.forEach(item -> {
 			item.setcTime(date);
 			item.setmTime(date);
-			item.setcUser("未定义");
-			item.setmUser("未定义");
+			item.setcUser(userInfo.getUserName());
+			item.setmUser(userInfo.getUserName());
 			item.setQuestionId(question.getQuestionId());
 			jQuestionOptionMapper.insertSelective(item);
 		});
@@ -104,6 +110,7 @@ public class QuestionInfoServiceImpl extends BaseService implements IQuestionInf
 		});
 		PageInfo<QuestionResultDTO> result = new PageInfo<QuestionResultDTO>(questionResultDTO);
 		result.setTotal(questionInfoMapper.selectQuestionCountNum(content, questionType));
+		result.setPageNum(pageNum);
 		return result;
 	}
 

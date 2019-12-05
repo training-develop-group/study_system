@@ -62,7 +62,7 @@ public class StatServiceImpl extends BaseService implements IStatService {
             if (percentage == null) {
             	percentage = 0.0f;
             }
-            statisticalList.add(new UserTaskDTO(task.getXx(), task.getCs(), task.getZh(), answerRecord, percentage, item.getUserName()));
+            statisticalList.add(new UserTaskDTO(task.getLearningNum(), task.getTestNum(), task.getSyntheticalNum(), answerRecord, percentage, item.getUserName()));
         });
         PageInfo<UserTaskDTO> result = new PageInfo<>(statisticalList);
         result.setTotal(userInfoMapper.selectUserByName(userName).size());

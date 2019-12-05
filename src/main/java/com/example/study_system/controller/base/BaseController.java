@@ -37,4 +37,7 @@ public class BaseController {
     protected <T> ResultDTO<T> thisFileFormatIsNotSupported() {
         return new ResultDTO<>(ResultEmun.THIS_FILE_FORMAT_IS_NOT_SUPPORTED);
     }
+    protected <T> ResultDTO<T> unauthorizedError() {
+        return new ResultDTO<>(ResultEmun.UNAUTHORIZED_ERROR);
+    }
 }

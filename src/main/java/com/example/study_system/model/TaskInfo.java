@@ -19,14 +19,6 @@ public class TaskInfo {
     
     private String userId;
 
-    public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	private Integer status;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -46,6 +38,46 @@ public class TaskInfo {
     private String mUser;
 
     private String taskRemark;
+    
+    private Integer learningNum;
+    private Integer testNum;
+    private Integer syntheticalNum;
+    
+    private float comprehensive;
+	private float test;
+	private float learning;
+    
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
+    public Integer getLearningNum() {
+		return learningNum;
+	}
+
+	public void setLearningNum(Integer learningNum) {
+		this.learningNum = learningNum;
+	}
+
+	public Integer getTestNum() {
+		return testNum;
+	}
+
+	public void setTestNum(Integer testNum) {
+		this.testNum = testNum;
+	}
+
+	public Integer getSyntheticalNum() {
+		return syntheticalNum;
+	}
+
+	public void setSyntheticalNum(Integer syntheticalNum) {
+		this.syntheticalNum = syntheticalNum;
+	}
 
     public Long getTaskId() {
         return taskId;
@@ -150,39 +182,6 @@ public class TaskInfo {
     public void setTaskRemark(String taskRemark) {
         this.taskRemark = taskRemark == null ? null : taskRemark.trim();
     }
-
-    private Integer xx;
-    public Integer getXx() {
-		return xx;
-	}
-
-	public void setXx(Integer xx) {
-		this.xx = xx;
-	}
-
-	public Integer getCs() {
-		return cs;
-	}
-
-	public void setCs(Integer cs) {
-		this.cs = cs;
-	}
-
-	public Integer getZh() {
-		return zh;
-	}
-
-	public void setZh(Integer zh) {
-		this.zh = zh;
-	}
-
-
-	private Integer cs;
-    private Integer zh;
-    
-    private float comprehensive;
-	private float test;
-	private float learning;
 	
 	public float getComprehensive() {
 		return comprehensive;

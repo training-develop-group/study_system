@@ -25,8 +25,15 @@ public class ServiceFacadeImpl implements IServiceFacade {
     @Autowired
     IJUserVideoLogService userVideoLogService;
     @Autowired
+    IUserActionLogService userActionLogService;
+    @Autowired
     IResourceService resourceService;
-
+    @Autowired
+    IUserService userService;
+    @Override
+    public IUserService getUserService() {
+        return userService;
+    }
     @Override
     public ICommentInfoService getCommentInfoService() {
         return commentInfoService;
@@ -62,6 +69,11 @@ public class ServiceFacadeImpl implements IServiceFacade {
         return userVideoLogService;
     }
 
+    @Override
+    public IUserActionLogService getIUserActionLogServive() {
+        return userActionLogService;
+    }
+    
     @Override
     public IStatService getStatService() {
         return statService;

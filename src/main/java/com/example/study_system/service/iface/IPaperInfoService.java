@@ -17,7 +17,7 @@ public interface IPaperInfoService {
     int insert(HttpServletRequest request, String paperName);
 
     //	修改试卷名
-    int modifyTestPaperName(PaperInfo record);
+    int modifyTestPaperName(HttpServletRequest request, Long paperId , String paperName);
 
     //	删除试卷
     int deleteTestPaper(Long paperId);
@@ -49,4 +49,6 @@ public interface IPaperInfoService {
 	
 	// 查询单选和多选题数
 	PaperInfo selectQuestionInfoSingleAndMany(Long paperId);
+
+	String getUrl();
 }

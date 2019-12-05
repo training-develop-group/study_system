@@ -18,7 +18,7 @@ public class JUserVideoLogServiceImpl extends BaseService implements IJUserVideo
 
     @Override
     public Long getVideoPlaybackTime(Long resId) {
-        Long a = userVideoLogMapper.selectByResId(resId);
-        return a;
+        Long video = userVideoLogMapper.selectByResId(resId);
+        return video;
     }
 }
