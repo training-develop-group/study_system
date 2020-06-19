@@ -1,46 +1,5 @@
 package com.example.study_system.service.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
-import org.apache.poi.hssf.usermodel.HSSFPictureData;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.xwpf.converter.core.BasicURIResolver;
-import org.apache.poi.xwpf.converter.core.FileImageExtractor;
-import org.apache.poi.xwpf.converter.xhtml.XHTMLConverter;
-import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.bytedeco.javacv.FrameGrabber.Exception;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.Document;
-
 import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
@@ -51,11 +10,41 @@ import com.example.study_system.service.base.BaseService;
 import com.example.study_system.service.iface.IResourceService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
+import org.apache.poi.hssf.usermodel.HSSFPictureData;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xwpf.converter.core.BasicURIResolver;
+import org.apache.poi.xwpf.converter.core.FileImageExtractor;
+import org.apache.poi.xwpf.converter.xhtml.XHTMLConverter;
+import org.apache.poi.xwpf.converter.xhtml.XHTMLOptions;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Document;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
+import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ResourceServiceImpl extends BaseService implements IResourceService {
 
-	public static String ORI_FILE_PATH = "F:\\study\\files\\"; // 输出文件路径
+	public static String ORI_FILE_PATH = "E:\\公司项目\\学习管理系统\\study\\files\\"; // 输出文件路径
+	public static String OPEN_OFFICE4 = "D:\\OpenOffice 4\\program\\soffice.exe -headless -accept=\"socket,host=127.0.0.1,port=8100;urp;\"";
 
 	/**
 	 * 上传资源
@@ -180,8 +169,6 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 						docxToHtml(desFilePath, uuid);	
 					} catch (Exception e) {
 						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
 					}
 				}
 			}
@@ -223,8 +210,6 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 			} catch (Exception e) {
 				e.printStackTrace();
 
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		} else {
 			System.err.println("路径	[" + video_path + "]对应的视频文件不存在!");
@@ -249,14 +234,13 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 		}
 
 		// 调用openoffice服务线程
-		String command = "C:\\Program Files (x86)\\OpenOffice 4\\program\\soffice.exe -headless -accept=\"socket,host=127.0.0.1,port=8100;urp;\"";
 		try {
 			 // 调用cmd命令
-			p = Runtime.getRuntime().exec(command);
+			p = Runtime.getRuntime().exec(OPEN_OFFICE4);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		OpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
+		OpenOfficeConnection connection = new SocketOpenOfficeConnection(8888);
 
 		try {
 			connection.connect();
@@ -324,7 +308,7 @@ public class ResourceServiceImpl extends BaseService implements IResourceService
 		XHTMLOptions options = XHTMLOptions.create();
 		// 图片保存文件夹路径
 		options.setExtractor(new FileImageExtractor(new File(imagePath)));
-		options.URIResolver(new BasicURIResolver("image"));
+		options.URIResolver( new BasicURIResolver("image"));
 		excelToHtmlConverter.setOutputRowNumbers(false);
 		excelToHtmlConverter.setOutputHiddenRows(false);
 		excelToHtmlConverter.setOutputColumnHeaders(false);

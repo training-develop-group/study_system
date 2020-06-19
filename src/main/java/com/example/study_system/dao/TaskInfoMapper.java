@@ -14,7 +14,7 @@ public interface TaskInfoMapper {
 
     int insertSelective(TaskInfo record);
 
-    TaskInfo selectByPrimaryKey(Long taskId,@Param("userId")String userId);
+    TaskInfo selectByPrimaryKey(@Param("taskId")Long taskId);
 
     int updateByPrimaryKeySelective(TaskInfo record);
 

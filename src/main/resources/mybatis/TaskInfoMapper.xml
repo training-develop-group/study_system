@@ -72,7 +72,6 @@
         from task_info t,j_user_task JUT
         where t.task_id = #{taskId,jdbcType=BIGINT} 
         and t.task_id = JUT.task_id 
-        and JUT.user_id = '${userId}'
     </select>
 
     <select id="selectAll" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">

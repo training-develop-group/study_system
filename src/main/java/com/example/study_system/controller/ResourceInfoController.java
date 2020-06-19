@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/resource")
 public class ResourceInfoController extends BaseController {
-
+	public static final String ffmpeg_path = "D:\\ffmpeg\\ffmpeg.exe";
 	/**
 	 * 	上传资源
 	 *
@@ -36,7 +36,6 @@ public class ResourceInfoController extends BaseController {
 	 */
 	@RequestMapping(value = "/resource", method = RequestMethod.POST)
 	public ResultDTO uploadResourceInfo(HttpServletRequest request, ResourceInfo resourceInfo, MultipartFile file) throws IllegalStateException, IOException {
-		final String ffmpeg_path = "C:\\Users\\Admin\\Desktop\\ffmpeg-4.2.1-win64-static\\bin\\ffmpeg.exe";
 		if (resourceInfo == null || file == null) {
 			return validationError();
 		}

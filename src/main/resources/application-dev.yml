@@ -1,15 +1,15 @@
 ﻿server:
   port: 8888
   servlet:
-   context-path: /manage_system
+    context-path: /manage_system
 
 
 spring:
   datasource:
     username: root
-    password: 13579
-    url: jdbc:mysql://127.0.0.1:3306/manage_system?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://dlyunyi.f3322.net:3306/manage_system?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
     hikari:
       connection-timeout: 3000
       connection-test-query: SELECT 1
@@ -17,10 +17,10 @@ spring:
     multipart:
      enabled: true
      max-file-size: 50MB
-     max-request-size: 50MB    
+     max-request-size: 50MB
   jackson:
     time-zone: Asia/Shanghai
-      
+
 mybatis:
   mapper-locations: classpath:mybatis/*Mapper.xml
   type-aliases-package: com.example.study_system.model

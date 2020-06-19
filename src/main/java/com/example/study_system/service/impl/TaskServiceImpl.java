@@ -22,7 +22,7 @@ public class TaskServiceImpl extends BaseService implements ITaskService {
 	 */
 	@Override
 	public TaskInfo taskDetails(Long taskId, String userId) {
-		TaskInfo taskInfo = taskInfoMapper.selectByPrimaryKey(taskId, userId);
+		TaskInfo taskInfo = taskInfoMapper.selectByPrimaryKey(taskId);
 		return taskInfo;
 	}
 
@@ -134,7 +134,7 @@ public class TaskServiceImpl extends BaseService implements ITaskService {
 	@Override
 	public int deleteTaskById(long taskId, String userId) {
 
-		TaskInfo taskInfo = taskInfoMapper.selectByPrimaryKey(taskId, userId);
+		TaskInfo taskInfo = taskInfoMapper.selectByPrimaryKey(taskId);
 
 		if (taskInfo != null) {
 

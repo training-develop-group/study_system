@@ -26,9 +26,13 @@ public final class UserUtil {
         UserInfo userInfo;
         if(StringUtils.isEmpty(user)) {
         	userInfo = new UserInfo();
-        	userInfo.setUserId("80577c73-0621-11ea-93b1-00ffa210afd0");
-        	userInfo.setUserName("张三");
-        	userInfo.setStRoleId(StRoleEmun.USER.getStRoleId());
+//        	userInfo.setUserId("80577c73-0621-11ea-93b1-00ffa210afd0");
+//        	userInfo.setUserName("张三");
+//        	userInfo.setStRoleId(StRoleEmun.USER.getStRoleId());
+
+        	userInfo.setUserId("79ef442f-ff8c-11e9-8cd4-18dbf23d06fc");
+        	userInfo.setUserName("admin");
+        	userInfo.setStRoleId(StRoleEmun.MANAGER.getStRoleId());
         } else {
         	userInfo = JSON.parseObject(user,UserInfo.class);
         }
